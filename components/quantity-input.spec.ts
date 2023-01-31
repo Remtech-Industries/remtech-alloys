@@ -3,8 +3,8 @@ import { mount } from '@vue/test-utils'
 import QuantityInput from './QuantityInput.vue'
 
 describe('Quantity Input', () => {
-  it('first test', () => {
+  it('should include the word Quantity', () => {
     const wrapper = mount(QuantityInput)
-    expect(wrapper.text()).toContain('hello')
+    expect(wrapper.text()).toContain('Quantity')
   })
 })
