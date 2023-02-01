@@ -1,4 +1,4 @@
-export async function usePostToShopify(query: string, variables: string) {
+export async function usePostToShopify(query: string, variables: any) {
   try {
     const result = await fetch(
       'https://remtech-dev.myshopify.com/api/2023-01/graphql.json',
