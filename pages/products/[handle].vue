@@ -149,11 +149,15 @@ const form = computed(() => {
   }
 })
 
-const product = ref()
+const nullProduct = {
+  variants: { edges: [] },
+  selected_or_first_available_variant: { id: 0, title: '', price: 0 },
+}
+const product = ref({ ...nullProduct })
 async function getProduct() {
   const productData = await useGetProduct({ itemHandle: route.params.handle })
-
-  product.value = productData
+  product.value = productData.productByHandle
+  console.log(Object.entries(productData.productByHandle))
 }
 getProduct()
 
@@ -163,9 +167,7 @@ const productVariants = computed(() => product.value.variants.edges)
 const selectedVariant = computed(
   () => product.value.selected_or_first_available_variant
 )
-const stockingUnit = computed(
-  () => product.value.metafields.custom.stocking_unit.value.first
-)
+const stockingUnit = computed(() => 'mm')
 
 // TODO: figure out where cutFee comes from
 const cutFee = ref()
@@ -178,7 +180,7 @@ const pricingTable = computed(() =>
 )
 
 function activeVariantClasses(variant: any) {
-  if (variant.id === product.value.selected_or_first_available_variant.id)
+  if (variant.id === product.value?.selected_or_first_available_variant.id)
     return 'bg-slate-700 text-slate-50 shadow-lg'
   return 'bg-slate-50 text-slate-700'
 }

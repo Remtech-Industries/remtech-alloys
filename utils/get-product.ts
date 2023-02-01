@@ -46,5 +46,5 @@ query getProduct($handle: String!) {
 export async function useGetProduct(event: any) {
   const { itemHandle } = event
   const shopifyResponse = await usePostToShopify(query, { handle: itemHandle })
-  return JSON.stringify(shopifyResponse)
+  return shopifyResponse
 }
