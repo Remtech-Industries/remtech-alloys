@@ -74,7 +74,7 @@
           </button>
         </div>
 
-        <!--  -->
+        <!-- Pricing Table  -->
         <table
           v-cloak
           v-if="pricingTable.length > 0"
