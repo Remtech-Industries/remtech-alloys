@@ -19,7 +19,6 @@
         </tr>
       </tbody>
     </table>
-    {{ collections }}
   </div>
 </template>
 
