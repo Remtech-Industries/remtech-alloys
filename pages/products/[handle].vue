@@ -12,7 +12,7 @@
         <a
           v-for="variant in productVariants"
           :key="variant.id"
-          :href="variant.url"
+          :href="variant.id"
           class="rounded border border-slate-300 p-2"
           :class="activeVariantClasses(variant)"
         >
@@ -20,17 +20,17 @@
 
           <div class="text-xs font-thin">
             <p>
-              {{ variant.inventory_quantity }}
+              {{ variant.quantityAvailable }}
               {{ stockingUnit }}@{{ useFormatMoney(variant.price) }}
             </p>
 
             <p v-if="stockingUnit === 'mm'">
-              {{ +(variant.inventory_quantity / 25.4).toFixed(2) }}in@
+              {{ +(variant.quantityAvailable / 25.4).toFixed(2) }}in@
               {{ useFormatMoney(variant.price * 25.4) }}
             </p>
 
             <p v-else-if="stockingUnit === 'cm'">
-              {{ +(variant.inventory_quantity / 2.54).toFixed(2) }}in@
+              {{ +(variant.quantityAvailable / 2.54).toFixed(2) }}in@
               {{ useFormatMoney(variant.price * 2.54) }}
             </p>
           </div>
@@ -156,11 +156,12 @@ const nullProduct = {
 const product = ref({ ...nullProduct })
 async function getProduct() {
   const productData = await useGetProduct(route.params.handle)
-  console.log(productData)
+  product.value = productData
+  console.log(Object.keys(productData))
 }
 getProduct()
 
-// TODO: sort variants by inventory_quantity
+// TODO: sort variants by quantityAvailable
 const productVariants = computed(() => product.value.variants)
 
 const selectedVariant = computed(

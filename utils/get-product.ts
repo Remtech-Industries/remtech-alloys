@@ -21,11 +21,21 @@ query product($handle: String!) {
         }
       }
     }
+    priceRange {
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
   }
 }
 `
 
-export async function useGetProduct(handle: string | string[]) {
+export async function useGetProduct(handle: string) {
   const shopifyResponse = await usePostToShopify(query, { handle: handle })
   return shopifyResponse
 }
