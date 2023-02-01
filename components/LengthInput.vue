@@ -10,9 +10,7 @@
       />
     </div>
 
-    <p class="ml-1 text-sm text-red-500">
-      {{ lengthState }}
-    </p>
+    <p class="ml-1 text-sm text-red-500">{{ lengthState }}</p>
   </div>
 </template>
 

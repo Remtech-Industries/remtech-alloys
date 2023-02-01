@@ -10,9 +10,7 @@
       />
     </div>
 
-    <p class="ml-1 text-sm text-red-500">
-      {{ quantityState }}
-    </p>
+    <p class="ml-1 text-sm text-red-500">{{ quantityState }}</p>
   </div>
 </template>
 
