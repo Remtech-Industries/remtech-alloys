@@ -1,8 +1,8 @@
 import { usePostToShopify } from './post-to-shopify'
 
 const query = `
-query getProduct($handle: String!) {
-  productByHandle(handle: $handle) {
+query product($handle: String!) {
+  product(handle: $handle) {
     id
     handle
     description
@@ -21,30 +21,11 @@ query getProduct($handle: String!) {
         }
       }
     }
-    priceRange {
-      maxVariantPrice {
-        amount
-        currencyCode
-      }
-      minVariantPrice {
-        amount
-        currencyCode
-      }
-    }
-    images(first: 1) {
-      edges {
-        node {
-          src
-          altText
-        }
-      }
-    }
   }
 }
 `
 
-export async function useGetProduct(event: any) {
-  const { itemHandle } = event
-  const shopifyResponse = await usePostToShopify(query, { handle: itemHandle })
+export async function useGetProduct(handle: string) {
+  const shopifyResponse = await usePostToShopify(query, { handle: handle })
   return shopifyResponse
 }

@@ -130,11 +130,11 @@ const route = useRoute()
 
 // v-models for QuantityInput
 const quantity = ref(1)
-const quantityIsValid = ref()
+const quantityIsValid = ref(true)
 
 // v-models for LengthInput
-const length = ref()
-const lengthIsValid = ref()
+const length = ref(null)
+const lengthIsValid = ref(false)
 
 const submitDisabled = computed(
   () => !quantityIsValid.value || !lengthIsValid.value
@@ -155,14 +155,13 @@ const nullProduct = {
 }
 const product = ref({ ...nullProduct })
 async function getProduct() {
-  const productData = await useGetProduct({ itemHandle: route.params.handle })
-  product.value = productData.productByHandle
-  console.log(Object.entries(productData.productByHandle))
+  const productData = await useGetProduct(route.params.handle)
+  console.log(productData)
 }
 getProduct()
 
 // TODO: sort variants by inventory_quantity
-const productVariants = computed(() => product.value.variants.edges)
+const productVariants = computed(() => product.value.variants)
 
 const selectedVariant = computed(
   () => product.value.selected_or_first_available_variant
