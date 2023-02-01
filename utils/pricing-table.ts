@@ -1,3 +1,4 @@
+import { useFormatMoney } from './format-money'
 import { Form, Product, Variant } from './types'
 
 type PricingTable = {
@@ -14,16 +15,12 @@ type Params = {
   cutFee: Product
 }
 
-export const pricingTable = (i: Params): PricingTable[] => {
+export function usePricingTable(i: Params): PricingTable[] {
   const { form, selectedVariant, cutFee } = i
   const { quantity, quantityState, length, lengthState } = form
 
-  const currency = (number: number) => {
-    return new Intl.NumberFormat('en-CA', {
-      style: 'currency',
-      currency: 'CAD',
-    }).format(number)
-  }
+  // TODO: remove this alias
+  const currency = (number: number) => useFormatMoney(number)
 
   const toInches = (number: number) => {
     return Math.floor((number / 25.4) * 1000) / 1000
