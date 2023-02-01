@@ -3,27 +3,40 @@
     <div class="flex">
       <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
       <input
-        v-model="quantity"
+        :value="value"
         type="number"
         class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-        :class="quantityState ? 'border-red-500' : ''"
+        :class="state ? 'border-red-500' : ''"
+        @input="emit('update:value', ($event.target as HTMLInputElement).value)"
       />
     </div>
 
-    <p class="ml-1 text-sm text-red-500">{{ quantityState }}</p>
+    <p v-if="!state" class="ml-1 text-sm text-red-500">
+      {{ stateMessage }}
+    </p>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { Ref } from 'vue'
+import { computed, watch } from 'vue'
 
-const quantity: Ref<number | string> = ref(1)
-const quantityState = computed(() => {
-  if (quantity.value === '') return 'Quantity is required.'
-  if (quantity.value <= 0) return 'Quantity must be more than 0.'
-  if (parseInt(`${quantity.value}`) !== quantity.value)
+const props = defineProps<{
+  value: number | string
+  state: boolean
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:value', value: number | string): void
+  (e: 'update:state', value: boolean): void
+}>()
+
+const stateMessage = computed(() => {
+  if (props.value === '') return 'Quantity is required.'
+  if (props.value <= 0) return 'Quantity must be more than 0.'
+  if (parseInt(`${props.value}`) !== props.value)
     return 'Quantity must be a whole number.'
   return ''
 })
+
+watch(stateMessage, () => emit('update:state', !!stateMessage.value))
 </script>
