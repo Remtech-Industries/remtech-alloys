@@ -2,6 +2,7 @@
   <div>
     <div class="flex">
       <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
+
       <input
         :value="value"
         type="number"
@@ -11,9 +12,7 @@
       />
     </div>
 
-    <p v-if="!isValid" class="ml-1 text-sm text-red-500">
-      {{ message }}
-    </p>
+    <p v-if="!isValid" class="ml-1 text-sm text-red-500">{{ message }}</p>
   </div>
 </template>
 

@@ -2,6 +2,7 @@
   <div>
     <div class="flex">
       <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Length</div>
+
       <input
         :value="value"
         type="number"
