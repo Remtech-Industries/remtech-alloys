@@ -122,7 +122,11 @@ import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import { computed, ref } from 'vue'
 import { useFormatMoney } from '@/utils/format-money'
+import { useGetProduct } from '@/utils/get-product'
 import { usePricingTable } from '@/utils/pricing-table'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 // v-models for QuantityInput
 const quantity = ref(1)
@@ -145,17 +149,22 @@ const form = computed(() => {
   }
 })
 
-// TODO: get product using GraphQL API
-const product: any = ref(null)
+const product = ref()
+async function getProduct() {
+  const productData = await useGetProduct({ itemHandle: route.params.handle })
+
+  product.value = productData
+}
+getProduct()
 
 // TODO: sort variants by inventory_quantity
-const productVariants = computed(() => product.variants.edges)
+const productVariants = computed(() => product.value.variants.edges)
 
 const selectedVariant = computed(
-  () => product.selected_or_first_available_variant
+  () => product.value.selected_or_first_available_variant
 )
 const stockingUnit = computed(
-  () => product.metafields.custom.stocking_unit.value.first
+  () => product.value.metafields.custom.stocking_unit.value.first
 )
 
 // TODO: figure out where cutFee comes from
@@ -169,7 +178,7 @@ const pricingTable = computed(() =>
 )
 
 function activeVariantClasses(variant: any) {
-  if (variant.id === product.selected_or_first_available_variant.id)
+  if (variant.id === product.value.selected_or_first_available_variant.id)
     return 'bg-slate-700 text-slate-50 shadow-lg'
   return 'bg-slate-50 text-slate-700'
 }
