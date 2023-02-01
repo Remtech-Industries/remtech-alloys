@@ -57,13 +57,12 @@
       <div v-cloak class="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
         <div class="flex flex-col">
           <!-- Inputs -->
-          <!-- TODO: make input components receive prop and emit data -->
           <QuantityInput
             v-model:value="quantity"
-            v-model:state="quantityState"
+            v-model:isValid="quantityIsValid"
           />
 
-          <LengthInput v-model:value="length" v-model:state="lengthState" />
+          <LengthInput v-model:value="length" v-model:isValid="lengthIsValid" />
 
           <!-- Submit -->
           <button
@@ -127,22 +126,22 @@ import { usePricingTable } from '@/utils/pricing-table'
 
 // v-models for QuantityInput
 const quantity = ref(1)
-const quantityState = ref()
+const quantityIsValid = ref()
 
 // v-models for LengthInput
-const length = ref(null)
-const lengthState = ref()
+const length = ref()
+const lengthIsValid = ref()
 
 const submitDisabled = computed(
-  () => !quantityState.value || !lengthState.value
+  () => !quantityIsValid.value || !lengthIsValid.value
 )
 
 const form = computed(() => {
   return {
     quantity: quantity.value,
-    quantityState: quantityState.value,
+    quantityIsValid: quantityIsValid.value,
     length: length.value,
-    lengthState: lengthState.value,
+    lengthIsValid: lengthIsValid.value,
   }
 })
 
