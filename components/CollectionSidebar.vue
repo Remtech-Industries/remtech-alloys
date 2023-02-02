@@ -4,16 +4,22 @@
       Choose a material type
     </div>
 
-    <ul class="space-y-6 border-l border-slate-100">
-      <li>
-        <a
-          class="border-l border-transparent pl-4 text-slate-700 hover:border-slate-400"
-        >
-          test
-        </a>
+    <ul class="space-y-3 border-l border-slate-100">
+      <li
+        v-for="{ node } in collections"
+        :key="node.id"
+        class="border-l border-transparent pl-4 text-slate-700 hover:border-slate-400"
+      >
+        <NuxtLink :to="`/collections/${node.handle}`">
+          {{ node.title }}
+        </NuxtLink>
       </li>
     </ul>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useGetCollections } from '~~/utils/get-collections'
+
+const { collections } = await useGetCollections()
+</script>
