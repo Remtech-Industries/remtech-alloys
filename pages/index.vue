@@ -13,7 +13,9 @@
       <tbody>
         <tr class="border-b" v-for="item in collections">
           <td class="border-r pr-6">
-            <a href="#">{{ item.node.title }}</a>
+            <NuxtLink :to="`/collections/${item.node.handle}`">
+              {{ item.node.title }}
+            </NuxtLink>
           </td>
           <td>{{ item.node.products.edges.length }}</td>
         </tr>
@@ -24,6 +26,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import CollectionSidebar from '@/components/CollectionSidebar.vue'
 
 const collections = ref([])
 
@@ -44,6 +47,7 @@ async function getCollections() {
                 node {
                   id
                   title
+                  handle
                   products(first: 100) {
                     edges {
                       node {
