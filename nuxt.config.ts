@@ -4,4 +4,10 @@ export default defineNuxtConfig({
     autoImport: false,
   },
   modules: ['@nuxtjs/tailwindcss'],
+  runtimeConfig: {
+    public: {
+      shopifyStore: process.env.SHOPIFY_STORE,
+      publicAccessToken: process.env.PUBLIC_ACCESS_TOKEN,
+    },
+  },
 })
