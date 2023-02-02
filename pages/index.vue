@@ -11,13 +11,13 @@
       </thead>
 
       <tbody>
-        <tr class="border-b" v-for="item in collections">
+        <tr class="border-b" v-for="{ node } in collections">
           <td class="border-r pr-6">
-            <NuxtLink :to="`/collections/${item.node.handle}`">
-              {{ item.node.title }}
+            <NuxtLink :to="`/collections/${node.handle}`">
+              {{ node.title }}
             </NuxtLink>
           </td>
-          <td>{{ item.node.products.edges.length }}</td>
+          <td>{{ node.products.edges.length }}</td>
         </tr>
       </tbody>
     </table>
@@ -25,48 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { useGetCollections } from '~~/utils/get-collections'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 
-const collections = ref([])
-
-async function getCollections() {
-  const result = await fetch(
-    'https://remtech-dev.myshopify.com/api/2023-01/graphql.json',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': 'ca9a09f596e0d350accac97729f6d540',
-      },
-      body: JSON.stringify({
-        query: `
-          query {
-            collections(first: 100) {
-              edges {
-                node {
-                  id
-                  title
-                  handle
-                  products(first: 100) {
-                    edges {
-                      node {
-                        id
-                        title
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `,
-      }),
-    }
-  )
-
-  const response = await result.json()
-  collections.value = response.data.collections.edges
-}
-getCollections()
+const { collections } = await useGetCollections()
 </script>
