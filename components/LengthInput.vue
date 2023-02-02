@@ -1,19 +1,17 @@
 <template>
-  <div>
-    <div class="flex">
-      <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Length</div>
+  <div class="flex">
+    <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Length</div>
 
-      <input
-        :value="value"
-        type="number"
-        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-        :class="!isValid ? 'border-red-500' : ''"
-        @input="emit('update:value', ($event.target as HTMLInputElement).value)"
-      />
-    </div>
-
-    <p v-if="!isValid" class="ml-1 text-sm text-red-500">{{ message }}</p>
+    <input
+      :value="value"
+      type="number"
+      class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+      :class="!isValid ? 'border-red-500' : ''"
+      @input="emit('update:value', ($event.target as HTMLInputElement).value)"
+    />
   </div>
+
+  <p v-if="!isValid" class="ml-1 text-sm text-red-500">{{ message }}</p>
 </template>
 
 <script setup lang="ts">

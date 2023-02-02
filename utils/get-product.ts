@@ -35,7 +35,7 @@ query product($handle: String!) {
 }
 `
 
-export async function useGetProduct(handle: string) {
-  const shopifyResponse = await usePostToShopify(query, { handle: handle })
-  return shopifyResponse
+export async function useGetProduct(handle: string | string[]) {
+  const { product } = await usePostToShopify(query, { handle: handle })
+  return { product }
 }
