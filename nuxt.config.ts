@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   imports: {
     autoImport: false,
   },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
       shopifyStore: process.env.SHOPIFY_STORE,
