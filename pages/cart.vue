@@ -1,7 +1,7 @@
 <template>
   <h1>Cart</h1>
   <p>Here is your cart</p>
-  <NuxtLink :href="cart.checkoutUrl">Checkout</NuxtLink>
+  <NuxtLink :to="cart.checkoutUrl">Checkout</NuxtLink>
 </template>
 
 <script setup lang="ts">
