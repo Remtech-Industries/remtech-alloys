@@ -4,9 +4,6 @@
 </template>
 
 <script setup lang="ts">
-import { useCartStore } from '~~/stores/cart'
 import { useHead } from '#app'
 useHead({ title: 'Cart' })
-
-const { cart } = useCartStore()
 </script>
