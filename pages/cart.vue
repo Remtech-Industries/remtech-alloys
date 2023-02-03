@@ -1,12 +1,13 @@
 <template>
   <h1>Cart</h1>
   <p>Here is your cart</p>
+  <NuxtLink :to="cart.checkoutUrl">Checkout</NuxtLink>
 </template>
 
 <script setup lang="ts">
 import { useCartStore } from '~~/stores/cart'
 import { useHead } from '#app'
-useHead({ title: 'Cart' })
 
 const { cart } = useCartStore()
+useHead({ title: 'Cart' })
 </script>

@@ -34,7 +34,7 @@
         v-model:value="form.quantity"
       />
 
-      <AddToCartButton :form="form" />
+      <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
 
       <PricingTable :form="form" />
     </div>
@@ -63,9 +63,6 @@ const quantityIsValid = ref(true)
 // v-models for LengthInput
 const lengthIsValid = ref(false)
 
-const submitDisabled = computed(
-  () => !quantityIsValid.value || !lengthIsValid.value
-)
-
 const { product } = await useGetProduct(params.handle)
+const selectedVariant = ref(product.variants.edges[0].node)
 </script>

@@ -17,3 +17,16 @@ export type Form = {
   length?: number | string | null
   lengthState?: boolean
 }
+
+export type CartLine = {
+  quantity: number
+  merchandiseId: string
+}
+
+export type Cart = {
+  id?: string
+  checkoutUrl?: string
+  lines?: {
+    edges: CartLine[]
+  }
+}
