@@ -8,6 +8,11 @@ export const useCartStore = defineStore('cart', () => {
   const cart: Ref<Cart> = ref({})
   const cartId = computed(() => cart.value.id)
 
+  const itemCount = computed(() => {
+    if (!cart.value.lines) return 0
+    return cart.value.lines.edges.length
+  })
+
   async function getCart(): Promise<void> {
     if (!cartId.value) return
     const { cart: response } = await useGetCart(cartId.value)
@@ -24,5 +29,5 @@ export const useCartStore = defineStore('cart', () => {
     }
     cart.value = response
   }
-  return { cart, cartId, getCart, addToCart }
+  return { cart, itemCount, cartId, getCart, addToCart }
 })

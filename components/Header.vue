@@ -4,7 +4,15 @@
 
     <a href="/cart" class="font-semibold text-slate-700">
       Cart
-      <span class="rounded bg-slate-600 px-1 text-slate-100">1</span>
+      <span class="rounded bg-slate-600 px-1 text-slate-100">{{
+        itemCount
+      }}</span>
     </a>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useCartStore } from '~~/stores/cart'
+import { storeToRefs } from 'pinia'
+const { itemCount } = storeToRefs(useCartStore())
+</script>

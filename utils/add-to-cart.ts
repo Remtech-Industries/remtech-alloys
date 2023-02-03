@@ -7,6 +7,14 @@ mutation createCart($cartInput: CartInput) {
     cart {
       id
       checkoutUrl
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+          }
+        }
+      }
     }
   }
 }
@@ -17,6 +25,15 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
   cartLinesAdd(cartId: $cartId, lines: $lines) {
     cart {
       id
+      checkoutUrl
+      lines(first: 100) {
+        edges {
+          node {
+            id
+            quantity
+          }
+        }
+      }
     }
   }
 }

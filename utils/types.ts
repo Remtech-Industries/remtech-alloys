@@ -25,4 +25,8 @@ export type CartLine = {
 
 export type Cart = {
   id?: string
+  checkoutUrl?: string
+  lines?: {
+    edges: CartLine[]
+  }
 }
