@@ -34,6 +34,8 @@
         v-model:value="form.quantity"
       />
 
+      <AddToCartButton :form="form" />
+
       <PricingTable :form="form" />
     </div>
   </div>
@@ -42,6 +44,7 @@
 <script setup lang="ts">
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
+import AddToCartButton from '~~/components/AddToCartButton.vue'
 import { computed, ref } from 'vue'
 import { useFormatMoney } from '@/utils/format-money'
 import { useGetProduct } from '@/utils/get-product'
