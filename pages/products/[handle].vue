@@ -24,12 +24,17 @@
         </div>
       </div>
 
-      <LengthInput v-model:is-valid="lengthIsValid" v-model:value="length" />
+      <LengthInput
+        v-model:is-valid="lengthIsValid"
+        v-model:value="form.length"
+      />
 
       <QuantityInput
         v-model:is-valid="quantityIsValid"
-        v-model:value="quantity"
+        v-model:value="form.quantity"
       />
+
+      <PricingTable :form="form" />
     </div>
   </div>
 </template>
@@ -44,12 +49,15 @@ import { useRoute } from 'vue-router'
 
 const { params } = useRoute()
 
+const form = ref({
+  quantity: 1,
+  length: 1,
+})
+
 // v-models for QuantityInput
-const quantity = ref(1)
 const quantityIsValid = ref(true)
 
 // v-models for LengthInput
-const length = ref(1)
 const lengthIsValid = ref(false)
 
 const submitDisabled = computed(
