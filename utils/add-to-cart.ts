@@ -1,12 +1,12 @@
 import { usePostToShopify } from './post-to-shopify'
-import { useCartStore } from '~~/stores/cart'
-import type { Cart, CartLineItem } from '~~/utils/types'
+import type { Cart, CartLine } from '~~/utils/types'
 
 const createQuery = `
 mutation createCart($cartInput: CartInput) {
   cartCreate(input: $cartInput) {
     cart {
       id
+      checkoutUrl
     }
   }
 }
@@ -22,8 +22,10 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
 }
 `
 
-export async function useAddToCart(items: CartLineItem[]): Promise<Cart> {
-  const { cartId } = useCartStore()
+export async function useAddToCart(
+  items: CartLine[],
+  cartId?: string
+): Promise<Cart> {
   if (cartId) {
     const cart = await usePostToShopify(addLineQuery, {
       cartId,

@@ -18,7 +18,7 @@ export type Form = {
   lengthState?: boolean
 }
 
-export type CartLineItem = {
+export type CartLine = {
   quantity: number
   merchandiseId: string
 }
