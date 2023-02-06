@@ -20,9 +20,9 @@ export type Variant = {
 }
 
 export type Form = {
-  quantity: number | null
+  quantity: number
   quantityIsValid: boolean
-  length: number | null
+  length: number
   lengthIsValid: boolean
 }
 

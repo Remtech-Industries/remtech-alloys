@@ -61,9 +61,9 @@ import type { Ref } from 'vue'
 const { params } = useRoute()
 
 const form: Ref<Form> = ref({
-  quantity: null,
+  quantity: 0,
   quantityIsValid: false,
-  length: null,
+  length: 0,
   lengthIsValid: false,
 })
 
