@@ -40,8 +40,9 @@ const props = defineProps<{
   variant: Variant
 }>()
 
-// this will always be a number so we can do math
+// these will always be numbers so we can do math
 const safeQuantity = computed(() => +(props.form.quantity || 0))
+const safeLength = computed(() => +(props.form.length || 0))
 
 const handlingFeeCost = 5
 const handlingFeeRow = computed(() => {
@@ -60,15 +61,20 @@ const productVariantRow = computed(() => {
     title: `${props.product.title} ${useDisplayHeatNumber(
       props.variant.title
     )}`,
-    each: useFormatMoney(+props.variant.priceV2.amount),
+    each: useFormatMoney(+props.variant.priceV2.amount * safeLength.value),
     quantity: safeQuantity.value,
-    price: useFormatMoney(+props.variant.priceV2.amount * safeQuantity.value),
+    price: useFormatMoney(
+      +props.variant.priceV2.amount * safeLength.value * safeQuantity.value
+    ),
   }
 })
 
 const cutFeeCost = 8
 const cutQuantity = computed(() => {
-  if (safeQuantity.value === props.variant.quantityAvailable) {
+  if (
+    safeLength.value * safeQuantity.value ===
+    props.variant.quantityAvailable
+  ) {
     return safeQuantity.value - 1
   }
   return safeQuantity.value
