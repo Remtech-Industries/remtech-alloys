@@ -40,14 +40,17 @@ const props = defineProps<{
   variant: Variant
 }>()
 
+// this will always be a number so we can do math
+const safeQuantity = computed(() => +(props.form.quantity || 0))
+
 const handlingFeeCost = 5
 const handlingFeeRow = computed(() => {
   return {
     id: 'handling-fee-id',
     title: 'Handling Fee',
     each: useFormatMoney(handlingFeeCost),
-    quantity: props.form.quantity,
-    price: useFormatMoney(handlingFeeCost * +(props.form.quantity || 0)),
+    quantity: safeQuantity.value,
+    price: useFormatMoney(handlingFeeCost * safeQuantity.value),
   }
 })
 
@@ -58,12 +61,26 @@ const productVariantRow = computed(() => {
       props.variant.title
     )}`,
     each: useFormatMoney(+props.variant.priceV2.amount),
-    quantity: props.form.quantity,
-    price: useFormatMoney(
-      +props.variant.priceV2.amount * +(props.form.quantity || 0)
-    ),
+    quantity: safeQuantity.value,
+    price: useFormatMoney(+props.variant.priceV2.amount * safeQuantity.value),
   }
 })
 
-const rows = computed(() => [handlingFeeRow.value, productVariantRow.value])
+const cutFeeCost = 8
+const cutQuantity = computed(() => safeQuantity.value - 1)
+const cutFeeRow = computed(() => {
+  return {
+    id: 'cut-fee-id',
+    title: 'Cut Fee',
+    each: useFormatMoney(cutFeeCost),
+    quantity: cutQuantity.value,
+    price: useFormatMoney(cutFeeCost * cutQuantity.value),
+  }
+})
+
+const rows = computed(() =>
+  [handlingFeeRow.value, productVariantRow.value, cutFeeRow.value].filter(
+    (row) => row.quantity > 0
+  )
+)
 </script>
