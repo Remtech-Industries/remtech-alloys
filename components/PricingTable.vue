@@ -67,13 +67,19 @@ const productVariantRow = computed(() => {
 })
 
 const cutFeeCost = 8
+const cutQuantity = computed(() => {
+  if (safeQuantity.value === props.variant.quantityAvailable) {
+    return safeQuantity.value - 1
+  }
+  return safeQuantity.value
+})
 const cutFeeRow = computed(() => {
   return {
     id: 'cut-fee-id',
     title: 'Cut Fee',
     each: useFormatMoney(cutFeeCost),
-    quantity: safeQuantity.value,
-    price: useFormatMoney(cutFeeCost * safeQuantity.value),
+    quantity: cutQuantity.value,
+    price: useFormatMoney(cutFeeCost * cutQuantity.value),
   }
 })
 
