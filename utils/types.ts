@@ -20,10 +20,10 @@ export type Variant = {
 }
 
 export type Form = {
-  quantity?: number | string | null
-  quantityState?: boolean
-  length?: number | string | null
-  lengthState?: boolean
+  quantity: number | null
+  quantityIsValid: boolean
+  length: number | null
+  lengthIsValid: boolean
 }
 
 export type CartLine = {

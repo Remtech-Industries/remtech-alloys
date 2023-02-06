@@ -30,7 +30,7 @@
       />
 
       <QuantityInput
-        @update:value="form.quantity = $event"
+        @update:quantity="form.quantity = $event"
         @update:is-valid="form.quantityIsValid = $event"
       />
 
@@ -55,10 +55,12 @@ import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
 import { useFormatMoney } from '@/utils/format-money'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
+import type { Form } from '~~/utils/types'
+import type { Ref } from 'vue'
 
 const { params } = useRoute()
 
-const form = ref({
+const form: Ref<Form> = ref({
   quantity: null,
   quantityIsValid: false,
   length: null,
