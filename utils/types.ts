@@ -1,21 +1,29 @@
+export type Price = {
+  amount: string
+  currencyCode: string
+}
+
 export type Product = {
-  id: number
+  id: string
+  handle: string
+  priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
   title: string
-  price: number
+  totalInventory: number
   variants: Variant[]
 }
 
 export type Variant = {
-  id: number
+  id: string
   title: string
-  price: number
+  quantityAvailable: number
+  priceV2: Price
 }
 
 export type Form = {
-  quantity?: number | string | null
-  quantityState?: boolean
-  length?: number | string | null
-  lengthState?: boolean
+  quantity: number
+  quantityIsValid: boolean
+  length: number
+  lengthIsValid: boolean
 }
 
 export type CartLine = {

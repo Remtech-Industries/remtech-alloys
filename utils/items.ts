@@ -8,7 +8,7 @@ type Params = {
 
 type Item = {
   quantity: number
-  id: number
+  id: string
   properties: { [key: string]: string | number }
 }
 
