@@ -39,18 +39,14 @@ const props = defineProps<{
   variant: Variant
 }>()
 
-// these will always be numbers so we can do math safely
-const safeQuantity = computed(() => +(props.form.quantity || 0))
-const safeLength = computed(() => +(props.form.length || 0))
-
 const handlingFeeCost = 5
 const handlingFeeRow = computed(() => {
   return {
     id: 'handling-fee-id',
     title: 'Handling Fee',
     each: useFormatMoney(handlingFeeCost),
-    quantity: safeQuantity.value,
-    price: useFormatMoney(handlingFeeCost * safeQuantity.value),
+    quantity: props.form.quantity,
+    price: useFormatMoney(handlingFeeCost * props.form.quantity),
   }
 })
 
@@ -58,10 +54,10 @@ const productVariantRow = computed(() => {
   return {
     id: props.variant.id,
     title: props.product.title,
-    each: useFormatMoney(+props.variant.priceV2.amount * safeLength.value),
-    quantity: safeQuantity.value,
+    each: useFormatMoney(+props.variant.priceV2.amount * props.form.length),
+    quantity: props.form.quantity,
     price: useFormatMoney(
-      +props.variant.priceV2.amount * safeLength.value * safeQuantity.value
+      +props.variant.priceV2.amount * props.form.length * props.form.quantity
     ),
   }
 })
@@ -69,12 +65,12 @@ const productVariantRow = computed(() => {
 const cutFeeCost = 8
 const cutQuantity = computed(() => {
   if (
-    safeLength.value * safeQuantity.value ===
+    props.form.length * props.form.quantity ===
     props.variant.quantityAvailable
   ) {
-    return safeQuantity.value - 1
+    return props.form.quantity - 1
   }
-  return safeQuantity.value
+  return props.form.quantity
 })
 const cutFeeRow = computed(() => {
   return {
