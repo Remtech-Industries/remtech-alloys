@@ -1,12 +1,19 @@
+export type Price = {
+  amount: string
+  currencyCode: string
+}
+
 export type Product = {
-  id: number
+  id: string
+  handle: string
+  priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
   title: string
-  price: number
+  totalInventory: number
   variants: Variant[]
 }
 
 export type Variant = {
-  id: number
+  id: string
   title: string
   price: number
 }

@@ -30,7 +30,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-const props = defineProps<{ form: object }>()
+import type { Product } from '~~/utils/types'
+
+const props = defineProps<{ form: object; product: Product }>()
 
 const rows = computed(() => [
   {
@@ -39,6 +41,9 @@ const rows = computed(() => [
     each: 5,
     quantity: 1,
     price: 5,
+  },
+  {
+    id: props.product.id,
   },
 ])
 </script>
