@@ -15,7 +15,7 @@
           :key="node.id"
           class="rounded border border-slate-300 p-2"
         >
-          <div>HT#: {{ node.title }}</div>
+          <div>{{ useDisplayHeatNumber(node.title) }}</div>
 
           <div class="text-xs font-thin">
             {{ node.quantityAvailable }}
@@ -36,7 +36,11 @@
 
       <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
 
-      <PricingTable :form="form" :variant="selectedVariant" />
+      <PricingTable
+        :form="form"
+        :product="product"
+        :variant="selectedVariant"
+      />
     </div>
   </div>
 </template>
@@ -45,7 +49,9 @@
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
+import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref } from 'vue'
+import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
 import { useFormatMoney } from '@/utils/format-money'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'

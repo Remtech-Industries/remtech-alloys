@@ -30,20 +30,40 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { Variant } from '~~/utils/types'
+import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
+import { useFormatMoney } from '~~/utils/format-money'
+import type { Form, Product, Variant } from '~~/utils/types'
 
-const props = defineProps<{ form: object; variant: Variant }>()
+const props = defineProps<{
+  form: Form
+  product: Product
+  variant: Variant
+}>()
 
-const rows = computed(() => [
-  {
-    id: 1,
+const handlingFeeCost = 5
+const handlingFeeRow = computed(() => {
+  return {
+    id: 'handling-fee-id',
     title: 'Handling Fee',
-    each: 5,
-    quantity: 1,
-    price: 5,
-  },
-  {
+    each: useFormatMoney(handlingFeeCost),
+    quantity: props.form.quantity,
+    price: useFormatMoney(handlingFeeCost * +(props.form.quantity || 0)),
+  }
+})
+
+const productVariantRow = computed(() => {
+  return {
     id: props.variant.id,
-  },
-])
+    title: `${props.product.title} ${useDisplayHeatNumber(
+      props.variant.title
+    )}`,
+    each: useFormatMoney(+props.variant.priceV2.amount),
+    quantity: props.form.quantity,
+    price: useFormatMoney(
+      +props.variant.priceV2.amount * +(props.form.quantity || 0)
+    ),
+  }
+})
+
+const rows = computed(() => [handlingFeeRow.value, productVariantRow.value])
 </script>
