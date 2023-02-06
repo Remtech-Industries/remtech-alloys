@@ -25,13 +25,13 @@
       </div>
 
       <LengthInput
-        v-model:is-valid="lengthIsValid"
-        v-model:value="form.length"
+        @update:is-valid="form.lengthIsValid = $event"
+        @update:value="form.length = $event"
       />
 
       <QuantityInput
-        v-model:is-valid="quantityIsValid"
-        v-model:value="form.quantity"
+        @update:value="form.quantity = $event"
+        @update:is-valid="form.quantityIsValid = $event"
       />
 
       <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
@@ -45,23 +45,18 @@
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
-import { computed, ref } from 'vue'
-import { useFormatMoney } from '@/utils/format-money'
+import { ref } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
 
 const { params } = useRoute()
 
 const form = ref({
-  quantity: 1,
-  length: 1,
+  quantity: null,
+  quantityIsValid: false,
+  length: null,
+  lengthIsValid: false,
 })
-
-// v-models for QuantityInput
-const quantityIsValid = ref(true)
-
-// v-models for LengthInput
-const lengthIsValid = ref(false)
 
 const { product } = await useGetProduct(params.handle)
 const selectedVariant = ref(product.variants.edges[0].node)
