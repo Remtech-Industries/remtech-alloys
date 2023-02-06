@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
 import { useFormatMoney } from '~~/utils/format-money'
 import type { Form, Product, Variant } from '~~/utils/types'
 
@@ -58,9 +57,7 @@ const handlingFeeRow = computed(() => {
 const productVariantRow = computed(() => {
   return {
     id: props.variant.id,
-    title: `${props.product.title} ${useDisplayHeatNumber(
-      props.variant.title
-    )}`,
+    title: props.product.title,
     each: useFormatMoney(+props.variant.priceV2.amount * safeLength.value),
     quantity: safeQuantity.value,
     price: useFormatMoney(
