@@ -36,7 +36,7 @@
 
       <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
 
-      <PricingTable :form="form" :product="product" />
+      <PricingTable :form="form" :variant="selectedVariant" />
     </div>
   </div>
 </template>

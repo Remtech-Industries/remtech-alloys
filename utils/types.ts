@@ -15,7 +15,8 @@ export type Product = {
 export type Variant = {
   id: string
   title: string
-  price: number
+  quantityAvailable: number
+  priceV2: Price
 }
 
 export type Form = {
