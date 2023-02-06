@@ -3,9 +3,9 @@
     <thead class="bg-slate-100 text-left text-xs uppercase text-slate-700">
       <tr>
         <th class="px-6 py-3">Item</th>
-        <th class="px-6 py-3">Each</th>
-        <th class="px-6 py-3">Qty</th>
-        <th class="px-6 py-3">Price</th>
+        <th class="px-6 py-3 text-right">Each</th>
+        <th class="px-6 py-3 text-center">Qty</th>
+        <th class="px-6 py-3 text-right">Price</th>
       </tr>
     </thead>
 
@@ -14,7 +14,7 @@
         <td class="border-b px-6 py-2 font-medium text-slate-700">
           {{ row.title }}
         </td>
-        <td class="border-b px-6 py-2 font-medium text-slate-700">
+        <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
           {{ row.each }}
         </td>
         <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
@@ -40,7 +40,7 @@ const props = defineProps<{
   variant: Variant
 }>()
 
-// these will always be numbers so we can do math
+// these will always be numbers so we can do math safely
 const safeQuantity = computed(() => +(props.form.quantity || 0))
 const safeLength = computed(() => +(props.form.length || 0))
 
