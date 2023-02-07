@@ -11,9 +11,10 @@
 
       <div class="flex gap-1">
         <VariantSelector
-          v-for="{ node } in product.variants.edges"
-          :key="node.id"
-          :variant="node"
+          v-for="variant in variants"
+          :key="variant.id"
+          :variant="variant"
+          :activeId="selectedVariant.id"
         />
       </div>
 
@@ -44,10 +45,10 @@ import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
-import type { Form } from '~~/utils/types'
+import type { Form, Variant } from '~~/utils/types'
 import type { Ref } from 'vue'
 
 const { params } = useRoute()
@@ -60,5 +61,12 @@ const form: Ref<Form> = ref({
 })
 
 const { product } = await useGetProduct(params.handle)
-const selectedVariant = ref(product.variants.edges[0].node)
+
+const variants = computed(() => {
+  return product.variants.edges
+    .map(({ node: variant }: { node: Variant }) => variant)
+    .sort((a: Variant, b: Variant) => a.quantityAvailable - b.quantityAvailable)
+})
+
+const selectedVariant = ref(variants.value[0])
 </script>
