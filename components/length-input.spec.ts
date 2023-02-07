@@ -8,18 +8,6 @@ describe('Length Input', () => {
     expect(wrapper.text()).toContain('Length')
   })
 
-  it('should display no errors and emit value when valid', async () => {
-    const wrapper = mount(LengthInput)
-    const $input = wrapper.get('input')
-    $input.element.value = '1'
-    await $input.trigger('input')
-
-    expect(wrapper.text()).not.toContain('is required.')
-    expect($input.classes()).not.toContain('border-red-500')
-    expect(wrapper.emitted('update:length')).toEqual([[1]])
-    expect(wrapper.emitted('update:isValid')).toEqual([[true]])
-  })
-
   it('should say length is required if input is blank', async () => {
     const wrapper = mount(LengthInput)
     const $input = wrapper.get('input')
@@ -70,5 +58,17 @@ describe('Length Input', () => {
 
     expect(wrapper.text()).not.toContain('greater than 0.')
     expect($input.classes()).not.toContain('border-red-500')
+  })
+
+  it('should display no errors and emit value when valid', async () => {
+    const wrapper = mount(LengthInput)
+    const $input = wrapper.get('input')
+    $input.element.value = '1'
+    await $input.trigger('input')
+
+    expect(wrapper.text()).not.toContain('is required.')
+    expect($input.classes()).not.toContain('border-red-500')
+    expect(wrapper.emitted('update:length')).toEqual([[1]])
+    expect(wrapper.emitted('update:isValid')).toEqual([[true]])
   })
 })
