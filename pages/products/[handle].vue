@@ -10,18 +10,11 @@
       <h2 class="font-semibold text-slate-700">Heat Numbers</h2>
 
       <div class="flex gap-1">
-        <div
+        <VariantSelector
           v-for="{ node } in product.variants.edges"
           :key="node.id"
-          class="rounded border border-slate-300 p-2"
-        >
-          <div>{{ useDisplayHeatNumber(node.title) }}</div>
-
-          <div class="text-xs font-thin">
-            {{ node.quantityAvailable }}
-            {{ node.priceV2.amount }}
-          </div>
-        </div>
+          :variant="node"
+        />
       </div>
 
       <LengthInput
@@ -46,12 +39,12 @@
 </template>
 
 <script setup lang="ts">
+import VariantSelector from '~~/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { ref } from 'vue'
-import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
 import type { Form } from '~~/utils/types'
