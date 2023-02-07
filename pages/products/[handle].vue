@@ -20,8 +20,8 @@
 
       <div>
         <LengthInput
+          @update:length="form.length = $event"
           @update:is-valid="form.lengthIsValid = $event"
-          @update:value="form.length = $event"
         />
       </div>
 
