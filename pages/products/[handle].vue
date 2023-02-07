@@ -18,15 +18,19 @@
         />
       </div>
 
-      <LengthInput
-        @update:is-valid="form.lengthIsValid = $event"
-        @update:value="form.length = $event"
-      />
+      <div>
+        <LengthInput
+          @update:is-valid="form.lengthIsValid = $event"
+          @update:value="form.length = $event"
+        />
+      </div>
 
-      <QuantityInput
-        @update:quantity="form.quantity = $event"
-        @update:is-valid="form.quantityIsValid = $event"
-      />
+      <div>
+        <QuantityInput
+          @update:quantity="form.quantity = $event"
+          @update:is-valid="form.quantityIsValid = $event"
+        />
+      </div>
 
       <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
 
