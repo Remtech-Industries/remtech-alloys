@@ -1,43 +1,51 @@
 import { usePostToShopify } from './post-to-shopify'
 import type { Cart, CartLine } from '~~/utils/types'
 
-const createQuery = `
-mutation createCart($cartInput: CartInput) {
-  cartCreate(input: $cartInput) {
-    cart {
-      id
-      checkoutUrl
-      lines(first: 100) {
-        edges {
-          node {
+const cart = `
+{ 
+  id
+  checkoutUrl
+  cost {
+    totalAmount {
+      amount
+    }
+  }
+  lines(first: 100) {
+    edges {
+      node {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
             id
-            quantity
+            title
+          }
+        }
+        cost {
+          totalAmount {
+            amount
           }
         }
       }
     }
   }
-}
-`
+}`
+
+const createQuery = `
+mutation createCart($cartInput: CartInput) {
+  cartCreate(input: $cartInput) {
+    cart ${cart}
+  }
+}`
 
 const addLineQuery = `
 mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
   cartLinesAdd(cartId: $cartId, lines: $lines) {
-    cart {
-      id
-      checkoutUrl
-      lines(first: 100) {
-        edges {
-          node {
-            id
-            quantity
-          }
-        }
-      }
-    }
+    cart ${cart}
   }
-}
-`
+}`
+
+const getCartQuery = `query getCart($cartId: ID!) { cart(id: $cartId) ${cart} }`
 
 export async function useAddToCart(
   items: CartLine[],
@@ -60,4 +68,9 @@ export async function useAddToCart(
 
     return cart.cartCreate.cart
   }
+}
+
+export async function useGetCart(cartId: string) {
+  const { cart } = await usePostToShopify(getCartQuery, { cartId: cartId })
+  return { cart }
 }

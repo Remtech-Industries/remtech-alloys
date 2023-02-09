@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, Ref, computed } from 'vue'
-import { useGetCart } from '../utils/get-cart'
-import { useAddToCart } from '~~/utils/add-to-cart'
+import { useAddToCart, useGetCart } from '~~/utils/cart'
 import type { Cart, CartLine } from '~~/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
@@ -14,8 +13,9 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   async function getCart() {
-    if (!process.client) return
+    if (!process.client) return // needed for SSR, errors with nitro server
 
+    // TODO: This need to be more robust, but it works for now
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
@@ -25,10 +25,10 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   async function addToCart(items: CartLine[]) {
+    if (!process.client) return // needed for SSR, errors with nitro server
+
     const response = await useAddToCart(items, cartId.value)
-    if (process.client) {
-      window.localStorage.setItem('cartId', JSON.stringify(response.id))
-    }
+    window.localStorage.setItem('cartId', JSON.stringify(response.id))
     cart.value = response
   }
   return { cart, itemCount, cartId, getCart, addToCart }
