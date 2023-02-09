@@ -13,19 +13,21 @@ export const useCartStore = defineStore('cart', () => {
     return cart.value.lines.edges.length
   })
 
-  async function getCart(): Promise<void> {
-    if (!cartId.value) return
-    const { cart: response } = await useGetCart(cartId.value)
-    if (process.client) {
-      window.localStorage.setItem('cart', JSON.stringify(response))
+  async function getCart() {
+    if (!process.client) return
+
+    const id = window.localStorage.getItem('cartId')
+    const cartId = id ? JSON.parse(id) : null
+    if (cartId) {
+      const { cart: response } = await useGetCart(cartId)
+      cart.value = response
     }
-    cart.value = response
   }
 
-  async function addToCart(items: CartLine[]): Promise<void> {
+  async function addToCart(items: CartLine[]) {
     const response = await useAddToCart(items, cartId.value)
     if (process.client) {
-      window.localStorage.setItem('cart', JSON.stringify(response))
+      window.localStorage.setItem('cartId', JSON.stringify(response.id))
     }
     cart.value = response
   }
