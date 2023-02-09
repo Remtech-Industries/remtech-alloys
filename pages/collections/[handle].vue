@@ -20,9 +20,9 @@
         <tbody>
           <tr v-for="{ node } in products" :key="node.id">
             <td class="border-b py-1 px-4 text-slate-600">
-              <NuxtLink :to="`/products/${node.handle}`">{{
-                node.title
-              }}</NuxtLink>
+              <NuxtLink :to="`/products/${node.handle}`">
+                {{ node.title }}
+              </NuxtLink>
             </td>
 
             <td class="border-b py-1 px-4 text-slate-600">
