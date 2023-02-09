@@ -31,6 +31,9 @@ query product($handle: String!) {
         currencyCode
       }
     }
+    stockingUnit: metafield(namespace: "custom", key: "stocking_unit") {
+      value
+    }
   }
 }
 `

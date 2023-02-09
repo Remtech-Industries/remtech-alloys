@@ -15,6 +15,7 @@
           :key="variant.id"
           :variant="variant"
           :activeId="selectedVariant.id"
+          :stockingUnit="product.stockingUnit.value"
         />
       </div>
 
