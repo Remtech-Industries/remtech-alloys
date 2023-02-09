@@ -16,22 +16,19 @@
           :variant="variant"
           :activeId="selectedVariant.id"
           :stockingUnit="product.stockingUnit.value"
+          @click="selectedVariant = variant"
         />
       </div>
 
-      <div>
-        <LengthInput
-          @update:length="form.length = $event"
-          @update:is-valid="form.lengthIsValid = $event"
-        />
-      </div>
+      <LengthInput
+        @update:length="form.length = $event"
+        @update:is-valid="form.lengthIsValid = $event"
+      />
 
-      <div>
-        <QuantityInput
-          @update:quantity="form.quantity = $event"
-          @update:is-valid="form.quantityIsValid = $event"
-        />
-      </div>
+      <QuantityInput
+        @update:quantity="form.quantity = $event"
+        @update:is-valid="form.quantityIsValid = $event"
+      />
 
       <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
 

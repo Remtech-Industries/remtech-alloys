@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded border border-slate-300 p-2"
+    class="cursor-pointer rounded border border-slate-300 p-2"
     :class="
       isActive
         ? 'bg-slate-700 text-slate-50 shadow-lg'
