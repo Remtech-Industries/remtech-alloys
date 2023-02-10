@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, Ref, computed } from 'vue'
-import { useGetCart } from '../utils/get-cart'
-import { useAddToCart } from '~~/utils/add-to-cart'
+import { useAddToCart, useGetCart, useRemoveFromCart } from '~~/utils/cart'
 import type { Cart, CartLine } from '~~/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
-  const cart: Ref<Cart> = ref({})
+  const cart: Ref<Cart> = ref({ id: '' })
   const cartId = computed(() => cart.value.id)
 
   const itemCount = computed(() => {
@@ -13,21 +12,30 @@ export const useCartStore = defineStore('cart', () => {
     return cart.value.lines.edges.length
   })
 
-  async function getCart(): Promise<void> {
-    if (!cartId.value) return
-    const { cart: response } = await useGetCart(cartId.value)
-    if (process.client) {
-      window.localStorage.setItem('cart', JSON.stringify(response))
+  async function getCart() {
+    if (!process.client) return // needed for SSR, errors with nitro server
+
+    // TODO: This need to be more robust, but it works for now
+    const id = window.localStorage.getItem('cartId')
+    const cartId = id ? JSON.parse(id) : null
+    if (cartId) {
+      const { cart: response } = await useGetCart(cartId)
+      cart.value = response
     }
+  }
+
+  async function addToCart(items: CartLine[]) {
+    if (!process.client) return // needed for SSR, errors with nitro server
+
+    const response = await useAddToCart(items, cartId.value)
+    window.localStorage.setItem('cartId', JSON.stringify(response.id))
     cart.value = response
   }
 
-  async function addToCart(items: CartLine[]): Promise<void> {
-    const response = await useAddToCart(items, cartId.value)
-    if (process.client) {
-      window.localStorage.setItem('cart', JSON.stringify(response))
-    }
+  async function removeFromCart(cartId: string, lineId: string) {
+    const response = await useRemoveFromCart(cartId, lineId)
     cart.value = response
   }
-  return { cart, itemCount, cartId, getCart, addToCart }
+
+  return { cart, itemCount, cartId, getCart, addToCart, removeFromCart }
 })

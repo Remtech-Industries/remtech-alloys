@@ -27,14 +27,21 @@ export type Form = {
 }
 
 export type CartLine = {
+  id: string
   quantity: number
   merchandiseId: string
+  merchandise: Product
+  cost: {
+    totalAmount: Price
+  }
 }
 
 export type Cart = {
-  id?: string
+  id: string
   checkoutUrl?: string
   lines?: {
-    edges: CartLine[]
+    edges: {
+      node: CartLine
+    }[]
   }
 }
