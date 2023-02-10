@@ -27,6 +27,7 @@ export type Form = {
 }
 
 export type CartLine = {
+  id: string
   quantity: number
   merchandiseId: string
   merchandise: Product
@@ -36,7 +37,7 @@ export type CartLine = {
 }
 
 export type Cart = {
-  id?: string
+  id: string
   checkoutUrl?: string
   lines?: {
     edges: {

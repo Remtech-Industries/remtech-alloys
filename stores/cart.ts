@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, Ref, computed } from 'vue'
-import { useAddToCart, useGetCart } from '~~/utils/cart'
+import { useAddToCart, useGetCart, useRemoveFromCart } from '~~/utils/cart'
 import type { Cart, CartLine } from '~~/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
-  const cart: Ref<Cart> = ref({})
+  const cart: Ref<Cart> = ref({ id: '' })
   const cartId = computed(() => cart.value.id)
 
   const itemCount = computed(() => {
@@ -31,5 +31,11 @@ export const useCartStore = defineStore('cart', () => {
     window.localStorage.setItem('cartId', JSON.stringify(response.id))
     cart.value = response
   }
-  return { cart, itemCount, cartId, getCart, addToCart }
+
+  async function removeFromCart(cartId: string, lineId: string) {
+    const response = await useRemoveFromCart(cartId, lineId)
+    cart.value = response
+  }
+
+  return { cart, itemCount, cartId, getCart, addToCart, removeFromCart }
 })
