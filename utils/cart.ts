@@ -47,10 +47,7 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
 
 const getCartQuery = `query getCart($cartId: ID!) { cart(id: $cartId) ${cart} }`
 
-export async function useAddToCart(
-  items: CartLine[],
-  cartId?: string
-): Promise<Cart> {
+export async function useAddToCart(items: CartLine[], cartId?: string) {
   if (cartId) {
     const cart = await usePostToShopify(addLineQuery, {
       cartId,
