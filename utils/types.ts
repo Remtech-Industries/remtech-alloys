@@ -1,15 +1,12 @@
-export type Price = {
-  amount: string
-  currencyCode: string
-}
-
 export type Product = {
   id: string
   handle: string
   priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
   title: string
+  cutFee?: { value: string }
+  stockingUnit?: { value: string }
   totalInventory: number
-  variants: Variant[]
+  variants: { edges: { node: Variant }[] }
 }
 
 export type Variant = {
@@ -26,6 +23,17 @@ export type Form = {
   lengthIsValid: boolean
 }
 
+// cart
+export type Cart = {
+  id: string
+  checkoutUrl: string
+  lines: {
+    edges: {
+      node: CartLine
+    }[]
+  }
+}
+
 export type CartLine = {
   id: string
   quantity: number
@@ -36,12 +44,13 @@ export type CartLine = {
   }
 }
 
-export type Cart = {
-  id: string
-  checkoutUrl?: string
-  lines?: {
-    edges: {
-      node: CartLine
-    }[]
-  }
+export type CartLineInput = {
+  quantity: number
+  merchandiseId: string
+}
+
+// other
+export type Price = {
+  amount: string
+  currencyCode: string
 }

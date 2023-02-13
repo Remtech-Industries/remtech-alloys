@@ -2,7 +2,7 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="flex flex-col gap-2 p-2">
+    <div class="flex flex-col gap-2 p-2" v-if="product">
       <h1 class="border-b text-2xl font-bold text-slate-700">
         {{ product.title }}
       </h1>
@@ -15,8 +15,7 @@
           :key="variant.id"
           :variant="variant"
           :activeId="selectedVariant.id"
-          :stockingUnit="product.stockingUnit.value"
-          @click="selectedVariant = variant"
+          :stockingUnit="product.stockingUnit?.value"
         />
       </div>
 
@@ -30,7 +29,11 @@
         @update:is-valid="form.quantityIsValid = $event"
       />
 
-      <AddToCartButton :form="form" :selectedVariant="selectedVariant" />
+      <AddToCartButton
+        v-if="selectedVariant"
+        :form="form"
+        :selectedVariant="selectedVariant"
+      />
 
       <PricingTable
         :form="form"
@@ -47,11 +50,12 @@ import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
-import type { Form, Variant } from '~~/utils/types'
+import type { Form, Variant, Product } from '~~/utils/types'
 import type { Ref } from 'vue'
+import { useGetProductVariants } from '~~/utils/product-variants'
 
 const { params } = useRoute()
 
@@ -62,13 +66,27 @@ const form: Ref<Form> = ref({
   lengthIsValid: false,
 })
 
-const { product } = await useGetProduct(params.handle)
+const product = ref<Product | null>(null)
+const addons = ref<Variant[] | null>(null)
 
-const variants = computed(() => {
-  return product.variants.edges
-    .map(({ node: variant }: { node: Variant }) => variant)
-    .sort((a: Variant, b: Variant) => a.quantityAvailable - b.quantityAvailable)
+onMounted(async () => {
+  const data = await useGetProduct(params.handle)
+  product.value = data
+
+  if (!product.value?.cutFee) return
+  const datas = await useGetProductVariants([product.value.cutFee.value])
+  addons.value = datas
 })
 
-const selectedVariant = ref(variants.value[0])
+const variants = computed(() => {
+  if (!product.value) return []
+
+  return product.value.variants.edges
+    .map(({ node }) => node)
+    .sort((a, b) => a.quantityAvailable - b.quantityAvailable)
+})
+
+const selectedVariant = computed(() => {
+  return variants.value[0]
+})
 </script>
