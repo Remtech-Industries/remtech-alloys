@@ -13,7 +13,7 @@ export const useCartStore = defineStore('cart', () => {
   })
 
   async function getCart() {
-    if (!process.client) return // needed for SSR, errors with nitro server
+    if (!process.client) return //window will return undefined on server, errors with nitro server
 
     // TODO: This need to be more robust, but it works for now
     const id = window.localStorage.getItem('cartId')
@@ -25,7 +25,7 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   async function addToCart(items: CartLine[]) {
-    if (!process.client) return // needed for SSR, errors with nitro server
+    if (!process.client) return //window will return undefined on server, errors with nitro server
 
     const response = await useAddToCart(items, cartId.value)
     window.localStorage.setItem('cartId', JSON.stringify(response.id))
