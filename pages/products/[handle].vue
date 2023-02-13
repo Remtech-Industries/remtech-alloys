@@ -2,14 +2,14 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="flex flex-col gap-2 p-2">
+    <div class="flex flex-col gap-2 p-2" v-if="product">
       <h1 class="border-b text-2xl font-bold text-slate-700">
-        {{ product?.title }}
+        {{ product.title }}
       </h1>
 
       <h2 class="font-semibold text-slate-700">Heat Numbers</h2>
 
-      <div class="flex gap-1" v-if="product">
+      <div class="flex gap-1">
         <VariantSelector
           v-for="variant in variants"
           :key="variant.id"
@@ -36,7 +36,6 @@
       />
 
       <PricingTable
-        v-if="product"
         :form="form"
         :product="product"
         :variant="selectedVariant"
@@ -51,7 +50,7 @@ import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '~~/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { computed, ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
 import type { Form, Variant, Product } from '~~/utils/types'
