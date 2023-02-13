@@ -1,14 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, Ref, computed } from 'vue'
 import { useAddToCart, useGetCart, useRemoveFromCart } from '~~/utils/cart'
-import type { Cart, CartLine } from '~~/utils/types'
+import type { Cart, CartLineInput } from '~~/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
-  const cart: Ref<Cart> = ref({ id: '' })
-  const cartId = computed(() => cart.value.id)
+  const cart = ref<Cart | null>(null)
+  const cartId = computed(() => cart?.value?.id)
 
   const itemCount = computed(() => {
-    if (!cart.value.lines) return 0
+    if (!cart.value) return 0
     return cart.value.lines.edges.length
   })
 
@@ -24,7 +24,7 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function addToCart(items: CartLine[]) {
+  async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
     const response = await useAddToCart(items, cartId.value)

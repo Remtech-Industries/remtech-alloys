@@ -25,13 +25,14 @@ import type { Variant } from '~~/utils/types'
 
 interface Props {
   variant: Variant
-  activeId: string
-  stockingUnit: string
+  activeId?: string
+  stockingUnit?: string
 }
 
 const props = defineProps<Props>()
 
 const isActive = computed(() => {
+  if (!props.variant) return false
   return props.variant.id === props.activeId
 })
 

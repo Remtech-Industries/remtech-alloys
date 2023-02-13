@@ -10,16 +10,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCartStore } from '~~/stores/cart'
+import { Form, Variant } from '~~/utils/types'
 
 const { addToCart } = useCartStore()
 
 interface Props {
-  form: object
-  selectedVariant: object
+  form: Form
+  selectedVariant: Variant
 }
 const props = defineProps<Props>()
-
-// {"data":{"cartCreate":{"cart":{"id":"gid://shopify/Cart/8c1440386e1e325a270b62e92a00e0ee"}}}}
 
 const items = computed(() => {
   return [

@@ -43,5 +43,5 @@ query product($handle: String!) {
 
 export async function useGetProduct(handle: string | string[]) {
   const { product } = await usePostToShopify(query, { handle: handle })
-  return { product }
+  return product
 }
