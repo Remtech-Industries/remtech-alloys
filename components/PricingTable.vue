@@ -10,7 +10,7 @@
     </thead>
 
     <tbody>
-      <tr v-for="row in rows" :key="row.id">
+      <tr v-for="row in items" :key="row.id">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
           {{ row.title }}
         </td>
@@ -29,15 +29,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-const props = defineProps({
-  items: {
-    type: Array,
-    required: true,
-  },
-})
-
-const rows = computed(() => {
-  return props.items
-})
+import type { Item } from '@/utils/items-generator'
+defineProps<{ items: Item[] }>()
 </script>
