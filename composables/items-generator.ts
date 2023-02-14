@@ -4,13 +4,21 @@ import type { Form, Variant } from '~~/utils/types'
 import type { Ref } from 'vue'
 
 interface VariantWithProductTitle extends Variant {
-  productTitle?: string
+  productTitle: string
 }
 
 type Props = {
   form: Ref<Form>
   selectedVariant: Ref<VariantWithProductTitle>
-  addons: Ref<Variant[] | null>
+  addons: Ref<Variant[]>
+}
+
+export type Item = {
+  id: string
+  title: string
+  each: string
+  quantity: number
+  price: string
 }
 
 export function useItemsGenerator(data: Props) {

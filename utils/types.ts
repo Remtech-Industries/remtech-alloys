@@ -4,6 +4,7 @@ export type Product = {
   priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
   title: string
   cutFee?: { value: string }
+  handlingFee?: { value: string }
   stockingUnit?: { value: string }
   totalInventory: number
   variants: { edges: { node: Variant }[] }

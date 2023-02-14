@@ -60,16 +60,25 @@ const form: Ref<Form> = ref({
 })
 
 const product = ref<Product | null>(null)
-const addons = ref<Variant[] | null>(null)
+const addons = ref<Variant[]>([])
 
 onMounted(async () => {
   {
+    // get product
     const data = await useGetProduct(params.handle)
     product.value = data
   }
   {
-    if (!product.value?.cutFee) return
-    const data = await useGetProductVariants([product.value.cutFee.value])
+    // get essential add-ons
+    if (!product.value?.cutFee || !product.value?.handlingFee) return
+    const data = await useGetProductVariants([
+      product.value.cutFee.value,
+      product.value.handlingFee.value,
+    ])
+    if (data.includes(null)) {
+      // send notification or alert that add-on does not exist
+      return
+    }
     addons.value = data
   }
 })
@@ -85,7 +94,7 @@ const variants = computed(() => {
 const selectedVariant = computed(() => {
   return {
     ...variants.value[0],
-    productTitle: product.value?.title,
+    productTitle: product.value?.title || '',
   }
 })
 
