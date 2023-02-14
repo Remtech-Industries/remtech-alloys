@@ -45,9 +45,9 @@ import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
-import type { Addons, Form, Variant, Product } from '~~/utils/types'
+import type { Addons, Form, MetafieldVariant, Product } from '~~/utils/types'
 import type { Ref } from 'vue'
-import { useGetProductVariants } from '~~/utils/product-variants'
+import { useGetProductVariants } from '~~/utils/get-product-variants'
 import { useItemsGenerator } from '~~/composables/items-generator'
 
 const { params } = useRoute()
@@ -79,7 +79,7 @@ onMounted(async () => {
       // send notification or alert that add-on does not exist
       return
     }
-    addons.value = data.reduce((acc: Addons, item: Variant) => {
+    addons.value = data.reduce((acc: Addons, item: MetafieldVariant) => {
       return { ...acc, [item.addonType.value]: item }
     }, {})
   }

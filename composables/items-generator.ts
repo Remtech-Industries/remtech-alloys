@@ -18,7 +18,7 @@ export function useItemsGenerator(
   addons: Addons
 ) {
   // handling fee
-  const handlingFeeCost = addons.handling_fee.price.amount
+  const handlingFeeCost = +addons.handling_fee.price.amount
   const handlingFeeRow = {
     id: addons.handling_fee.id,
     title: 'Handling Fee',
@@ -43,7 +43,7 @@ export function useItemsGenerator(
   if (form.length * form.quantity === selectedVariant.quantityAvailable) {
     cutFeeQuantity--
   }
-  const cutFeeCost = addons.cut_fee.price.amount
+  const cutFeeCost = +addons.cut_fee.price.amount
   const cutFeeRow = {
     id: addons.cut_fee.id,
     title: 'Cut Fee',

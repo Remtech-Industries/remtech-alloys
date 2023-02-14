@@ -15,7 +15,6 @@ export type Variant = {
   title: string
   quantityAvailable: number
   priceV2: Price
-  addonType: { value: string }
 }
 
 export type Form = {
@@ -57,4 +56,14 @@ export type Price = {
   currencyCode: string
 }
 
-export type Addons = { cut_fee: Variant; handling_fee: Variant }
+export type MetafieldVariant = {
+  id: string
+  title: string
+  price: Price
+  addonType: { value: string }
+}
+
+export type Addons = {
+  cut_fee: MetafieldVariant
+  handling_fee: MetafieldVariant
+}
