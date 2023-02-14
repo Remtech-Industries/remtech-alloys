@@ -7,7 +7,7 @@
         : 'bg-slate-50 text-slate-700'
     "
   >
-    <div>{{ useDisplayHeatNumber(variant.title) }}</div>
+    <div>{{ displayHeatNumber(variant.title) }}</div>
 
     <div class="text-xs font-thin">
       <div>
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { useDisplayHeatNumber } from '~~/utils/display-heat-number'
+import { displayHeatNumber } from '~~/utils/display-heat-number'
 import { computed } from 'vue'
 import type { Variant } from '~~/utils/types'
 
