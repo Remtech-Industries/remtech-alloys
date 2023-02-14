@@ -1,5 +1,5 @@
-import { formatMoney } from '~~/utils/format-money'
-import type { Addons, Form, Variant } from '~~/utils/types'
+import { formatMoney } from '@/utils/format-money'
+import type { Addons, Form, Variant } from '@/utils/types'
 interface VariantWithProductTitle extends Variant {
   productTitle: string
 }

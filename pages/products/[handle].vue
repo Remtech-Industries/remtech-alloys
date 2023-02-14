@@ -41,18 +41,18 @@
 </template>
 
 <script setup lang="ts">
-import VariantSelector from '~~/components/VariantSelector.vue'
+import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
-import AddToCartButton from '~~/components/AddToCartButton.vue'
+import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
-import { useGetProduct } from '~~/proxies/get-product'
+import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type { Addons, Form, MetafieldVariant, Product } from '~~/utils/types'
+import type { Addons, Form, MetafieldVariant, Product } from '@/utils/types'
 import type { Ref } from 'vue'
-import { useGetProductVariants } from '~~/proxies/get-product-variants'
-import { itemsGenerator } from '~~/utils/items-generator'
+import { useGetProductVariants } from '@/proxies/get-product-variants'
+import { itemsGenerator } from '@/utils/items-generator'
 
 const { params } = useRoute()
 

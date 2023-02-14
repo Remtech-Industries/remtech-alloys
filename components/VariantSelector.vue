@@ -19,9 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import { displayHeatNumber } from '~~/utils/display-heat-number'
+import { displayHeatNumber } from '@/utils/display-heat-number'
 import { computed } from 'vue'
-import type { Variant } from '~~/utils/types'
+import type { Variant } from '@/utils/types'
 
 interface Props {
   variant: Variant
