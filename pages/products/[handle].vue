@@ -29,11 +29,7 @@
         @update:is-valid="form.quantityIsValid = $event"
       />
 
-      <AddToCartButton
-        v-if="selectedVariant"
-        :form="form"
-        :selectedVariant="selectedVariant"
-      />
+      <AddToCartButton :items="items" />
 
       <PricingTable :items="items" />
     </div>
