@@ -30,61 +30,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useFormatMoney } from '~~/utils/format-money'
-import type { Form, Product, Variant } from '~~/utils/types'
-
-const props = defineProps<{
-  form: Form
-  product: Product
-  variant: Variant
-}>()
-
-const handlingFeeCost = 5
-const handlingFeeRow = computed(() => {
-  return {
-    id: 'handling-fee-id',
-    title: 'Handling Fee',
-    each: useFormatMoney(handlingFeeCost),
-    quantity: props.form.quantity,
-    price: useFormatMoney(handlingFeeCost * props.form.quantity),
-  }
+const props = defineProps({
+  items: {
+    type: Array,
+    required: true,
+  },
 })
 
-const productVariantRow = computed(() => {
-  return {
-    id: props.variant.id,
-    title: props.product.title,
-    each: useFormatMoney(+props.variant.priceV2.amount * props.form.length),
-    quantity: props.form.quantity,
-    price: useFormatMoney(
-      +props.variant.priceV2.amount * props.form.length * props.form.quantity
-    ),
-  }
+const rows = computed(() => {
+  return props.items
 })
-
-const cutFeeCost = 8
-const cutQuantity = computed(() => {
-  if (
-    props.form.length * props.form.quantity ===
-    props.variant.quantityAvailable
-  ) {
-    return props.form.quantity - 1
-  }
-  return props.form.quantity
-})
-const cutFeeRow = computed(() => {
-  return {
-    id: 'cut-fee-id',
-    title: 'Cut Fee',
-    each: useFormatMoney(cutFeeCost),
-    quantity: cutQuantity.value,
-    price: useFormatMoney(cutFeeCost * cutQuantity.value),
-  }
-})
-
-const rows = computed(() =>
-  [handlingFeeRow.value, productVariantRow.value, cutFeeRow.value].filter(
-    (row) => row.quantity > 0
-  )
-)
 </script>

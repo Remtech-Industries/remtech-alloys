@@ -35,11 +35,7 @@
         :selectedVariant="selectedVariant"
       />
 
-      <PricingTable
-        :form="form"
-        :product="product"
-        :variant="selectedVariant"
-      />
+      <PricingTable :items="items" />
     </div>
   </div>
 </template>
@@ -56,6 +52,7 @@ import { useRoute } from 'vue-router'
 import type { Form, Variant, Product } from '~~/utils/types'
 import type { Ref } from 'vue'
 import { useGetProductVariants } from '~~/utils/product-variants'
+import { useItemsGenerator } from '~~/composables/items-generator'
 
 const { params } = useRoute()
 
@@ -87,6 +84,11 @@ const variants = computed(() => {
 })
 
 const selectedVariant = computed(() => {
-  return variants.value[0]
+  return {
+    ...variants.value[0],
+    productTitle: product.value?.title,
+  }
 })
+
+const items = useItemsGenerator({ form, selectedVariant, addons })
 </script>
