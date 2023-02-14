@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGetCollections } from '~~/utils/get-collections'
+import { useGetCollections } from '~~/proxies/get-collections'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 
 const { collections } = await useGetCollections()
