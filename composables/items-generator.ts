@@ -1,8 +1,7 @@
 import { computed } from 'vue'
 import { useFormatMoney } from '~~/utils/format-money'
-import type { Form, Variant } from '~~/utils/types'
+import type { Addons, Form, Variant } from '~~/utils/types'
 import type { Ref } from 'vue'
-
 interface VariantWithProductTitle extends Variant {
   productTitle: string
 }
@@ -10,7 +9,7 @@ interface VariantWithProductTitle extends Variant {
 type Props = {
   form: Ref<Form>
   selectedVariant: Ref<VariantWithProductTitle>
-  addons: Ref<Variant[]>
+  addons: Ref<Addons>
 }
 
 export type Item = {
@@ -24,10 +23,12 @@ export type Item = {
 export function useItemsGenerator(data: Props) {
   const { form, selectedVariant, addons } = data
 
-  const handlingFeeCost = 5
   const handlingFeeRow = computed(() => {
+    if (!addons.value) return { quantity: 0 }
+
+    const handlingFeeCost = addons.value.handling_fee.price.amount
     return {
-      id: 'handling-fee-id',
+      id: addons.value.handling_fee.id,
       title: 'Handling Fee',
       each: useFormatMoney(handlingFeeCost),
       quantity: form.value.quantity,
@@ -51,7 +52,6 @@ export function useItemsGenerator(data: Props) {
     }
   })
 
-  const cutFeeCost = 8
   const cutQuantity = computed(() => {
     if (
       form.value.length * form.value.quantity ===
@@ -62,8 +62,11 @@ export function useItemsGenerator(data: Props) {
     return form.value.quantity
   })
   const cutFeeRow = computed(() => {
+    if (!addons.value) return { quantity: 0 }
+
+    const cutFeeCost = addons.value.cut_fee.price.amount
     return {
-      id: 'cut-fee-id',
+      id: addons.value.cut_fee.id,
       title: 'Cut Fee',
       each: useFormatMoney(cutFeeCost),
       quantity: cutQuantity.value,

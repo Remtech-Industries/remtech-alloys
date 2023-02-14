@@ -8,6 +8,9 @@ query ($ids : [ID!]!) {
       title
       price {
         amount
+      },
+      addonType: metafield(namespace: "custom", key: "addon_type") {
+        value
       }
     }
   }

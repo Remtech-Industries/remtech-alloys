@@ -15,6 +15,7 @@ export type Variant = {
   title: string
   quantityAvailable: number
   priceV2: Price
+  addonType: { value: string }
 }
 
 export type Form = {
@@ -55,3 +56,5 @@ export type Price = {
   amount: string
   currencyCode: string
 }
+
+export type Addons = { cut_fee: Variant; handling_fee: Variant }

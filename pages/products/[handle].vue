@@ -45,7 +45,7 @@ import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
 import { useGetProduct } from '@/utils/get-product'
 import { useRoute } from 'vue-router'
-import type { Form, Variant, Product } from '~~/utils/types'
+import type { Addons, Form, Variant, Product } from '~~/utils/types'
 import type { Ref } from 'vue'
 import { useGetProductVariants } from '~~/utils/product-variants'
 import { useItemsGenerator } from '~~/composables/items-generator'
@@ -60,7 +60,7 @@ const form: Ref<Form> = ref({
 })
 
 const product = ref<Product | null>(null)
-const addons = ref<Variant[]>([])
+const addons = ref<Addons | null>(null)
 
 onMounted(async () => {
   {
@@ -79,7 +79,9 @@ onMounted(async () => {
       // send notification or alert that add-on does not exist
       return
     }
-    addons.value = data
+    addons.value = data.reduce((acc: Addons, item: Variant) => {
+      return { ...acc, [item.addonType.value]: item }
+    }, {})
   }
 })
 
