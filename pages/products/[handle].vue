@@ -52,7 +52,7 @@ import { useRoute } from 'vue-router'
 import type { Addons, Form, MetafieldVariant, Product } from '~~/utils/types'
 import type { Ref } from 'vue'
 import { useGetProductVariants } from '~~/utils/get-product-variants'
-import { useItemsGenerator } from '~~/composables/items-generator'
+import { itemsGenerator } from '~~/utils/items-generator'
 
 const { params } = useRoute()
 
@@ -113,6 +113,6 @@ const items = computed(() => {
   if (!selectedVariant.value) return []
   if (!addons.value) return []
 
-  return useItemsGenerator(form.value, selectedVariant.value, addons.value)
+  return itemsGenerator(form.value, selectedVariant.value, addons.value)
 })
 </script>

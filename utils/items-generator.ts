@@ -12,7 +12,7 @@ export type Item = {
   price: string
 }
 
-export function useItemsGenerator(
+export function itemsGenerator(
   form: Form,
   selectedVariant: VariantWithProductTitle,
   addons: Addons
