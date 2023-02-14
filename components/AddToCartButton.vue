@@ -1,11 +1,9 @@
 <template>
   <button
     :disabled="disabled"
-    @click="addToCart(items)"
+    @click="addToCart(computedItems)"
     class="rounded bg-slate-400 px-2 py-1 text-slate-700 hover:bg-slate-300"
-    :class="
-      disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer opacity-100'
-    "
+    :class="disabledClass"
   >
     Add To Cart
   </button>
@@ -14,26 +12,19 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCartStore } from '~~/stores/cart'
-import type { Form, Variant } from '~~/utils/types'
+import type { Item } from '~~/composables/items-generator'
+
+const props = defineProps<{ items: Item[] }>()
+const disabled = computed(() => !props.items.length)
+const disabledClass = computed(() => {
+  if (disabled.value) return 'cursor-not-allowed opacity-50'
+  return 'cursor-pointer opacity-100'
+})
+const computedItems = computed(() =>
+  props.items.map((item) => {
+    return { quantity: item.quantity, merchandiseId: item.id }
+  })
+)
 
 const { addToCart } = useCartStore()
-
-interface Props {
-  form: Form
-  selectedVariant: Variant
-}
-const props = defineProps<Props>()
-
-const disabled = computed(() => {
-  return !props.form.quantity || !props.selectedVariant || !props.form.length
-})
-
-const items = computed(() => {
-  return [
-    {
-      quantity: props.form.quantity,
-      merchandiseId: props.selectedVariant.id,
-    },
-  ]
-})
 </script>

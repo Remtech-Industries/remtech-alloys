@@ -37,6 +37,9 @@ query product($handle: String!) {
     cutFee: metafield(namespace: "custom", key: "cut_fee") {
       value
     }
+    handlingFee: metafield(namespace: "custom", key: "handling_fee") {
+      value
+    }
   }
 }
 `
