@@ -14,7 +14,7 @@
           v-for="variant in variants"
           :key="variant.id"
           :variant="variant"
-          :activeId="selectedVariant.id"
+          :activeId="selectedVariant?.id"
           :stockingUnit="product.stockingUnit?.value"
         />
       </div>
@@ -94,11 +94,22 @@ const variants = computed(() => {
 })
 
 const selectedVariant = computed(() => {
+  const totalAmount = form.value.length * form.value.quantity
+  const foundVariant = variants.value.find(
+    (variant) => variant.quantityAvailable >= totalAmount
+  )
+
+  if (!foundVariant) return null
   return {
-    ...variants.value[0],
+    ...foundVariant,
     productTitle: product.value?.title || '',
   }
 })
 
-const items = useItemsGenerator({ form, selectedVariant, addons })
+const items = computed(() => {
+  if (!selectedVariant.value) return []
+  if (!addons.value) return []
+
+  return useItemsGenerator(form.value, selectedVariant.value, addons.value)
+})
 </script>
