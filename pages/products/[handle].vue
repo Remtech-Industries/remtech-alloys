@@ -94,16 +94,15 @@ const variants = computed(() => {
 })
 
 const selectedVariant = computed(() => {
+  if (!product.value) return null
+
   const totalAmount = form.value.length * form.value.quantity
   const foundVariant = variants.value.find(
     (variant) => variant.quantityAvailable >= totalAmount
   )
-
   if (!foundVariant) return null
-  return {
-    ...foundVariant,
-    productTitle: product.value?.title || '',
-  }
+
+  return { ...foundVariant, productTitle: product.value.title }
 })
 
 const items = computed(() => {
