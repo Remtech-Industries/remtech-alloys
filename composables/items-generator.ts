@@ -5,12 +5,12 @@ import type { Ref } from 'vue'
 
 type Props = {
   form: Ref<Form>
-  product: Ref<Product> | Ref<null>
   selectedVariant: Ref<Variant>
+  addons: Ref<Variant[] | null>
 }
 
 export function useItemsGenerator(data: Props) {
-  const { form, product, selectedVariant } = data
+  const { form, selectedVariant, addons } = data
 
   const handlingFeeCost = 5
   const handlingFeeRow = computed(() => {
@@ -26,7 +26,7 @@ export function useItemsGenerator(data: Props) {
   const productVariantRow = computed(() => {
     return {
       id: selectedVariant.value.id,
-      title: product.value.title,
+      title: selectedVariant.value.productTitle,
       each: useFormatMoney(
         +selectedVariant.value.priceV2.amount * form.value.length
       ),

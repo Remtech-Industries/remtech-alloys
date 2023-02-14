@@ -84,8 +84,11 @@ const variants = computed(() => {
 })
 
 const selectedVariant = computed(() => {
-  return variants.value[0]
+  return {
+    ...variants.value[0],
+    productTitle: product.value?.title,
+  }
 })
 
-const items = useItemsGenerator({ form, selectedVariant, product })
+const items = useItemsGenerator({ form, selectedVariant, addons })
 </script>
