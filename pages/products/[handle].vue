@@ -31,7 +31,11 @@
 
       <AddToCartButton :items="items" />
 
-      <PricingTable :items="items" />
+      <div v-if="items.length">
+        <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
+
+        <PricingTable :items="items" />
+      </div>
     </div>
   </div>
 </template>
