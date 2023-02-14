@@ -1,11 +1,15 @@
-import { useFormatMoney } from '~~/utils/format-money'
 import { computed } from 'vue'
-import type { Form, Product, Variant } from '~~/utils/types'
+import { useFormatMoney } from '~~/utils/format-money'
+import type { Form, Variant } from '~~/utils/types'
 import type { Ref } from 'vue'
+
+interface VariantWithProductTitle extends Variant {
+  productTitle?: string
+}
 
 type Props = {
   form: Ref<Form>
-  selectedVariant: Ref<Variant>
+  selectedVariant: Ref<VariantWithProductTitle>
   addons: Ref<Variant[] | null>
 }
 

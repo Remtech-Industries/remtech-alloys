@@ -63,12 +63,15 @@ const product = ref<Product | null>(null)
 const addons = ref<Variant[] | null>(null)
 
 onMounted(async () => {
-  const data = await useGetProduct(params.handle)
-  product.value = data
-
-  if (!product.value?.cutFee) return
-  const datas = await useGetProductVariants([product.value.cutFee.value])
-  addons.value = datas
+  {
+    const data = await useGetProduct(params.handle)
+    product.value = data
+  }
+  {
+    if (!product.value?.cutFee) return
+    const data = await useGetProductVariants([product.value.cutFee.value])
+    addons.value = data
+  }
 })
 
 const variants = computed(() => {
