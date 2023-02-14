@@ -1,4 +1,4 @@
-import { useFormatMoney } from '~~/utils/format-money'
+import { formatMoney } from '~~/utils/format-money'
 import type { Addons, Form, Variant } from '~~/utils/types'
 interface VariantWithProductTitle extends Variant {
   productTitle: string
@@ -22,18 +22,18 @@ export function itemsGenerator(
   const handlingFeeRow = {
     id: addons.handling_fee.id,
     title: 'Handling Fee',
-    each: useFormatMoney(handlingFeeCost),
+    each: formatMoney(handlingFeeCost),
     quantity: form.quantity,
-    price: useFormatMoney(handlingFeeCost * form.quantity),
+    price: formatMoney(handlingFeeCost * form.quantity),
   }
 
   // product variant
   const productVariantRow = {
     id: selectedVariant.id,
     title: selectedVariant.productTitle,
-    each: useFormatMoney(+selectedVariant.priceV2.amount * form.length),
+    each: formatMoney(+selectedVariant.priceV2.amount * form.length),
     quantity: form.quantity,
-    price: useFormatMoney(
+    price: formatMoney(
       +selectedVariant.priceV2.amount * form.length * form.quantity
     ),
   }
@@ -47,9 +47,9 @@ export function itemsGenerator(
   const cutFeeRow = {
     id: addons.cut_fee.id,
     title: 'Cut Fee',
-    each: useFormatMoney(cutFeeCost),
+    each: formatMoney(cutFeeCost),
     quantity: cutFeeQuantity,
-    price: useFormatMoney(cutFeeCost * cutFeeQuantity),
+    price: formatMoney(cutFeeCost * cutFeeQuantity),
   }
 
   return [handlingFeeRow, productVariantRow, cutFeeRow].filter(
