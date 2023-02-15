@@ -4,7 +4,10 @@
       <img src="/logo.png" width="200px" />
     </NuxtLink>
 
-    <NuxtLink to="/cart" class="flex gap-1 font-semibold text-slate-700">
+    <NuxtLink
+      to="/cart"
+      class="flex gap-1 whitespace-nowrap font-semibold text-slate-700"
+    >
       <p>Cart</p>
 
       <p class="self-center rounded bg-slate-600 px-1 text-sm text-slate-100">
@@ -17,5 +20,12 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
+import { watch } from 'vue'
+
 const { itemCount } = storeToRefs(useCartStore())
+watch(itemCount, (oldCount, newCount) => {
+  if (oldCount > newCount) {
+    // TODO: animate something in the header
+  }
+})
 </script>
