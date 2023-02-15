@@ -25,6 +25,7 @@ export function itemsGenerator(
     each: formatMoney(handlingFeeCost),
     quantity: form.quantity,
     price: formatMoney(handlingFeeCost * form.quantity),
+    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
   }
 
   // product variant
@@ -50,6 +51,7 @@ export function itemsGenerator(
     each: formatMoney(cutFeeCost),
     quantity: cutFeeQuantity,
     price: formatMoney(cutFeeCost * cutFeeQuantity),
+    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
   }
 
   return [handlingFeeRow, productVariantRow, cutFeeRow].filter(

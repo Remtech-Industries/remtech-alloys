@@ -19,6 +19,13 @@ const cart = `
           ... on ProductVariant {
             id
             title
+            image {
+              url
+              altText
+            }
+            product {
+              title
+            }
             addonType: metafield(namespace: "custom", key: "addon_type") {
               value
             }
@@ -79,7 +86,7 @@ export async function useGetCart(cartId: string) {
   return { cart }
 }
 
-export async function useRemoveFromCart(cartId: string, lineId: string) {
+export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
   const response = await usePostToShopify(
     `
     mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
@@ -88,7 +95,7 @@ export async function useRemoveFromCart(cartId: string, lineId: string) {
       }
     }
   `,
-    { cartId, lineIds: [lineId] }
+    { cartId, lineIds: lineIds }
   )
 
   return response.cartLinesRemove.cart

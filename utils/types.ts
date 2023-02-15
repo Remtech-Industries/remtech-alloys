@@ -35,19 +35,35 @@ export type Cart = {
   }
 }
 
+export type Attribute = {
+  key: string
+  value: string
+}
+
+export type Merchandise = {
+  id: string
+  title: string
+  image?: { url: string; altText: string }
+  product: { title: string }
+  addonType: {
+    value: string | null
+  }
+}
+
 export type CartLine = {
   id: string
   quantity: number
-  merchandiseId: string
-  merchandise: Product
+  merchandise: Merchandise
   cost: {
     totalAmount: Price
   }
+  attributes: Attribute[]
 }
 
 export type CartLineInput = {
   quantity: number
   merchandiseId: string
+  attributes: Attribute[]
 }
 
 // other

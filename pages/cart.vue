@@ -1,14 +1,27 @@
 <template>
   <div class="mx-auto flex max-w-2xl flex-col">
-    <h1 class="text-2xl font-bold">Cart</h1>
+    <h1 class="mb-2 text-2xl font-bold">Cart</h1>
 
-    <div class="rounded border p-2" v-for="{ node } in cart.lines?.edges">
-      <p v-if="node.merchandise.addonType">This is a child</p>
+    <div
+      class="mb-4 flex flex-col gap-1 rounded border p-2"
+      v-for="item in displayCart"
+      :key="item.id"
+    >
+      <CartLineItem
+        :cart-id="cart?.id"
+        :cart-line="item.parent"
+        :remove-items="[item.id, ...item.children.map(({ id }) => id)]"
+      />
 
-      {{ node.merchandise.title }} - {{ node.quantity }} - ${{
-        node.cost.totalAmount.amount
-      }}
-      <RemoveCartLineButton :cart-id="cart.id" :line-id="node.id" />
+      <div
+        class="ml-8 divide-y divide-slate-300 border-l-8 border-slate-600 pl-4"
+      >
+        <CartLineItem
+          v-for="child in item.children"
+          :key="child.id"
+          :cart-line="child"
+        />
+      </div>
     </div>
 
     <NuxtLink
@@ -21,12 +34,46 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { useCartStore } from '@/stores/cart'
+import CartLineItem from '@/components/CartLineItem.vue'
+import { computed, onMounted } from 'vue'
+import { formatMoney } from '@/utils/format-money'
 import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
+import type { Attribute } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
+
+function convertAttributesToObject(attributes: Attribute[]) {
+  return attributes.reduce(
+    (acc, attribute) => {
+      return { ...acc, [attribute.key]: attribute.value }
+    },
+    { _parent_id: null }
+  )
+}
+
+const displayCart = computed(() => {
+  if (!cart.value) return []
+
+  const nodes = cart.value.lines.edges.map(({ node }) => node)
+  const parentItems = nodes.filter((node) => {
+    const attributes = convertAttributesToObject(node.attributes)
+    return !attributes._parent_id
+  })
+
+  return parentItems.map((item) => {
+    return {
+      id: item.id,
+      parent: item,
+      children: nodes.filter((node) => {
+        const attributes = convertAttributesToObject(node.attributes)
+        return attributes._parent_id === item.merchandise.id
+      }),
+    }
+  })
+})
+
 const { getCart } = useCartStore()
 onMounted(() => getCart())
 useHead({ title: 'Cart' })
