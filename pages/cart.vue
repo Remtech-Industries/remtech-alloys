@@ -11,8 +11,8 @@
         <div>
           <img
             v-if="item.parent.merchandise.image"
-            :src="item.parent.merchandise.image?.url"
-            :alt="item.parent.merchandise.image?.altText"
+            :src="item.parent.merchandise.image.url"
+            :alt="item.parent.merchandise.image.altText"
             width="64px"
           />
 
@@ -50,12 +50,12 @@
           :key="child.id"
           class="flex justify-between gap-1"
         >
-          <div>
+          <div class="flex gap-1">
             <img
               v-if="child.merchandise.image"
-              :src="child.merchandise.image?.url"
-              :alt="child.merchandise.image?.altText"
-              width="64px"
+              :src="child.merchandise.image.url"
+              :alt="child.merchandise.image.altText"
+              width="64"
             />
 
             <div>
