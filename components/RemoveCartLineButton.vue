@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-full bg-slate-800 px-1 text-center text-slate-100"
+    class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
     @click="removeFromCart(cartId, lineId)"
   >
     X
