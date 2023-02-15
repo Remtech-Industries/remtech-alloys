@@ -1,5 +1,5 @@
 import { formatMoney } from '@/utils/format-money'
-import type { Addons, Form, Variant } from '@/utils/types'
+import type { Addons, Attribute, Form, Variant } from '@/utils/types'
 interface VariantWithProductTitle extends Variant {
   productTitle: string
 }
@@ -10,6 +10,7 @@ export type Item = {
   each: string
   quantity: number
   price: string
+  attributes: Attribute[]
 }
 
 export function itemsGenerator(
@@ -37,6 +38,7 @@ export function itemsGenerator(
     price: formatMoney(
       +selectedVariant.priceV2.amount * form.length * form.quantity
     ),
+    attributes: [],
   }
 
   // cut fee
