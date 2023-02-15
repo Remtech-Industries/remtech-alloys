@@ -23,7 +23,6 @@ const { itemCount } = storeToRefs(useCartStore())
 watch(itemCount, (oldCount, newCount) => {
   if (oldCount > newCount) {
     // TODO: animate something in the header
-    console.log('Items added!')
   }
 })
 </script>
