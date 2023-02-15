@@ -1,4 +1,5 @@
 <template>
+  <!-- This first wrapper div protects outside css from interfering with layout. -->
   <div>
     <div class="flex">
       <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
@@ -18,12 +19,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const message = ref('')
-
 const emit = defineEmits<{
   (e: 'update:quantity', value: number): void
   (e: 'update:isValid', value: boolean): void
 }>()
+
+const message = ref('')
 
 function onInput(event: Event) {
   message.value = ''
@@ -37,6 +38,12 @@ function onInput(event: Event) {
 
   if (+quantity <= 0) {
     message.value = 'Quantity must be greater than 0.'
+    emit('update:isValid', false)
+    return
+  }
+
+  if (+quantity % 1 !== 0) {
+    message.value = 'Please enter only whole numbers.'
     emit('update:isValid', false)
     return
   }

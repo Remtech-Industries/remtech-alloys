@@ -8,7 +8,7 @@ describe('Quantity Input', () => {
     expect(wrapper.text()).toContain('Quantity')
   })
 
-  it('should display no errors and emit value when valid', async () => {
+  it('should display no errors and emit value of 1 when 1 is entered', async () => {
     const wrapper = mount(QuantityInput)
     const $input = wrapper.get('input')
     $input.element.value = '1'
@@ -70,5 +70,17 @@ describe('Quantity Input', () => {
 
     expect(wrapper.text()).not.toContain('greater than 0.')
     expect($input.classes()).not.toContain('border-red-500')
+  })
+
+  it('should warn about whole numbers and emit not valid when decimal number is entered', async () => {
+    const wrapper = mount(QuantityInput)
+    const $input = wrapper.get('input')
+    $input.element.value = '1.5'
+    await $input.trigger('input')
+
+    expect(wrapper.text()).toContain('Please enter only whole numbers.')
+    expect($input.classes()).toContain('border-red-500')
+    expect(wrapper.emitted('update:quantity')).toBeUndefined()
+    expect(wrapper.emitted('update:isValid')).toEqual([[false]])
   })
 })
