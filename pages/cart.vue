@@ -7,72 +7,20 @@
       v-for="item in displayCart"
       :key="item.id"
     >
-      <div class="flex justify-between gap-1">
-        <div>
-          <img
-            v-if="item.parent.merchandise.image"
-            :src="item.parent.merchandise.image.url"
-            :alt="item.parent.merchandise.image.altText"
-            width="64px"
-          />
-
-          <div>
-            <p class="text-slate-800">
-              {{ item.parent.merchandise.product.title }}
-            </p>
-
-            <p class="text-sm text-slate-500">
-              {{ item.parent.merchandise.title }}
-            </p>
-          </div>
-        </div>
-
-        <div class="flex gap-2">
-          <p class="self-center">
-            {{ formatMoney(+item.parent.cost.totalAmount.amount) }}
-          </p>
-
-          <div class="self-center">
-            <RemoveCartLineButton
-              v-if="cart?.id"
-              :cart-id="cart.id"
-              :line-id="item.id"
-            />
-          </div>
-        </div>
-      </div>
+      <CartLineItem
+        :cart-id="cart?.id"
+        :cart-line="item.parent"
+        :remove-items="[item.id, ...item.children.map(({ id }) => id)]"
+      />
 
       <div
         class="ml-8 divide-y divide-slate-300 border-l-8 border-slate-600 pl-4"
       >
-        <div
+        <CartLineItem
           v-for="child in item.children"
           :key="child.id"
-          class="flex justify-between gap-1"
-        >
-          <div class="flex gap-1">
-            <img
-              v-if="child.merchandise.image"
-              :src="child.merchandise.image.url"
-              :alt="child.merchandise.image.altText"
-              width="64"
-            />
-
-            <div>
-              <p class="text-slate-800">
-                {{ child.merchandise.product.title }}
-              </p>
-
-              <p class="text-sm text-slate-500">
-                {{ child.merchandise.title }}
-              </p>
-            </div>
-          </div>
-
-          <p class="self-center">
-            {{ formatMoney(+child.cost.totalAmount.amount) }}
-          </p>
-        </div>
+          :cart-line="child"
+        />
       </div>
     </div>
 
@@ -86,6 +34,7 @@
 </template>
 
 <script setup lang="ts">
+import CartLineItem from '@/components/CartLineItem.vue'
 import { computed, onMounted } from 'vue'
 import { formatMoney } from '@/utils/format-money'
 import { storeToRefs } from 'pinia'
