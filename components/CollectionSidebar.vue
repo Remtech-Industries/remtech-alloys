@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGetCollections } from '~~/utils/get-collections'
+import { useGetCollections } from '@/proxies/get-collections'
 
 const { collections } = await useGetCollections()
 </script>

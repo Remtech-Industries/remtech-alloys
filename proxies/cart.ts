@@ -1,5 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Cart, CartLine, CartLineInput } from '~~/utils/types'
+import type { Cart, CartLine, CartLineInput } from '@/utils/types'
 
 const cart = `
 { 

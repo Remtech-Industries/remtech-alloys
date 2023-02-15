@@ -11,8 +11,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useCartStore } from '~~/stores/cart'
-import type { Item } from '~~/composables/items-generator'
+import { useCartStore } from '@/stores/cart'
+import type { Item } from '@/utils/items-generator'
 
 const props = defineProps<{ items: Item[] }>()
 const disabled = computed(() => !props.items.length)
