@@ -19,12 +19,19 @@ const cart = `
           ... on ProductVariant {
             id
             title
+            addonType: metafield(namespace: "custom", key: "addon_type") {
+              value
+            }
           }
         }
         cost {
           totalAmount {
             amount
           }
+        }
+        attributes {
+          key
+          value
         }
       }
     }
