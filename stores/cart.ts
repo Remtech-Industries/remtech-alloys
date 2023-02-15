@@ -1,5 +1,6 @@
+import { computed, ref } from 'vue'
+import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
 import { useAddToCart, useGetCart, useRemoveFromCart } from '@/proxies/cart'
 import type { Cart, CartLineInput } from '@/utils/types'
 
@@ -9,7 +10,12 @@ export const useCartStore = defineStore('cart', () => {
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
-    return cart.value.lines.edges.length
+
+    return cart.value.lines.edges
+      .filter(
+        ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
+      )
+      .reduce((acc, { node }) => acc + node.quantity, 0)
   })
 
   async function getCart() {

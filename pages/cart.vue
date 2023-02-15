@@ -36,22 +36,12 @@
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
 import { computed, onMounted } from 'vue'
-import { formatMoney } from '@/utils/format-money'
+import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
-import type { Attribute } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
-
-function convertAttributesToObject(attributes: Attribute[]) {
-  return attributes.reduce(
-    (acc, attribute) => {
-      return { ...acc, [attribute.key]: attribute.value }
-    },
-    { _parent_id: null }
-  )
-}
 
 const displayCart = computed(() => {
   if (!cart.value) return []
