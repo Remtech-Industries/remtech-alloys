@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useGetCollection } from '@/utils/get-collection'
+import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 const { params } = useRoute()
 

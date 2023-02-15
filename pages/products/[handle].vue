@@ -14,7 +14,7 @@
           v-for="variant in variants"
           :key="variant.id"
           :variant="variant"
-          :activeId="selectedVariant.id"
+          :activeId="selectedVariant?.id"
           :stockingUnit="product.stockingUnit?.value"
         />
       </div>
@@ -31,24 +31,28 @@
 
       <AddToCartButton :items="items" />
 
-      <PricingTable :items="items" />
+      <div v-if="items.length">
+        <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
+
+        <PricingTable :items="items" />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import VariantSelector from '~~/components/VariantSelector.vue'
+import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
-import AddToCartButton from '~~/components/AddToCartButton.vue'
+import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
-import { useGetProduct } from '@/utils/get-product'
+import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type { Addons, Form, Variant, Product } from '~~/utils/types'
+import type { Addons, Form, MetafieldVariant, Product } from '@/utils/types'
 import type { Ref } from 'vue'
-import { useGetProductVariants } from '~~/utils/product-variants'
-import { useItemsGenerator } from '~~/composables/items-generator'
+import { useGetProductVariants } from '@/proxies/get-product-variants'
+import { itemsGenerator } from '@/utils/items-generator'
 
 const { params } = useRoute()
 
@@ -79,7 +83,7 @@ onMounted(async () => {
       // send notification or alert that add-on does not exist
       return
     }
-    addons.value = data.reduce((acc: Addons, item: Variant) => {
+    addons.value = data.reduce((acc: Addons, item: MetafieldVariant) => {
       return { ...acc, [item.addonType.value]: item }
     }, {})
   }
@@ -94,11 +98,21 @@ const variants = computed(() => {
 })
 
 const selectedVariant = computed(() => {
-  return {
-    ...variants.value[0],
-    productTitle: product.value?.title || '',
-  }
+  if (!product.value) return null
+
+  const totalAmount = form.value.length * form.value.quantity
+  const foundVariant = variants.value.find(
+    (variant) => variant.quantityAvailable >= totalAmount
+  )
+  if (!foundVariant) return null
+
+  return { ...foundVariant, productTitle: product.value.title }
 })
 
-const items = useItemsGenerator({ form, selectedVariant, addons })
+const items = computed(() => {
+  if (!selectedVariant.value) return []
+  if (!addons.value) return []
+
+  return itemsGenerator(form.value, selectedVariant.value, addons.value)
+})
 </script>

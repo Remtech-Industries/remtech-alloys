@@ -1,1 +1,1 @@
-export const useDisplayHeatNumber = (title: string) => `HT#: ${title}`
+export const displayHeatNumber = (title: string) => `HT#: ${title}`

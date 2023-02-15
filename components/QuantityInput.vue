@@ -1,16 +1,18 @@
 <template>
-  <div class="flex">
-    <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
+  <div>
+    <div class="flex">
+      <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
 
-    <input
-      type="number"
-      class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-      :class="message ? 'border-red-500' : ''"
-      @input="onInput($event)"
-    />
+      <input
+        type="number"
+        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+        :class="message ? 'border-red-500' : ''"
+        @input="onInput($event)"
+      />
+    </div>
+
+    <p v-if="message" class="ml-1 text-sm text-red-500">{{ message }}</p>
   </div>
-
-  <p v-if="message" class="ml-1 text-sm text-red-500">{{ message }}</p>
 </template>
 
 <script setup lang="ts">

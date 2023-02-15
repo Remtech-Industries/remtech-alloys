@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import { ref, Ref, computed } from 'vue'
-import { useAddToCart, useGetCart, useRemoveFromCart } from '~~/utils/cart'
-import type { Cart, CartLineInput } from '~~/utils/types'
+import { ref, computed } from 'vue'
+import { useAddToCart, useGetCart, useRemoveFromCart } from '@/proxies/cart'
+import type { Cart, CartLineInput } from '@/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
