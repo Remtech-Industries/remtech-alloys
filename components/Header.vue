@@ -7,7 +7,7 @@
     <NuxtLink to="/cart" class="flex gap-1 font-semibold text-slate-700">
       <p>Cart</p>
 
-      <p class="rounded bg-slate-600 px-1 text-slate-100">
+      <p class="self-center rounded bg-slate-600 px-1 text-sm text-slate-100">
         {{ itemCount }}
       </p>
     </NuxtLink>
