@@ -65,10 +65,10 @@ describe('Length Input', () => {
     const $input = wrapper.get('input')
     $input.element.value = '1'
     await $input.trigger('input')
-
+    // TODO: for now this will convert to mm from inches
     expect(wrapper.text()).not.toContain('is required.')
     expect($input.classes()).not.toContain('border-red-500')
-    expect(wrapper.emitted('update:length')).toEqual([[1]])
+    expect(wrapper.emitted('update:length')).toEqual([[25.4]])
     expect(wrapper.emitted('update:isValid')).toEqual([[true]])
   })
 })
