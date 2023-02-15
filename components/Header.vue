@@ -4,15 +4,12 @@
       <img src="/logo.png" width="200px" />
     </NuxtLink>
 
-    <NuxtLink
-      to="/cart"
-      class="flex gap-1 whitespace-nowrap font-semibold text-slate-700"
-    >
-      <p>Cart</p>
+    <NuxtLink to="/cart" class="font-semibold text-slate-700">
+      <span class="mr-1 text-slate-700">Cart</span>
 
-      <p class="self-center rounded bg-slate-600 px-1 text-sm text-slate-100">
+      <span class="rounded bg-slate-600 px-1 text-sm text-slate-100">
         {{ itemCount }}
-      </p>
+      </span>
     </NuxtLink>
   </div>
 </template>
