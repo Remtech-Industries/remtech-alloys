@@ -25,9 +25,7 @@
     </div>
 
     <NuxtLink
-      :to="`https://remtech-alloys.myshopify.com/cart/c/${
-        cart?.id.split('/')[4]
-      }`"
+      :to="cart?.checkoutUrl"
       class="rounded bg-slate-800 py-2 px-1 text-center text-slate-100"
     >
       Checkout
