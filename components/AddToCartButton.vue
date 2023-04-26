@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCartStore } from '@/stores/cart'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import type { Item } from '@/utils/items-generator'
 
 const props = withDefaults(
@@ -36,7 +36,6 @@ const computedItems = computed(() =>
 )
 
 const { addToCart } = useCartStore()
-const route = useRoute()
 const router = useRouter()
 
 async function onClick() {
