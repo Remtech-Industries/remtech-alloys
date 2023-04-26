@@ -29,7 +29,10 @@
         @update:is-valid="form.quantityIsValid = $event"
       />
 
-      <AddToCartButton :items="items" />
+      <AddToCartButton
+        :items="items"
+        :collection="product.collections?.edges[0]?.node?.title"
+      />
 
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>

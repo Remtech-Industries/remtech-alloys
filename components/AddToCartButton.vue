@@ -12,10 +12,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useCartStore } from '@/stores/cart'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import type { Item } from '@/utils/items-generator'
 
-const props = defineProps<{ items: Item[] }>()
+const props = withDefaults(
+  defineProps<{ items: Item[]; collection?: string }>(),
+  { collection: '' }
+)
 const disabled = computed(() => !props.items.length)
 const disabledClass = computed(() => {
   if (disabled.value) return 'cursor-not-allowed opacity-50'
@@ -33,9 +36,12 @@ const computedItems = computed(() =>
 )
 
 const { addToCart } = useCartStore()
+const route = useRoute()
 const router = useRouter()
+
 async function onClick() {
   await addToCart(computedItems.value)
-  router.push({ name: 'index' })
+  if (!props.collection) router.push({ name: 'index' })
+  else router.push({ path: `/collections/${props.collection}` })
 }
 </script>

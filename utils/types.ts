@@ -1,6 +1,7 @@
 export type Product = {
   id: string
   handle: string
+  collections: { edges: { node: { title: string } }[] }
   priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
   title: string
   cutFee?: { value: string }

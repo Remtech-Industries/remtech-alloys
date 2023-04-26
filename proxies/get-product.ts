@@ -8,6 +8,13 @@ query product($handle: String!) {
     description
     title
     totalInventory
+    collections(first: 1) {
+      edges {
+        node {
+          title
+        }
+      }
+    }
     variants(first: 5) {
       edges {
         node {
