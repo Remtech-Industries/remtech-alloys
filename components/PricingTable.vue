@@ -25,10 +25,30 @@
         </td>
       </tr>
     </tbody>
+
+    <tfoot class="bg-slate-100 text-left text-xs uppercase text-slate-700">
+      <tr>
+        <th class="px-6 py-3">Total</th>
+        <td />
+        <td />
+        <th class="px-6 py-3 text-right">
+          {{ totalPrice }}
+        </th>
+      </tr>
+    </tfoot>
   </table>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
+import { formatMoney } from '@/utils/format-money'
+
 import type { Item } from '@/utils/items-generator'
-defineProps<{ items: Item[] }>()
+
+const props = defineProps<{ items: Item[] }>()
+
+const totalPrice = computed(() =>
+  formatMoney(props.items.reduce((acc, item) => acc + item.numberPrice, 0))
+)
 </script>
