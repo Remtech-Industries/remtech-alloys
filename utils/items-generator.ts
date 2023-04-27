@@ -10,8 +10,11 @@ export type Item = {
   each: string
   quantity: number
   price: string
+  numberPrice: number
   attributes: Attribute[]
 }
+
+const asItem = (item: Item) => item
 
 export function itemsGenerator(
   form: Form,
@@ -20,26 +23,29 @@ export function itemsGenerator(
 ) {
   // handling fee
   const handlingFeeCost = +addons.handling_fee.price.amount
-  const handlingFeeRow = {
+  const handlingFeePrice = handlingFeeCost * form.quantity
+  const handlingFeeRow = asItem({
     id: addons.handling_fee.id,
     title: 'Handling Fee',
     each: formatMoney(handlingFeeCost),
     quantity: form.quantity,
-    price: formatMoney(handlingFeeCost * form.quantity),
+    price: formatMoney(handlingFeePrice),
+    numberPrice: handlingFeePrice,
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],
-  }
+  })
 
   // product variant
-  const productVariantRow = {
+  const productVariantPrice =
+    +selectedVariant.priceV2.amount * form.length * form.quantity
+  const productVariantRow = asItem({
     id: selectedVariant.id,
     title: selectedVariant.productTitle,
     each: formatMoney(+selectedVariant.priceV2.amount * form.length),
     quantity: form.quantity,
-    price: formatMoney(
-      +selectedVariant.priceV2.amount * form.length * form.quantity
-    ),
+    price: formatMoney(productVariantPrice),
+    numberPrice: productVariantPrice,
     attributes: [],
-  }
+  })
 
   // cut fee
   let cutFeeQuantity = form.quantity
@@ -47,14 +53,16 @@ export function itemsGenerator(
     cutFeeQuantity--
   }
   const cutFeeCost = +addons.cut_fee.price.amount
-  const cutFeeRow = {
+  const cutFeePrice = cutFeeCost * cutFeeQuantity
+  const cutFeeRow = asItem({
     id: addons.cut_fee.id,
     title: 'Cut Fee',
     each: formatMoney(cutFeeCost),
     quantity: cutFeeQuantity,
-    price: formatMoney(cutFeeCost * cutFeeQuantity),
+    price: formatMoney(cutFeePrice),
+    numberPrice: cutFeePrice,
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],
-  }
+  })
 
   return [handlingFeeRow, productVariantRow, cutFeeRow].filter(
     (row) => row.quantity > 0
