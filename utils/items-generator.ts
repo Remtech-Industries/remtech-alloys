@@ -12,6 +12,7 @@ export type Item = {
   price: string
   numberPrice: number
   attributes: Attribute[]
+  length?: number
 }
 
 const asItem = (item: Item) => item
@@ -42,6 +43,7 @@ export function itemsGenerator(
     title: selectedVariant.productTitle,
     each: formatMoney(+selectedVariant.priceV2.amount * form.length),
     quantity: form.quantity,
+    length: form.length,
     price: formatMoney(productVariantPrice),
     numberPrice: productVariantPrice,
     attributes: [],
