@@ -25,7 +25,7 @@ const disabledClass = computed(() => {
 const computedItems = computed(() =>
   props.items.map((item) => {
     return {
-      quantity: item.quantity,
+      quantity: item.quantity * Math.ceil(item.length || 1),
       merchandiseId: item.id,
       attributes: item.attributes,
     }
