@@ -15,8 +15,13 @@
         {{ formatMoney(+cartLine.cost.totalAmount.amount) }}
       </p>
 
-      <div v-if="cartId && removeItems.length" class="self-center">
-        <RemoveCartLineButton :cart-id="cartId" :line-ids="removeItems" />
+      <div class="self-center" v-if="showRemove">
+        <button
+          class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
+          @click="emit('click:remove')"
+        >
+          X
+        </button>
       </div>
     </div>
   </div>
@@ -26,10 +31,9 @@
 import { formatMoney } from '@/utils/format-money'
 import type { CartLine } from '@/utils/types'
 
-interface Props {
-  cartId?: string
-  cartLine: CartLine
-  removeItems?: string[]
-}
-withDefaults(defineProps<Props>(), { removeItems: () => [] })
+withDefaults(defineProps<{ cartLine: CartLine; showRemove?: boolean }>(), {
+  showRemove: false,
+})
+
+const emit = defineEmits<{ (e: 'click:remove'): void }>()
 </script>

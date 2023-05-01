@@ -3,14 +3,16 @@
     <h1 class="mb-2 text-2xl font-bold">Cart</h1>
 
     <div
+      v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
-      v-for="item in displayCart"
       :key="item.id"
     >
       <CartLineItem
-        :cart-id="cart?.id"
         :cart-line="item.parent"
-        :remove-items="[item.id, ...item.children.map(({ id }) => id)]"
+        show-remove
+        @click:remove="
+          removeFromCart([item.id, ...item.children.map(({ id }) => id)])
+        "
       />
 
       <div
@@ -42,8 +44,9 @@ import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 
 const { cart } = storeToRefs(useCartStore())
+const { removeFromCart } = useCartStore()
 
-const displayCart = computed(() => {
+const cartItems = computed(() => {
   if (!cart.value) return []
 
   const nodes = cart.value.lines.edges.map(({ node }) => node)

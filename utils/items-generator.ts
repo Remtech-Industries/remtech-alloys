@@ -43,7 +43,7 @@ export function itemsGenerator(
     id: addons.handling_fee.id,
     title: 'Handling Fee',
     each: formatMoney(handlingFeePrice),
-    quantity: 1,
+    quantity: form.quantity > 0 ? 1 : 0,
     price: formatMoney(handlingFeePrice),
     numberPrice: handlingFeePrice,
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],

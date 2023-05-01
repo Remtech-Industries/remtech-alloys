@@ -38,8 +38,10 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  async function removeFromCart(cartId: string, lineIds: string[]) {
-    const response = await useRemoveFromCart(cartId, lineIds)
+  async function removeFromCart(lineIds: string[]) {
+    if (!cartId.value) return
+
+    const response = await useRemoveFromCart(cartId.value, lineIds)
     cart.value = response
   }
 
