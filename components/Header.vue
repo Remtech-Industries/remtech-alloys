@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between border-b p-2">
     <NuxtLink to="/" class="text-3xl font-bold text-slate-700">
-      <img src="/logo.png" width="200px" />
+      Rem-Tech Alloys
     </NuxtLink>
 
     <NuxtLink to="/cart" class="font-semibold text-slate-700">
