@@ -22,18 +22,6 @@ export function itemsGenerator(
   selectedVariant: VariantWithProductTitle,
   addons: Addons
 ) {
-  // handling fee
-  const handlingFeeCost = +addons.handling_fee.price.amount
-  const handlingFeePrice = handlingFeeCost * form.quantity
-  const handlingFeeRow = asItem({
-    id: addons.handling_fee.id,
-    title: 'Handling Fee',
-    each: formatMoney(handlingFeeCost),
-    quantity: 1,
-    price: formatMoney(handlingFeePrice),
-    numberPrice: handlingFeePrice,
-    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
-  })
 
   // product variant
   const productVariantPrice =
@@ -47,6 +35,18 @@ export function itemsGenerator(
     price: formatMoney(productVariantPrice),
     numberPrice: productVariantPrice,
     attributes: [],
+  })
+
+  // handling fee
+  const handlingFeePrice = +addons.handling_fee.price.amount
+  const handlingFeeRow = asItem({
+    id: addons.handling_fee.id,
+    title: 'Handling Fee',
+    each: formatMoney(handlingFeePrice),
+    quantity: 1,
+    price: formatMoney(handlingFeePrice),
+    numberPrice: handlingFeePrice,
+    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
   })
 
   // cut fee
@@ -66,7 +66,7 @@ export function itemsGenerator(
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],
   })
 
-  return [handlingFeeRow, productVariantRow, cutFeeRow].filter(
+  return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
     (row) => row.quantity > 0
   )
 }
