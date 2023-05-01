@@ -26,7 +26,7 @@
             </td>
 
             <td class="border-b py-1 px-4 text-slate-600">
-              {{ node.priceRange.minVariantPrice.amount }}
+              {{ node.priceRange.minVariantPrice.amount * 25.4 }}
             </td>
           </tr>
         </tbody>
