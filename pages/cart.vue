@@ -9,7 +9,7 @@
     >
       <CartLineItem
         :cart-line="item.parent"
-        show-remove
+        show-remove-button
         @click:remove="
           removeFromCart([item.id, ...item.children.map(({ id }) => id)])
         "

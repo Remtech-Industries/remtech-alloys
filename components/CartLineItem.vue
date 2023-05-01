@@ -15,7 +15,7 @@
         {{ formatMoney(+cartLine.cost.totalAmount.amount) }}
       </p>
 
-      <div class="self-center" v-if="showRemove">
+      <div class="self-center" v-if="showRemoveButton">
         <button
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
           @click="emit('click:remove')"
@@ -31,9 +31,12 @@
 import { formatMoney } from '@/utils/format-money'
 import type { CartLine } from '@/utils/types'
 
-withDefaults(defineProps<{ cartLine: CartLine; showRemove?: boolean }>(), {
-  showRemove: false,
-})
+withDefaults(
+  defineProps<{ cartLine: CartLine; showRemoveButton?: boolean }>(),
+  {
+    showRemoveButton: false,
+  }
+)
 
 const emit = defineEmits<{ (e: 'click:remove'): void }>()
 </script>
