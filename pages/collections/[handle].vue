@@ -13,7 +13,7 @@
         <thead>
           <tr>
             <th class="border-b py-1 font-semibold text-slate-700">Size</th>
-            <th class="border-b py-1 font-semibold text-slate-700">Price</th>
+            <th class="border-b py-1 font-semibold text-slate-700">Price/Inch</th>
           </tr>
         </thead>
 
