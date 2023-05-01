@@ -1,22 +1,13 @@
 <template>
   <div class="flex justify-between gap-1">
-    <div class="flex gap-1">
-      <img
-        v-if="cartLine.merchandise.image"
-        :src="cartLine.merchandise.image.url"
-        :alt="cartLine.merchandise.image.altText"
-        width="64"
-      />
+    <div class="flex-col gap-1">
+      <p class="text-slate-800">
+        {{ cartLine.merchandise.product.title }}
+      </p>
 
-      <div>
-        <p class="text-slate-800">
-          {{ cartLine.merchandise.product.title }}
-        </p>
-
-        <p class="text-sm text-slate-500">
-          {{ cartLine.merchandise.title }}
-        </p>
-      </div>
+      <p class="text-sm text-slate-500">
+        {{ cartLine.merchandise.title }}
+      </p>
     </div>
 
     <div class="flex gap-2">
