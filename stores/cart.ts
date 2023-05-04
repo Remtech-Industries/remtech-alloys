@@ -11,9 +11,10 @@ export const useCartStore = defineStore('cart', () => {
   const itemCount = computed(() => {
     if (!cart.value) return 0
 
-    return cart.value.lines.edges.filter(
-      ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
-    ).length
+    return cart.value.lines.edges
+      .filter(
+        ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
+      ).length
   })
 
   async function getCart() {
