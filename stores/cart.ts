@@ -7,7 +7,6 @@ import type { Cart, CartLineInput } from '@/utils/types'
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
   const cartId = computed(() => cart?.value?.id)
-  const poNumber = ref('')
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
@@ -43,13 +42,5 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  return {
-    cart,
-    poNumber,
-    itemCount,
-    cartId,
-    getCart,
-    addToCart,
-    removeFromCart,
-  }
+  return { cart, itemCount, cartId, getCart, addToCart, removeFromCart }
 })
