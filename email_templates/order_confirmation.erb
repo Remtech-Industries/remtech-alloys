@@ -238,7 +238,7 @@
             {% assign line_display = line.quantity  %}
           {% endif %}
 
-          <span class="order-list__item-title">{{ line_title }}&nbsp;&times;&nbsp;{{ line_display }}</span><br/>
+          <span class="order-list__item-title">{{ line_title }}</span><br/>
 
           {% if line.variant.title != 'Default Title' %}
             <span class="order-list__item-variant">{{ line.variant.title }}</span><br/>
