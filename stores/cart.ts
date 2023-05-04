@@ -7,14 +7,14 @@ import type { Cart, CartLineInput } from '@/utils/types'
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
   const cartId = computed(() => cart?.value?.id)
+  const poNumber = ref('')
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
 
-    return cart.value.lines.edges
-      .filter(
-        ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
-      ).length
+    return cart.value.lines.edges.filter(
+      ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
+    ).length
   })
 
   async function getCart() {
@@ -43,5 +43,13 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  return { cart, itemCount, cartId, getCart, addToCart, removeFromCart }
+  return {
+    cart,
+    poNumber,
+    itemCount,
+    cartId,
+    getCart,
+    addToCart,
+    removeFromCart,
+  }
 })
