@@ -9,7 +9,7 @@
     <input
       type="text"
       placeholder="(optional, for reference only)"
-      class="w-full border px-2 py-1 shadow-inner focus:outline-none"
+      class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
       @input="emit('update', ($event.target as HTMLInputElement).value)"
     />
   </div>
