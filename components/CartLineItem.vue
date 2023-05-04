@@ -8,6 +8,8 @@
       <p class="text-sm text-slate-500">
         {{ cartLine.merchandise.title }}
       </p>
+
+      <div v-if="pieces">{{ pieces }}</div>
     </div>
 
     <div class="flex gap-2">
@@ -30,8 +32,10 @@
 <script setup lang="ts">
 import { formatMoney } from '@/utils/format-money'
 import type { CartLine } from '@/utils/types'
+import { computed } from 'vue'
+import { convertAttributesToObject } from '~~/utils/convert-attributes-to-object'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{ cartLine: CartLine; showRemoveButton?: boolean }>(),
   {
     showRemoveButton: false,
@@ -39,4 +43,9 @@ withDefaults(
 )
 
 const emit = defineEmits<{ (e: 'click:remove'): void }>()
+
+const pieces = computed(() => {
+  const attributes = convertAttributesToObject(props.cartLine.attributes)
+  return attributes['Pieces']
+})
 </script>

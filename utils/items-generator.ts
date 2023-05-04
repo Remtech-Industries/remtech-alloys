@@ -34,7 +34,9 @@ export function itemsGenerator(
     length: form.length,
     price: formatMoney(productVariantPrice),
     numberPrice: productVariantPrice,
-    attributes: [],
+    attributes: [
+      {key: 'Pieces', value: `${form.quantity} pcs @ ${form.length / 25.4}/ea.`},
+    ],
   })
 
   // handling fee
@@ -67,6 +69,6 @@ export function itemsGenerator(
   })
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
-    (row) => row.quantity > 0
+    ({quantity}) => quantity > 0
   )
 }

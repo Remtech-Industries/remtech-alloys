@@ -52,6 +52,7 @@ const cartItems = computed(() => {
   const nodes = cart.value.lines.edges.map(({ node }) => node)
   const parentItems = nodes.filter((node) => {
     const attributes = convertAttributesToObject(node.attributes)
+    // not having a parent_id means it's a parent item
     return !attributes._parent_id
   })
 
@@ -61,6 +62,7 @@ const cartItems = computed(() => {
       parent: item,
       children: nodes.filter((node) => {
         const attributes = convertAttributesToObject(node.attributes)
+        // having a parent_id means it's a child item
         return attributes._parent_id === item.merchandise.id
       }),
     }
