@@ -16,14 +16,14 @@ export async function usePostToShopify(query: string, variables = {}) {
 
     // TODO: Figure out how to handle errors
     if (result.errors) {
-      console.log({ errors: result.errors })
+      console.log('test', { errors: result.errors })
     } else if (!result || !result.data) {
-      console.log({ result })
+      console.log('usePostToShopify if', { result })
       return 'No results found.'
     }
 
     return result.data
   } catch (error) {
-    console.log(error)
+    console.log('usePostToShopify catch', error)
   }
 }

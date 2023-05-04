@@ -8,6 +8,8 @@
       <p class="text-sm text-slate-500">
         {{ cartLine.merchandise.title }}
       </p>
+
+      <div v-if="pieces">{{ pieces }}</div>
     </div>
 
     <div class="flex gap-2">
@@ -15,8 +17,13 @@
         {{ formatMoney(+cartLine.cost.totalAmount.amount) }}
       </p>
 
-      <div v-if="cartId && removeItems.length" class="self-center">
-        <RemoveCartLineButton :cart-id="cartId" :line-ids="removeItems" />
+      <div class="self-center" v-if="showRemoveButton">
+        <button
+          class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
+          @click="emit('click:remove')"
+        >
+          X
+        </button>
       </div>
     </div>
   </div>
@@ -25,11 +32,20 @@
 <script setup lang="ts">
 import { formatMoney } from '@/utils/format-money'
 import type { CartLine } from '@/utils/types'
+import { computed } from 'vue'
+import { convertAttributesToObject } from '~~/utils/convert-attributes-to-object'
 
-interface Props {
-  cartId?: string
-  cartLine: CartLine
-  removeItems?: string[]
-}
-withDefaults(defineProps<Props>(), { removeItems: () => [] })
+const props = withDefaults(
+  defineProps<{ cartLine: CartLine; showRemoveButton?: boolean }>(),
+  {
+    showRemoveButton: false,
+  }
+)
+
+const emit = defineEmits<{ (e: 'click:remove'): void }>()
+
+const pieces = computed(() => {
+  const attributes = convertAttributesToObject(props.cartLine.attributes)
+  return attributes['Pieces']
+})
 </script>

@@ -14,14 +14,12 @@ export const useCartStore = defineStore('cart', () => {
     return cart.value.lines.edges
       .filter(
         ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
-      )
-      .reduce((acc, { node }) => acc + node.quantity, 0)
+      ).length
   })
 
   async function getCart() {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
-    // TODO: This need to be more robust, but it works for now
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
@@ -38,8 +36,10 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  async function removeFromCart(cartId: string, lineIds: string[]) {
-    const response = await useRemoveFromCart(cartId, lineIds)
+  async function removeFromCart(lineIds: string[]) {
+    if (!cartId.value) return
+
+    const response = await useRemoveFromCart(cartId.value, lineIds)
     cart.value = response
   }
 
