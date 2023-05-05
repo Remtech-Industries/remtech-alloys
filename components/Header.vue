@@ -6,23 +6,25 @@
       <img src="/logo.png" alt="Rem-Tech Alloys Logo" width="200" />
     </NuxtLink>
 
-    <div class="flex flex-col">
-      <div>(519) 773-3455</div>
+    <div class="flex gap-2">
+      <div
+        v-show="showAddedToCartAlert"
+        class="self-end text-base font-semibold text-slate-700"
+      >
+        Added to cart!
+      </div>
 
-      <NuxtLink to="/cart" class="font-semibold text-slate-700">
-        <span
-          v-show="showAddedToCartAlert"
-          class="mr-1 text-base text-slate-700"
-        >
-          Added to cart!
-        </span>
+      <div class="flex flex-col">
+        <div>(519) 773-3455</div>
 
-        <span class="mr-1 text-slate-700">Cart</span>
+        <NuxtLink to="/cart" class="font-semibold text-slate-700">
+          <span class="mr-1 text-slate-700">Cart</span>
 
-        <span class="rounded bg-yellow-500 px-1 text-sm text-slate-100">
-          {{ itemCount }}
-        </span>
-      </NuxtLink>
+          <span class="rounded bg-yellow-500 px-1 text-sm text-slate-100">
+            {{ itemCount }}
+          </span>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
