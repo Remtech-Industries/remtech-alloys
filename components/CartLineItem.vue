@@ -33,7 +33,7 @@
 import { formatMoney } from '@/utils/format-money'
 import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
-import { convertAttributesToObject } from '~~/utils/convert-attributes-to-object'
+import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 
 const props = withDefaults(
   defineProps<{ cartLine: CartLine; showRemoveButton?: boolean }>(),

@@ -44,7 +44,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
 import { mmInInch } from '@/utils/constants'
-import { formatMoney } from '~~/utils/format-money'
+import { formatMoney } from '@/utils/format-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 const { params } = useRoute()
 
