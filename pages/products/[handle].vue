@@ -19,19 +19,17 @@
         />
       </div>
 
-      <div class="flex">
-        <LengthInput
-          @update:length="form.length = $event"
-          @update:is-valid="form.lengthIsValid = $event"
-        />
-      </div>
+      <LengthInput
+        class="self-start"
+        @update:length="form.length = $event"
+        @update:is-valid="form.lengthIsValid = $event"
+      />
 
-      <div class="flex">
-        <QuantityInput
-          @update:quantity="form.quantity = $event"
-          @update:is-valid="form.quantityIsValid = $event"
-        />
-      </div>
+      <QuantityInput
+        class="self-start"
+        @update:quantity="form.quantity = $event"
+        @update:is-valid="form.quantityIsValid = $event"
+      />
 
       <AddToCartButton :items="items" />
 
