@@ -19,17 +19,19 @@
         />
       </div>
 
-      <LengthInput
-        class="flex"
-        @update:length="form.length = $event"
-        @update:is-valid="form.lengthIsValid = $event"
-      />
+      <div class="flex">
+        <LengthInput
+          @update:length="form.length = $event"
+          @update:is-valid="form.lengthIsValid = $event"
+        />
+      </div>
 
-      <QuantityInput
-        class="flex"
-        @update:quantity="form.quantity = $event"
-        @update:is-valid="form.quantityIsValid = $event"
-      />
+      <div class="flex">
+        <QuantityInput
+          @update:quantity="form.quantity = $event"
+          @update:is-valid="form.quantityIsValid = $event"
+        />
+      </div>
 
       <AddToCartButton :items="items" />
 
