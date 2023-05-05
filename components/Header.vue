@@ -3,7 +3,7 @@
     class="flex items-center justify-between border-b bg-slate-50 p-2 shadow"
   >
     <NuxtLink to="/" class="text-3xl font-bold text-slate-700">
-      <img src="logo.png" alt="Rem-Tech Alloys Logo" width="200" />
+      <img src="/logo.png" alt="Rem-Tech Alloys Logo" width="200" />
     </NuxtLink>
 
     <div class="flex flex-col">
