@@ -43,6 +43,10 @@ const cart = `
       }
     }
   }
+  attributes {
+    key
+    value
+  }
 }`
 
 const createQuery = `
@@ -99,4 +103,18 @@ export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
   )
 
   return response.cartLinesRemove.cart
+}
+
+export async function usePatchPoNumber(cartId: string, poNumber: string) {
+  const response = await usePostToShopify(
+    `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
+      cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
+        cart ${cart}
+      }
+    }
+    `,
+    { cartId, attributes: [{ key: 'PO #', value: poNumber }] }
+  )
+
+  return response.cartAttributesUpdate.cart
 }

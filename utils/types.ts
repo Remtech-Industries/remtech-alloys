@@ -33,6 +33,7 @@ export type Cart = {
       node: CartLine
     }[]
   }
+  attributes: { key: string; value: string }[]
 }
 
 export type Attribute = {

@@ -2,6 +2,21 @@
   <div class="mx-auto flex max-w-2xl flex-col">
     <h1 class="mb-2 text-2xl font-bold">Cart</h1>
 
+    <div class="mb-2 flex">
+      <div
+        class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
+      >
+        PO #
+      </div>
+
+      <input
+        v-model="po"
+        type="text"
+        placeholder="(optional, for reference only)"
+        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+      />
+    </div>
+
     <div
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
@@ -26,25 +41,31 @@
       </div>
     </div>
 
-    <NuxtLink
-      :to="cart?.checkoutUrl"
+    <button
       class="rounded bg-slate-800 py-2 px-1 text-center text-slate-100"
+      @click="onClick()"
     >
       Checkout
-    </NuxtLink>
+    </button>
+
+    <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
   </div>
 </template>
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 
 const { cart } = storeToRefs(useCartStore())
-const { removeFromCart } = useCartStore()
+const { removeFromCart, patchPoNumber } = useCartStore()
+
+const po = ref(
+  cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
+)
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -72,4 +93,11 @@ const cartItems = computed(() => {
 const { getCart } = useCartStore()
 onMounted(() => getCart())
 useHead({ title: 'Cart' })
+onBeforeUnmount(() => patchPoNumber(po.value))
+
+const toCheckoutLink = ref()
+async function onClick() {
+  await patchPoNumber(po.value)
+  if (toCheckoutLink.value) toCheckoutLink.value.click()
+}
 </script>

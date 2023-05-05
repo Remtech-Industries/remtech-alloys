@@ -1,7 +1,12 @@
 import { computed, ref } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { defineStore } from 'pinia'
-import { useAddToCart, useGetCart, useRemoveFromCart } from '@/proxies/cart'
+import {
+  useAddToCart,
+  useGetCart,
+  usePatchPoNumber,
+  useRemoveFromCart,
+} from '@/proxies/cart'
 import type { Cart, CartLineInput } from '@/utils/types'
 
 export const useCartStore = defineStore('cart', () => {
@@ -11,10 +16,9 @@ export const useCartStore = defineStore('cart', () => {
   const itemCount = computed(() => {
     if (!cart.value) return 0
 
-    return cart.value.lines.edges
-      .filter(
-        ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
-      ).length
+    return cart.value.lines.edges.filter(
+      ({ node }) => !convertAttributesToObject(node.attributes)._parent_id
+    ).length
   })
 
   async function getCart() {
@@ -43,5 +47,20 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  return { cart, itemCount, cartId, getCart, addToCart, removeFromCart }
+  async function patchPoNumber(poNumber: string) {
+    if (!cartId.value) return
+
+    const response = await usePatchPoNumber(cartId.value, poNumber)
+    cart.value = response
+  }
+
+  return {
+    cart,
+    itemCount,
+    cartId,
+    getCart,
+    addToCart,
+    removeFromCart,
+    patchPoNumber,
+  }
 })
