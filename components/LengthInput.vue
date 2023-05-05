@@ -5,6 +5,7 @@
 
       <input
         type="number"
+        step="any"
         class="w-full border px-2 py-1 shadow-inner focus:outline-none"
         :class="message ? 'border-red-500' : ''"
         @input="onInput($event)"
