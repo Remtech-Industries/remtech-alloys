@@ -2,7 +2,23 @@
   <div class="mx-auto flex max-w-2xl flex-col">
     <h1 class="mb-2 text-2xl font-bold">Cart</h1>
 
-    <PoInput v-model="po" class="mb-2" />
+    <div class="mb-2 flex">
+      <div
+        class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
+      >
+        PO #
+      </div>
+
+      <input
+        ref="poNumberRef"
+        v-model="po"
+        type="text"
+        placeholder="(optional, for reference only)"
+        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+      />
+    </div>
+
+    {{ focused }}
 
     <div
       v-for="item in cartItems"
@@ -39,12 +55,12 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import PoInput from '@/components/PoInput.vue'
-import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
+import { computed, onMounted, ref, onBeforeUnmount, watch } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
+import { useFocus } from '@vueuse/core'
 
 const { cart } = storeToRefs(useCartStore())
 const { removeFromCart, patchPoNumber } = useCartStore()
@@ -52,6 +68,13 @@ const { removeFromCart, patchPoNumber } = useCartStore()
 const po = ref(
   cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
 )
+
+// Save value if the input loses focus
+const poNumberRef = ref()
+const { focused } = useFocus(poNumberRef)
+watch(focused, (isFocused) => {
+  if (!isFocused) patchPoNumber(po.value)
+})
 
 const cartItems = computed(() => {
   if (!cart.value) return []
