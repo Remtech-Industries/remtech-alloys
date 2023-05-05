@@ -10,7 +10,6 @@
       </div>
 
       <input
-        ref="poNumberRef"
         v-model="po"
         type="text"
         placeholder="(optional, for reference only)"
@@ -42,23 +41,24 @@
       </div>
     </div>
 
-    <NuxtLink
-      :to="cart?.checkoutUrl"
+    <button
       class="rounded bg-slate-800 py-2 px-1 text-center text-slate-100"
+      @click="onClick()"
     >
       Checkout
-    </NuxtLink>
+    </button>
+
+    <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
   </div>
 </template>
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { computed, onMounted, ref, onBeforeUnmount, watch } from 'vue'
+import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
-import { useFocus } from '@vueuse/core'
 
 const { cart } = storeToRefs(useCartStore())
 const { removeFromCart, patchPoNumber } = useCartStore()
@@ -66,13 +66,6 @@ const { removeFromCart, patchPoNumber } = useCartStore()
 const po = ref(
   cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
 )
-
-// Save value if the input loses focus
-const poNumberRef = ref()
-const { focused } = useFocus(poNumberRef)
-watch(focused, (isFocused) => {
-  if (!isFocused) patchPoNumber(po.value)
-})
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -101,4 +94,10 @@ const { getCart } = useCartStore()
 onMounted(() => getCart())
 useHead({ title: 'Cart' })
 onBeforeUnmount(() => patchPoNumber(po.value))
+
+const toCheckoutLink = ref()
+async function onClick() {
+  await patchPoNumber(po.value)
+  if (toCheckoutLink.value) toCheckoutLink.value.click()
+}
 </script>
