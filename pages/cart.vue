@@ -18,8 +18,6 @@
       />
     </div>
 
-    {{ focused }}
-
     <div
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
