@@ -13,7 +13,9 @@
         <thead>
           <tr>
             <th class="border-b py-1 font-semibold text-slate-700">Size</th>
-            <th class="border-b py-1 font-semibold text-slate-700">Price/Inch</th>
+            <th class="border-b py-1 font-semibold text-slate-700">
+              Price/Inch
+            </th>
           </tr>
         </thead>
 
@@ -26,7 +28,9 @@
             </td>
 
             <td class="border-b py-1 px-4 text-slate-600">
-              {{ formatMoney( node.priceRange.minVariantPrice.amount * mmInInch) }}
+              {{
+                formatMoney(node.priceRange.minVariantPrice.amount * mmInInch)
+              }}
             </td>
           </tr>
         </tbody>
