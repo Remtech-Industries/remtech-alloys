@@ -20,11 +20,13 @@
       </div>
 
       <LengthInput
+        class="flex"
         @update:length="form.length = $event"
         @update:is-valid="form.lengthIsValid = $event"
       />
 
       <QuantityInput
+        class="flex"
         @update:quantity="form.quantity = $event"
         @update:is-valid="form.quantityIsValid = $event"
       />
