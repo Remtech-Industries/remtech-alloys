@@ -2,7 +2,7 @@
   <div class="mx-auto flex max-w-2xl flex-col">
     <h1 class="mb-2 text-2xl font-bold">Cart</h1>
 
-    <PoInput class="mb-2" @update="po = $event" />
+    <PoInput v-model="po" class="mb-2" />
 
     <div
       v-for="item in cartItems"
@@ -40,16 +40,18 @@
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
 import PoInput from '@/components/PoInput.vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 
 const { cart } = storeToRefs(useCartStore())
-const { removeFromCart } = useCartStore()
+const { removeFromCart, patchPoNumber } = useCartStore()
 
-const po = ref('')
+const po = ref(
+  cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
+)
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -77,4 +79,5 @@ const cartItems = computed(() => {
 const { getCart } = useCartStore()
 onMounted(() => getCart())
 useHead({ title: 'Cart' })
+onBeforeUnmount(() => patchPoNumber(po.value))
 </script>
