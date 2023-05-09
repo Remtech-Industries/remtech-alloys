@@ -90,7 +90,10 @@
                         <td class="order-number__cell">
                           <span class="order-number__text">
                             Order {{ order_name }}
-                          </span>
+                          </span><br/>
+                          <span class="order-number__text">
+                            PO# {{ attributes["PO #"] }}
+                          </span><br/>
                         </td>
                       </tr>
                       {%- if po_number %}
@@ -220,22 +223,11 @@
   <tr class="order-list__item">
     <td class="order-list__item__cell">
       <table>
-        <td>
-          {% if line.image %}
-            <img src="{{ line | img_url: 'compact_cropped' }}" align="left" width="60" height="60" class="order-list__product-image"/>
-          {% endif %}
-        </td>
         <td class="order-list__product-description-cell">
           {% if line.product.title %}	
             {% assign line_title = line.product.title %}	
           {% else %}	
             {% assign line_title = line.title %}	
-          {% endif %}
-
-          {% if line.quantity < line.quantity %}
-            {% capture line_display %} {{ line.quantity }} of {{ line.quantity }} {% endcapture %}
-          {% else %}
-            {% assign line_display = line.quantity  %}
           {% endif %}
 
           <span class="order-list__item-title">{{ line_title }}</span><br/>
@@ -244,26 +236,30 @@
             <span class="order-list__item-variant">{{ line.variant.title }}</span><br/>
           {% endif %}
 
-            {% if line.gift_card and line.properties["__shopify_send_gift_card_to_recipient"] %}
-              {% for property in line.properties %}
-  {% assign property_first_char = property.first | slice: 0 %}
-  {% if property.last != blank and property_first_char != '_' %}
-    <div class="order-list__item-property">
-      <dt>{{ property.first }}:</dt>
-      <dd>
-      {% if property.last contains '/uploads/' %}
-        <a href="{{ property.last }}" class="link" target="_blank">
-        {{ property.last | split: '/' | last }}
-        </a>
-      {% else %}
-        {{ property.last }}
-      {% endif %}
-      </dd>
-    </div>
-  {% endif %}
-{% endfor %}
+          {% if line.properties["Pieces"] %}
+            <span>{{ line.properties["Pieces"] }}</span><br/>
+          {% endif %}
 
-            {% endif %}
+          {% if line.gift_card and line.properties["__shopify_send_gift_card_to_recipient"] %}
+            {% for property in line.properties %}
+              {% assign property_first_char = property.first | slice: 0 %}
+
+              {% if property.last != blank and property_first_char != '_' %}
+                <div class="order-list__item-property">
+                <dt>{{ property.first }}:</dt>
+                <dd>
+                {% if property.last contains '/uploads/' %}
+                  <a href="{{ property.last }}" class="link" target="_blank">
+                   {{ property.last | split: '/' | last }}
+                  </a>
+                {% else %}
+                  {{ property.last }}
+                {% endif %}
+                </dd>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
 
           {% if line.selling_plan_allocation %}
             <span class="order-list__item-variant">{{ line.selling_plan_allocation.selling_plan.name }}</span><br/>
@@ -301,7 +297,8 @@
           </td>
       </table>
     </td>
-  </tr>{% endfor %}
+  </tr>
+  {% endfor %}
 </table>
 
             <table class="row subtotal-lines">

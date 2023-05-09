@@ -35,7 +35,7 @@ export function itemsGenerator(
     price: formatMoney(productVariantPrice),
     numberPrice: productVariantPrice,
     attributes: [
-      {key: 'Pieces', value: `${form.quantity} pcs @ ${form.length / 25.4}/ea.`},
+      {key: 'Pieces', value: `${form.quantity} pcs @ ${form.length / 25.4} inches/ea.`},
     ],
   })
 
