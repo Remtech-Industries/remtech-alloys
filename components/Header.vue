@@ -29,7 +29,7 @@
           </div>
         </div>
 
-        <div class="mt-4 flex">
+        <div class="mt-4 flex justify-end">
           <div v-show="showAddedToCartAlert" class="mr-2">Added to cart!</div>
 
           <NuxtLink to="/cart" class="font-semibold">
