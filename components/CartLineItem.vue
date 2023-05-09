@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between gap-1">
     <div class="flex-col gap-1">
-      <p class="text-slate-800">
+      <p class="font-oswald text-xl text-slate-800">
         {{ cartLine.merchandise.product.title }}
       </p>
 
@@ -17,7 +17,7 @@
         {{ formatMoney(+cartLine.cost.totalAmount.amount) }}
       </p>
 
-      <div class="self-center" v-if="showRemoveButton">
+      <div class="self-center">
         <button
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
           @click="emit('click:remove')"
@@ -35,12 +35,7 @@ import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 
-const props = withDefaults(
-  defineProps<{ cartLine: CartLine; showRemoveButton?: boolean }>(),
-  {
-    showRemoveButton: false,
-  }
-)
+const props = defineProps<{ cartLine: CartLine }>()
 
 const emit = defineEmits<{ (e: 'click:remove'): void }>()
 

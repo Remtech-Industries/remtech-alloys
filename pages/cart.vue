@@ -1,8 +1,9 @@
 <template>
   <div class="mx-auto flex max-w-2xl flex-col">
-    <h1 class="mb-2 text-2xl font-bold">Cart</h1>
+    <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
 
-    <div class="mb-2 flex">
+    <!-- po -->
+    <div class="mb-2 flex w-96">
       <div
         class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
       >
@@ -12,7 +13,7 @@
       <input
         v-model="po"
         type="text"
-        placeholder="(optional, for reference only)"
+        placeholder="(optional)"
         class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
       />
     </div>
@@ -24,20 +25,27 @@
     >
       <CartLineItem
         :cart-line="item.parent"
-        show-remove-button
         @click:remove="
           removeFromCart([item.id, ...item.children.map(({ id }) => id)])
         "
       />
 
       <div
-        class="ml-8 divide-y divide-slate-300 border-l-8 border-slate-600 pl-4"
+        class="ml-5 divide-y divide-slate-300 border-l-8 border-yellow-500 pl-4"
       >
-        <CartLineItem
+        <div
           v-for="child in item.children"
           :key="child.id"
-          :cart-line="child"
-        />
+          class="flex justify-between"
+        >
+          <div class="font-oswald text-slate-800">
+            {{ child.merchandise.product.title }}
+          </div>
+
+          <div>
+            {{ formatMoney(+child.cost.totalAmount.amount) }}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -54,6 +62,7 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
+import { formatMoney } from '@/utils/format-money'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
