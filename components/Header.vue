@@ -14,7 +14,7 @@
         </div>
 
         <div class="flex flex-col">
-          <div>(519) 773-3455</div>
+          <div class="font-oswald">(519) 773-3455</div>
 
           <NuxtLink to="/cart" class="font-semibold">
             <span class="mr-1">Cart</span>

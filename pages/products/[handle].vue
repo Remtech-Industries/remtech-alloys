@@ -3,7 +3,7 @@
     <CollectionSidebar />
 
     <div class="flex flex-col gap-2 p-2" v-if="product">
-      <h1 class="border-b text-2xl font-bold text-slate-700">
+      <h1 class="border-b font-oswald text-2xl font-bold text-slate-700">
         {{ product.title }}
       </h1>
 
