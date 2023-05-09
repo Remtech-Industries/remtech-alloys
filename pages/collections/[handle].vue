@@ -2,9 +2,13 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="p-2">
+    <div class="p-2" v-if="collection">
       <div class="mb-3 flex items-baseline">
-        <h1 class="text-center text-3xl">{{ collection.title }}</h1>
+        <h1
+          class="border-b-4 border-yellow-500 text-center font-oswald text-3xl font-bold text-slate-600"
+        >
+          {{ collection.title }}
+        </h1>
 
         <p class="pl-4 text-sm font-thin">{{ collection.description }}</p>
       </div>
@@ -46,10 +50,11 @@ import { useGetCollection } from '@/proxies/get-collection'
 import { mmInInch } from '@/utils/constants'
 import { formatMoney } from '@/utils/format-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
+import { Product, Collection } from '@/utils/types'
 const { params } = useRoute()
 
-const collection = ref({})
-const products = ref([])
+const collection = ref<Collection | null>(null)
+const products = ref<Product[]>([])
 
 onMounted(async () => {
   const response = await useGetCollection(params.handle)

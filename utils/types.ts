@@ -1,3 +1,8 @@
+export type Collection = {
+  title: string
+  description: string
+}
+
 export type Product = {
   id: string
   handle: string
