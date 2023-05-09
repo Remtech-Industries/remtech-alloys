@@ -1,7 +1,10 @@
 <template>
   <div v-if="show">
     <Header />
-    <NuxtPage />
+
+    <div class="container mx-auto">
+      <NuxtPage />
+    </div>
   </div>
 
   <div class="m-auto flex w-96 flex-col text-center" v-else>

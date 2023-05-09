@@ -1,8 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  imports: {
-    autoImport: false,
-  },
+  imports: { autoImport: false, },
   modules: ['@nuxtjs/tailwindcss', '@pinia/nuxt', '@nuxt/devtools'],
   runtimeConfig: {
     public: {

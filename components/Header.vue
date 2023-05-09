@@ -1,29 +1,29 @@
 <template>
-  <div
-    class="flex items-center justify-between border-b bg-slate-50 p-2 shadow"
-  >
-    <NuxtLink to="/" class="text-3xl font-bold text-slate-700">
-      <img src="/logo.png" alt="Rem-Tech Alloys Logo" width="200" />
-    </NuxtLink>
+  <div class="border-b bg-slate-900 p-2 opacity-90 shadow-lg">
+    <div class="container mx-auto flex items-center justify-between">
+      <NuxtLink to="/">
+        <img src="/logo.png" alt="Rem-Tech Alloys Logo" width="200" />
+      </NuxtLink>
 
-    <div class="flex gap-2">
-      <div
-        v-show="showAddedToCartAlert"
-        class="self-end text-base font-semibold text-slate-700"
-      >
-        Added to cart!
-      </div>
+      <div class="flex gap-2 text-slate-50">
+        <div
+          v-show="showAddedToCartAlert"
+          class="self-end text-base font-semibold"
+        >
+          Added to cart!
+        </div>
 
-      <div class="flex flex-col">
-        <div>(519) 773-3455</div>
+        <div class="flex flex-col">
+          <div>(519) 773-3455</div>
 
-        <NuxtLink to="/cart" class="font-semibold text-slate-700">
-          <span class="mr-1 text-slate-700">Cart</span>
+          <NuxtLink to="/cart" class="font-semibold">
+            <span class="mr-1">Cart</span>
 
-          <span class="rounded bg-yellow-500 px-1 text-sm text-slate-100">
-            {{ itemCount }}
-          </span>
-        </NuxtLink>
+            <span class="rounded bg-yellow-500 px-1 text-sm">
+              {{ itemCount }}
+            </span>
+          </NuxtLink>
+        </div>
       </div>
     </div>
   </div>
