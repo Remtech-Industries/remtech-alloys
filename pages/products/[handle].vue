@@ -2,14 +2,12 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="flex flex-col gap-2 p-2" v-if="product">
-      <h1 class="border-b font-oswald text-2xl font-bold text-slate-700">
+    <div class="flex flex-col gap-2 p-5" v-if="product">
+      <h1 class="border-b pb-2 font-oswald text-2xl font-bold text-slate-700">
         {{ product.title }}
       </h1>
 
-      <h2 class="font-semibold text-slate-700">Round Bars</h2>
-
-      <div class="flex gap-1">
+      <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
           :key="variant.id"
@@ -19,9 +17,6 @@
         />
       </div>
 
-      <p class="text-sm font-thin">
-        Every piece is subject to a 0.078 inch additional cut waste fee.
-      </p>
       <LengthInput
         class="self-start"
         @update:length="form.length = $event"

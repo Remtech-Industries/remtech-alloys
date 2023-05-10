@@ -2,7 +2,7 @@
   <!-- This first wrapper div protects outside css from interfering with layout. -->
   <div>
     <div class="flex">
-      <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Quantity</div>
+      <div class="rounded-l bg-slate-600 px-2 py-1 text-slate-50">Quantity</div>
 
       <input
         type="number"

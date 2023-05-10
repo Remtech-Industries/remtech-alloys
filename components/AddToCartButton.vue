@@ -1,7 +1,7 @@
 <template>
   <button
     :disabled="disabled"
-    class="rounded bg-slate-400 px-2 py-1 text-slate-700 hover:bg-slate-300"
+    class="rounded bg-slate-700 px-2 py-1 text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
     :class="disabledClass"
     @click="onClick()"
   >

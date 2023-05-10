@@ -35,7 +35,7 @@
           <NuxtLink to="/cart" class="font-semibold">
             <span class="mr-1">Cart</span>
 
-            <span class="rounded bg-yellow-500 px-1 text-sm">
+            <span class="rounded bg-yellow-500 px-1 text-sm text-slate-900">
               {{ itemCount }}
             </span>
           </NuxtLink>
