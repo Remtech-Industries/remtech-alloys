@@ -19,6 +19,9 @@
         />
       </div>
 
+      <p class="text-sm font-thin">
+        Every piece is subject to a 0.078 inch additional cut waste fee.
+      </p>
       <LengthInput
         class="self-start"
         @update:length="form.length = $event"

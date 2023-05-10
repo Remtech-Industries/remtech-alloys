@@ -12,7 +12,18 @@
     <tbody>
       <tr v-for="row in items" :key="row.id">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
-          {{ row.title }}
+          <div class="flex flex-col">
+            <div>
+              {{ row.title }}
+              <span class="text-xs font-thin">
+                {{ row.displayedQuantity }} @{{ '1.235"' }}
+              </span>
+            </div>
+
+            <div class="font-thin">
+              1.235" requested length + .078" cut waste = 1.314"
+            </div>
+          </div>
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
           {{ formatMoney(row.pricePerPiece) }}
