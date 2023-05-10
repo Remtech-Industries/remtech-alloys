@@ -15,13 +15,13 @@
           {{ row.title }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ row.each }}
+          {{ formatMoney(row.pricePerPiece) }}
         </td>
         <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
-          {{ row.quantity }}
+          {{ row.displayedQuantity }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ row.price }}
+          {{ formatMoney(row.linePrice) }}
         </td>
       </tr>
     </tbody>
@@ -32,7 +32,7 @@
         <td />
         <td />
         <th class="px-6 py-3 text-right">
-          {{ totalPrice }}
+          {{ formatMoney(totalPrice) }}
         </th>
       </tr>
     </tfoot>
@@ -49,6 +49,6 @@ import type { Item } from '@/utils/items-generator'
 const props = defineProps<{ items: Item[] }>()
 
 const totalPrice = computed(() =>
-  formatMoney(props.items.reduce((acc, item) => acc + item.numberPrice, 0))
+  props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)
 )
 </script>

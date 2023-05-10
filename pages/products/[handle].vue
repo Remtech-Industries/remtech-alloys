@@ -7,7 +7,7 @@
         {{ product.title }}
       </h1>
 
-      <h2 class="font-semibold text-slate-700">Heat Numbers</h2>
+      <h2 class="font-semibold text-slate-700">Round Bars</h2>
 
       <div class="flex gap-1">
         <VariantSelector
@@ -108,7 +108,11 @@ const selectedVariant = computed(() => {
   )
   if (!foundVariant) return null
 
-  return { ...foundVariant, productTitle: product.value.title }
+  return {
+    ...foundVariant,
+    productTitle: product.value.title,
+    cutWaste: product.value.cutWaste?.value,
+  }
 })
 
 const items = computed(() => {
