@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-900 p-2 opacity-90 shadow-lg">
+  <div class="bg-slate-800 p-2 shadow-lg">
     <div class="container mx-auto flex items-stretch justify-between">
       <NuxtLink to="/">
         <img
