@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { toMm } from '@/utils/to-mm'
 
 const message = ref('')
 
@@ -44,7 +45,7 @@ function onInput(event: Event) {
     return
   }
 
-  emit('update:length', +length * 25.4)
+  emit('update:length', toMm(+length, 'inch'))
   emit('update:isValid', true)
 }
 </script>

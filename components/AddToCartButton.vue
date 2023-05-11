@@ -26,7 +26,7 @@ const computedItems = computed(() =>
   props.items.map((item) => {
     return {
       merchandiseId: item.id,
-      quantity: item.cartQuantity,
+      quantity: Math.ceil(item.cartQuantity),
       attributes: item.attributes,
     }
   })
