@@ -11,7 +11,9 @@
       </NuxtLink>
 
       <div class="flex flex-col text-slate-50">
-        <div class="flex justify-end font-oswald">
+        <div class="flex justify-end gap-5 font-oswald">
+          <NuxtLink to="/about" class="tracking-widest">ABOUT</NuxtLink>
+
           <div class="flex items-baseline">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +27,7 @@
               />
             </svg>
 
-            <div class="ml-1">(519) 773-3455</div>
+            <div class="ml-1 tracking-widest">(519) 773-3455</div>
           </div>
         </div>
 
