@@ -17,9 +17,15 @@
               {{ row.title }}
             </div>
 
-            <ul class="ml-5 list-disc font-thin">
-              <li>Provided: 1.235" x 9</li>
-              <li>Actual Cost*: 1.314" x 9</li>
+            <ul v-if="row.requestedLength" class="ml-5 list-disc font-thin">
+              <li>
+                Provided: {{ toInches(row.requestedLength, 'mm') }}" x
+                {{ row.displayedQuantity }}
+              </li>
+              <li>
+                Actual Cost*: {{ toInches(row.cartQuantity, 'mm') }}" x
+                {{ row.displayedQuantity }}
+              </li>
             </ul>
           </div>
         </td>
@@ -46,19 +52,21 @@
       </tr>
     </tfoot>
   </table>
-  <p class="mt-3 text-xs font-thin">
-    * Every piece is subject to a 0.078 inch additional cut waste fee
+  <p class="mt-3 text-xs font-thin" v-if="cutWaste">
+    * Every piece is subject to a {{ toInches(+cutWaste, 'mm') }}" inch
+    additional cut waste fee
   </p>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { toInches } from '@/utils/to-inches'
 import { formatMoney } from '@/utils/format-money'
 
 import type { Item } from '@/utils/items-generator'
 
-const props = defineProps<{ items: Item[] }>()
+const props = defineProps<{ items: Item[]; cutWaste?: string }>()
 
 const totalPrice = computed(() =>
   props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)

@@ -2,13 +2,14 @@ import { formatMoney } from '@/utils/format-money'
 import type { Addons, Attribute, Form, Variant } from '@/utils/types'
 interface VariantWithProduct extends Variant {
   productTitle: string
-  cutWaste?: number
+  cutWaste?: string
 }
 
 export type Item = {
   id: string
   title: string
   cartQuantity: number
+  requestedLength?: number
   pricePerPiece: number
   linePrice: number
   displayedQuantity: number
@@ -21,22 +22,26 @@ export function itemsGenerator(
   addons: Addons
 ) {
   const numberOfPieces = form.quantity
-  const requestedLength = form.length
+  const requestedLength = form.length // requested length is always in specified stocking unit
 
   // product variant
   const cutWaste = selectedVariant.cutWaste || 0
-  const actualLength = requestedLength + cutWaste
+  const actualLength = requestedLength + +cutWaste
   const pricePerStockingUnit = +selectedVariant.priceV2.amount
 
   const productVariantRow: Item = {
     id: selectedVariant.id,
     title: selectedVariant.productTitle,
     cartQuantity: numberOfPieces * actualLength,
+    requestedLength: requestedLength,
     pricePerPiece: actualLength * pricePerStockingUnit,
     linePrice: numberOfPieces * actualLength * pricePerStockingUnit,
     displayedQuantity: numberOfPieces,
     attributes: [
-      {key: 'Pieces', value: `${numberOfPieces} pcs @ ${requestedLength / 25.4} inches/ea.`},
+      {
+        key: 'Pieces',
+        value: `${numberOfPieces} pcs @ ${requestedLength / 25.4} inches/ea.`,
+      },
     ],
   }
 
@@ -66,6 +71,6 @@ export function itemsGenerator(
   }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
-    ({cartQuantity}) => cartQuantity > 0
+    ({ cartQuantity }) => cartQuantity > 0
   )
 }

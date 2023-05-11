@@ -34,7 +34,7 @@
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
-        <PricingTable :items="items" />
+        <PricingTable :items="items" :cut-waste="product.cutWaste?.value" />
       </div>
     </div>
   </div>
