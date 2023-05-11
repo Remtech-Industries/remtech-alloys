@@ -11,6 +11,7 @@ export type Product = {
   cutFee?: { value: string }
   handlingFee?: { value: string }
   stockingUnit?: { value: string }
+  cutWaste?: { value: string }
   totalInventory: number
   variants: { edges: { node: Variant }[] }
 }

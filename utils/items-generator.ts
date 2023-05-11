@@ -1,74 +1,76 @@
 import { formatMoney } from '@/utils/format-money'
 import type { Addons, Attribute, Form, Variant } from '@/utils/types'
-interface VariantWithProductTitle extends Variant {
+interface VariantWithProduct extends Variant {
   productTitle: string
+  cutWaste?: string
 }
 
 export type Item = {
   id: string
   title: string
-  each: string
-  quantity: number
-  price: string
-  numberPrice: number
+  cartQuantity: number
+  requestedLength?: number
+  pricePerPiece: number
+  linePrice: number
+  displayedQuantity: number
   attributes: Attribute[]
-  length?: number
 }
-
-const asItem = (item: Item) => item
 
 export function itemsGenerator(
   form: Form,
-  selectedVariant: VariantWithProductTitle,
+  selectedVariant: VariantWithProduct,
   addons: Addons
 ) {
+  const numberOfPieces = form.quantity
+  const requestedLength = form.length // requested length is always in specified stocking unit
 
   // product variant
-  const productVariantPrice =
-    +selectedVariant.priceV2.amount * form.length * form.quantity
-  const productVariantRow = asItem({
+  const cutWaste = selectedVariant.cutWaste || 0
+  const actualLength = requestedLength + +cutWaste
+  const pricePerStockingUnit = +selectedVariant.priceV2.amount
+
+  const productVariantRow: Item = {
     id: selectedVariant.id,
     title: selectedVariant.productTitle,
-    each: formatMoney(+selectedVariant.priceV2.amount * form.length),
-    quantity: form.quantity,
-    length: form.length,
-    price: formatMoney(productVariantPrice),
-    numberPrice: productVariantPrice,
+    cartQuantity: numberOfPieces * actualLength,
+    requestedLength: requestedLength,
+    pricePerPiece: actualLength * pricePerStockingUnit,
+    linePrice: numberOfPieces * actualLength * pricePerStockingUnit,
+    displayedQuantity: numberOfPieces,
     attributes: [
-      {key: 'Pieces', value: `${form.quantity} pcs @ ${form.length / 25.4} inches/ea.`},
+      {
+        key: 'Pieces',
+        value: `${numberOfPieces} pcs @ ${requestedLength / 25.4} inches/ea.`,
+      },
     ],
-  })
+  }
 
   // handling fee
   const handlingFeePrice = +addons.handling_fee.price.amount
-  const handlingFeeRow = asItem({
+  const handlingFeeRow: Item = {
     id: addons.handling_fee.id,
     title: 'Handling Fee',
-    each: formatMoney(handlingFeePrice),
-    quantity: form.quantity > 0 ? 1 : 0,
-    price: formatMoney(handlingFeePrice),
-    numberPrice: handlingFeePrice,
+    cartQuantity: numberOfPieces > 0 ? 1 : 0,
+    pricePerPiece: handlingFeePrice,
+    linePrice: handlingFeePrice,
+    displayedQuantity: 1,
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],
-  })
+  }
 
   // cut fee
-  let cutFeeQuantity = form.quantity
-  if (form.length * form.quantity === selectedVariant.quantityAvailable) {
-    cutFeeQuantity--
-  }
   const cutFeeCost = +addons.cut_fee.price.amount
-  const cutFeePrice = cutFeeCost * cutFeeQuantity
-  const cutFeeRow = asItem({
+  const cutFeePrice = cutFeeCost * numberOfPieces
+  const cutFeeRow: Item = {
     id: addons.cut_fee.id,
     title: 'Cut Fee',
-    each: formatMoney(cutFeeCost),
-    quantity: cutFeeQuantity,
-    price: formatMoney(cutFeePrice),
-    numberPrice: cutFeePrice,
+    cartQuantity: numberOfPieces,
+    pricePerPiece: cutFeeCost,
+    linePrice: cutFeePrice,
+    displayedQuantity: numberOfPieces,
     attributes: [{ key: '_parent_id', value: selectedVariant.id }],
-  })
+  }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
-    ({quantity}) => quantity > 0
+    ({ cartQuantity }) => cartQuantity > 0
   )
 }

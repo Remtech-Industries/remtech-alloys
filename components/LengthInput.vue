@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex">
-      <div class="rounded-l bg-slate-700 px-2 py-1 text-slate-50">Length</div>
+      <div class="rounded-l bg-slate-600 px-2 py-1 text-slate-50">Length</div>
 
       <input
         type="number"
@@ -11,7 +11,7 @@
         @input="onInput($event)"
       />
 
-      <div class="rounded-r bg-slate-700 px-2 py-1 text-slate-50">Inches</div>
+      <div class="rounded-r bg-slate-600 px-2 py-1 text-slate-50">Inches</div>
     </div>
 
     <p v-if="message" class="ml-1 text-sm text-red-500">{{ message }}</p>
@@ -20,6 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { toMm } from '@/utils/to-mm'
 
 const message = ref('')
 
@@ -44,7 +45,7 @@ function onInput(event: Event) {
     return
   }
 
-  emit('update:length', +length * 25.4)
+  emit('update:length', toMm(+length, 'inch'))
   emit('update:isValid', true)
 }
 </script>

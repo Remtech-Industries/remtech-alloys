@@ -1,7 +1,7 @@
 <template>
   <button
     :disabled="disabled"
-    class="rounded bg-slate-400 px-2 py-1 text-slate-700 hover:bg-slate-300"
+    class="rounded bg-slate-700 px-2 py-1 text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
     :class="disabledClass"
     @click="onClick()"
   >
@@ -25,8 +25,8 @@ const disabledClass = computed(() => {
 const computedItems = computed(() =>
   props.items.map((item) => {
     return {
-      quantity: item.quantity * Math.ceil(item.length || 1),
       merchandiseId: item.id,
+      quantity: Math.ceil(item.cartQuantity),
       attributes: item.attributes,
     }
   })

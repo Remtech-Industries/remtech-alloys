@@ -12,16 +12,31 @@
     <tbody>
       <tr v-for="row in items" :key="row.id">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
-          {{ row.title }}
+          <div class="flex flex-col">
+            <div>
+              {{ row.title }}
+            </div>
+
+            <ul v-if="row.requestedLength" class="ml-5 list-disc font-thin">
+              <li>
+                Provided: {{ toInches(row.requestedLength, 'mm') }}" x
+                {{ row.displayedQuantity }}
+              </li>
+              <li>
+                Actual Cost*: {{ toInches(row.cartQuantity, 'mm') }}" x
+                {{ row.displayedQuantity }}
+              </li>
+            </ul>
+          </div>
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ row.each }}
+          {{ formatMoney(row.pricePerPiece) }}
         </td>
         <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
-          {{ row.quantity }}
+          {{ row.displayedQuantity }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ row.price }}
+          {{ formatMoney(row.linePrice) }}
         </td>
       </tr>
     </tbody>
@@ -32,23 +47,28 @@
         <td />
         <td />
         <th class="px-6 py-3 text-right">
-          {{ totalPrice }}
+          {{ formatMoney(totalPrice) }}
         </th>
       </tr>
     </tfoot>
   </table>
+  <p class="mt-3 text-xs font-thin" v-if="cutWaste">
+    * Every piece is subject to a {{ toInches(+cutWaste, 'mm') }}" inch
+    additional cut waste fee
+  </p>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 
+import { toInches } from '@/utils/to-inches'
 import { formatMoney } from '@/utils/format-money'
 
 import type { Item } from '@/utils/items-generator'
 
-const props = defineProps<{ items: Item[] }>()
+const props = defineProps<{ items: Item[]; cutWaste?: string }>()
 
 const totalPrice = computed(() =>
-  formatMoney(props.items.reduce((acc, item) => acc + item.numberPrice, 0))
+  props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)
 )
 </script>

@@ -2,14 +2,12 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="flex flex-col gap-2 p-2" v-if="product">
-      <h1 class="border-b font-oswald text-2xl font-bold text-slate-700">
+    <div class="flex flex-col gap-2 p-5" v-if="product">
+      <h1 class="border-b pb-2 font-oswald text-2xl font-bold text-slate-700">
         {{ product.title }}
       </h1>
 
-      <h2 class="font-semibold text-slate-700">Heat Numbers</h2>
-
-      <div class="flex gap-1">
+      <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
           :key="variant.id"
@@ -36,7 +34,7 @@
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
-        <PricingTable :items="items" />
+        <PricingTable :items="items" :cut-waste="product.cutWaste?.value" />
       </div>
     </div>
   </div>
@@ -108,7 +106,11 @@ const selectedVariant = computed(() => {
   )
   if (!foundVariant) return null
 
-  return { ...foundVariant, productTitle: product.value.title }
+  return {
+    ...foundVariant,
+    productTitle: product.value.title,
+    cutWaste: product.value.cutWaste?.value,
+  }
 })
 
 const items = computed(() => {

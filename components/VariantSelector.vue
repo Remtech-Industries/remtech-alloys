@@ -3,7 +3,7 @@
     class="cursor-pointer rounded border border-slate-300 p-2"
     :class="
       isActive
-        ? 'bg-slate-700 text-slate-50 shadow-lg'
+        ? 'bg-slate-600 text-slate-50 shadow-lg'
         : 'bg-slate-50 text-slate-700'
     "
   >
