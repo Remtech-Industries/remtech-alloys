@@ -1,6 +1,6 @@
-import type { Attribute, Maybe, Scalars } from './storefront-api-types'
+import type { Attribute } from './storefront-api-types'
 
-type ReduceType = Record<Scalars['String'], Maybe<string> | undefined>
+type ReduceType = Record<Attribute['key'], Attribute['value']>
 
 export function convertAttributesToObject(attributes: Attribute[]) {
   return attributes.reduce(
