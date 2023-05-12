@@ -1,10 +1,10 @@
-import type { Attribute } from './types'
+import type { Attribute } from './storefront-api-types'
+
+type ReduceType = Record<Attribute['key'], Attribute['value']>
 
 export function convertAttributesToObject(attributes: Attribute[]) {
   return attributes.reduce(
-    (acc, attribute) => {
-      return { ...acc, [attribute.key]: attribute.value }
-    },
+    (acc: ReduceType, attr) => ({ ...acc, [attr.key]: attr.value }),
     { _parent_id: null }
   )
 }
