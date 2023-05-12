@@ -33,7 +33,7 @@
 
             <td class="border-b py-1 px-4 text-slate-600">
               {{
-                formatMoney(node.priceRange.minVariantPrice.amount * mmInInch)
+                formatMoney(+node.priceRange.minVariantPrice.amount * mmInInch)
               }}
             </td>
           </tr>
@@ -50,14 +50,16 @@ import { useGetCollection } from '@/proxies/get-collection'
 import { mmInInch } from '@/utils/constants'
 import { formatMoney } from '@/utils/format-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
-import { Product, Collection } from '@/utils/types'
+import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
 const { params } = useRoute()
 
 const collection = ref<Collection | null>(null)
-const products = ref<Product[]>([])
+const products = ref<ProductEdge[]>([])
 
 onMounted(async () => {
-  const response = await useGetCollection(params.handle)
+  const handle =
+    typeof params.handle === 'string' ? params.handle : params.handle[0] || ''
+  const response = await useGetCollection(handle)
   collection.value = response.collection
   products.value = response.collection.products.edges
 })
