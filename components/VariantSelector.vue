@@ -21,10 +21,10 @@
 <script setup lang="ts">
 import { displayHeatNumber } from '@/utils/display-heat-number'
 import { computed } from 'vue'
-import type { Variant } from '@/utils/types'
+import type { ProductVariant } from '@/utils/storefront-api-types'
 
 interface Props {
-  variant: Variant
+  variant: ProductVariant
   activeId?: string
   stockingUnit?: string
 }
@@ -39,7 +39,7 @@ const isActive = computed(() => {
 const quantityAvailable = computed(() => {
   const quantity = props.variant.quantityAvailable
   if (props.stockingUnit === 'mm') {
-    return `${quantity}mm/${(quantity / 25.4).toFixed(3)}in`
+    return `${quantity}mm/${((quantity || 0) / 25.4).toFixed(3)}in`
   }
 })
 
