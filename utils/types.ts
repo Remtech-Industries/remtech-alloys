@@ -3,6 +3,13 @@ export type Collection = {
   description: string
 }
 
+export type CustomProductFields = {
+  cutFee?: { value: string }
+  handlingFee?: { value: string }
+  stockingUnit?: { value: string }
+  cutWaste?: { value: string }
+}
+
 export type Product = {
   id: string
   handle: string
