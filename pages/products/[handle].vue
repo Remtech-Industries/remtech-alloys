@@ -49,8 +49,14 @@ import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type { Addons, Form, MetafieldVariant, Product } from '@/utils/types'
+import type {
+  Addons,
+  Form,
+  MetafieldVariant,
+  CustomProductFields,
+} from '@/utils/types'
 import type { Ref } from 'vue'
+import type { Product } from '@/utils/storefront-api-types'
 import { useGetProductVariants } from '@/proxies/get-product-variants'
 import { itemsGenerator } from '@/utils/items-generator'
 
@@ -63,7 +69,7 @@ const form: Ref<Form> = ref({
   lengthIsValid: false,
 })
 
-const product = ref<Product | null>(null)
+const product = ref<(Product & CustomProductFields) | null>(null)
 const addons = ref<Addons | null>(null)
 
 onMounted(async () => {
@@ -94,7 +100,7 @@ const variants = computed(() => {
 
   return product.value.variants.edges
     .map(({ node }) => node)
-    .sort((a, b) => a.quantityAvailable - b.quantityAvailable)
+    .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
 const selectedVariant = computed(() => {
@@ -102,7 +108,7 @@ const selectedVariant = computed(() => {
 
   const totalAmount = form.value.length * form.value.quantity
   const foundVariant = variants.value.find(
-    (variant) => variant.quantityAvailable >= totalAmount
+    (variant) => (variant.quantityAvailable || 0) >= totalAmount
   )
   if (!foundVariant) return null
 

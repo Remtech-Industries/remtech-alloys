@@ -1,6 +1,6 @@
-import { formatMoney } from '@/utils/format-money'
-import type { Addons, Attribute, Form, Variant } from '@/utils/types'
-interface VariantWithProduct extends Variant {
+import type { Addons, Attribute, Form } from '@/utils/types'
+import type { ProductVariant } from './storefront-api-types'
+interface VariantWithProduct extends ProductVariant {
   productTitle: string
   cutWaste?: string
 }
