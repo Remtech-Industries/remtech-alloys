@@ -1,33 +1,8 @@
-export type Collection = {
-  title: string
-  description: string
-}
-
 export type CustomProductFields = {
   cutFee?: { value: string }
   handlingFee?: { value: string }
   stockingUnit?: { value: string }
   cutWaste?: { value: string }
-}
-
-export type Product = {
-  id: string
-  handle: string
-  priceRange: { maxVariantPrice: Price; minVariantPrice: Price }
-  title: string
-  cutFee?: { value: string }
-  handlingFee?: { value: string }
-  stockingUnit?: { value: string }
-  cutWaste?: { value: string }
-  totalInventory: number
-  variants: { edges: { node: Variant }[] }
-}
-
-export type Variant = {
-  id: string
-  title: string
-  quantityAvailable: number
-  priceV2: Price
 }
 
 export type Form = {
