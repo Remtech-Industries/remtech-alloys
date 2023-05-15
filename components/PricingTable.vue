@@ -23,7 +23,9 @@
                 {{ row.displayedQuantity }}
               </li>
               <li>
-                Actual Cost*: {{ toInches(row.cartQuantity, 'mm') }}" x
+                Actual Cost*:
+                {{ toInches(row.cartQuantity / row.displayedQuantity, 'mm') }}"
+                x
                 {{ row.displayedQuantity }}
               </li>
             </ul>
