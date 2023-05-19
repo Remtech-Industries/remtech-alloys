@@ -566,10 +566,26 @@
                                 {{ shipping_address | format_address }}
                               </td>
                             {% endif %}
+
                             {% if billing_address %}
                               <td class='customer-info__item'>
                                 <h4>Billing address</h4>
-                                {{ billing_address | format_address }}
+                                <p>
+                                  {% if billing_address.company %}
+                                    {{ billing_address.company }}
+                                  {% else %}
+                                    {{ billing_address.name }}
+                                    {{ billing_address.last_name }}
+                                  {% endif %}
+                                  <br>
+                                  {{ billing_address.street }}
+                                  <br>
+                                  {{ billing_address.city }}
+                                  {{ billing_address.province }}
+                                  {{ billing_address.zip }}
+                                  <br>
+                                  {{ billing_address.country }}
+                                </p>
                               </td>
                             {% endif %}
                           </tr>

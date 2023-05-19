@@ -235,12 +235,12 @@
                                 {% for discount_application in discount_applications %}
                                   {% if discount_application.target_selection == 'all' %}
                                     {% capture discount_title %}
-        {% if discount_application.title %}
-        {{ discount_application.title | upcase }}
-        {% else %}
-        Discount
-        {% endif %}
-        {% endcapture %}
+                                      {% if discount_application.title %}
+                                        {{ discount_application.title | upcase }}
+                                      {% else %}
+                                        Discount
+                                      {% endif %}
+                                    {% endcapture %}
 
                                     <tr class='subtotal-line'>
                                       <td class='subtotal-line__title'>
@@ -406,7 +406,22 @@
                               {% if billing_address %}
                                 <td class='customer-info__item'>
                                   <h4>Billing address</h4>
-                                  {{ billing_address | format_address }}
+                                  <p>
+                                    {% if billing_address.company %}
+                                      {{ billing_address.company }}
+                                    {% else %}
+                                      {{ billing_address.name }}
+                                      {{ billing_address.last_name }}
+                                    {% endif %}
+                                    <br>
+                                    {{ billing_address.street }}
+                                    <br>
+                                    {{ billing_address.city }}
+                                    {{ billing_address.province }}
+                                    {{ billing_address.zip }}
+                                    <br>
+                                    {{ billing_address.country }}
+                                  </p>
                                 </td>
                               {% endif %}
                             </tr>
