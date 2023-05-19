@@ -225,7 +225,9 @@
 
                                     <span class='order-list__item-title'>{{ line_title }}</span><br>
 
-                                    {% if line.variant.title != 'Default Title' %}
+                                    {% if line.variant.title != 'Default Title'
+                                      and line.variant.metafields.custom.addon_type == null
+                                    %}
                                       <span class='order-list__item-variant'>{{ line.variant.title }}</span><br>
                                     {% endif %}
 
@@ -316,12 +318,12 @@
                                 {% for discount_application in discount_applications %}
                                   {% if discount_application.target_selection == 'all' %}
                                     {% capture discount_title %}
-              {% if discount_application.title %}
-                {{ discount_application.title | upcase }}
-              {% else %}
-                Discount
-              {% endif %}
-            {% endcapture %}
+                                      {% if discount_application.title %}
+                                        {{ discount_application.title | upcase }}
+                                      {% else %}
+                                        Discount
+                                      {% endif %}
+                                    {% endcapture %}
 
                                     <tr class='subtotal-line'>
                                       <td class='subtotal-line__title'>
