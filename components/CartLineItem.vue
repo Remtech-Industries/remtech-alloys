@@ -5,10 +5,6 @@
         {{ cartLine.merchandise.product.title }}
       </p>
 
-      <p class="text-sm text-slate-500">
-        {{ cartLine.merchandise.title }}
-      </p>
-
       <div v-if="pieces">{{ pieces }}</div>
     </div>
 
