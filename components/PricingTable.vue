@@ -19,11 +19,11 @@
 
             <ul v-if="row.requestedLength" class="ml-5 list-disc font-thin">
               <li>
-                Provided: {{ toInches(row.requestedLength, 'mm') }}" x
+                Provided*: {{ toInches(row.requestedLength, 'mm') }}" x
                 {{ row.displayedQuantity }}
               </li>
               <li>
-                Actual Cost*:
+                Length Charged&dagger;:
                 {{ toInches(row.cartQuantity / row.displayedQuantity, 'mm') }}"
                 x
                 {{ row.displayedQuantity }}
@@ -54,8 +54,11 @@
       </tr>
     </tfoot>
   </table>
-  <p class="mt-3 text-xs font-thin" v-if="cutWaste">
-    * Every piece is subject to a {{ toInches(+cutWaste, 'mm') }}" inch
+  <p class="mt-3 text-xs font-thin">
+    * Every piece is +0.080 to +0.250 inches over the requested length
+  </p>
+  <p class="text-xs font-thin" v-if="cutWaste">
+    &dagger; Every piece is subject to a {{ toInches(+cutWaste, 'mm') }}" inch
     additional cut waste fee
   </p>
 </template>
