@@ -7,6 +7,8 @@
         {{ product.title }}
       </h1>
 
+      <div class="text-slate-700">Price: {{ formatMoney(price) }} / inch</div>
+
       <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
@@ -59,6 +61,7 @@ import type { Ref } from 'vue'
 import type { Product } from '@/utils/storefront-api-types'
 import { useGetProductVariants } from '@/proxies/get-product-variants'
 import { itemsGenerator } from '@/utils/items-generator'
+import { formatMoney } from '~~/utils/format-money'
 
 const { params } = useRoute()
 
@@ -124,5 +127,12 @@ const items = computed(() => {
   if (!addons.value) return []
 
   return itemsGenerator(form.value, selectedVariant.value, addons.value)
+})
+
+const price = computed(() => {
+  if (selectedVariant.value) {
+    return +selectedVariant.value.priceV2.amount * 25.4
+  }
+  return 0 // or any other default value you prefer
 })
 </script>
