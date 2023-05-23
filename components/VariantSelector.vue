@@ -7,20 +7,15 @@
         : 'bg-slate-50 text-slate-700'
     "
   >
-    <div>{{ displayHeatNumber(variant.title) }}</div>
+    <div>{{ variant.title }}</div>
 
-    <div class="text-xs font-thin">
-      <div>
-        {{ quantityAvailable }}
-      </div>
-      {{ price }}
-    </div>
+    <div class="text-xs font-thin">Bar Length: {{ quantityAvailable }}</div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { displayHeatNumber } from '@/utils/display-heat-number'
 import { computed } from 'vue'
+import { formatMoney } from '@/utils/format-money'
 import type { ProductVariant } from '@/utils/storefront-api-types'
 
 interface Props {
@@ -39,14 +34,7 @@ const isActive = computed(() => {
 const quantityAvailable = computed(() => {
   const quantity = props.variant.quantityAvailable
   if (props.stockingUnit === 'mm') {
-    return `${quantity}mm/${((quantity || 0) / 25.4).toFixed(3)}in`
-  }
-})
-
-const price = computed(() => {
-  const price = +props.variant.priceV2.amount
-  if (props.stockingUnit === 'mm') {
-    return `${price}/${props.stockingUnit}/${(price * 25.4).toFixed(2)}in`
+    return `${((quantity || 0) / 25.4).toFixed(3)}"`
   }
 })
 </script>
