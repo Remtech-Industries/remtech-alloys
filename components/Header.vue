@@ -11,8 +11,8 @@
           />
         </NuxtLink>
         <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
-          Providing Stainless Steels and Specialty Alloys at Custom Sizes as
-          Quickly as Possible​
+          Offering Prompt Delivery of Custom-Sized Stainless Steels and
+          Specialty Alloys
         </div>
       </div>
 
