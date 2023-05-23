@@ -1,14 +1,20 @@
 <template>
   <div class="bg-slate-800 p-2 shadow-lg">
     <div class="container mx-auto flex items-stretch justify-between">
-      <NuxtLink to="/">
-        <img
-          src="/logo.png"
-          alt="Rem-Tech Alloys Logo"
-          width="200"
-          class="ml-8"
-        />
-      </NuxtLink>
+      <div class="flex items-center">
+        <NuxtLink to="/">
+          <img
+            src="/logo.png"
+            alt="Rem-Tech Alloys Logo"
+            width="200"
+            class="ml-8"
+          />
+        </NuxtLink>
+        <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
+          Providing Stainless Steels and Specialty Alloys at Custom Sizes as
+          Quickly as Possible​
+        </div>
+      </div>
 
       <div class="flex flex-col text-slate-50">
         <div class="flex justify-end gap-5 font-oswald">
