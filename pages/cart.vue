@@ -43,7 +43,7 @@
           </div>
 
           <div>
-            {{ formatMoney(+child.cost.totalAmount.amount) }}
+            {{ toMoney(+child.cost.totalAmount.amount) }}
           </div>
         </div>
       </div>
@@ -62,7 +62,7 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { formatMoney } from '@/utils/format-money'
+import { toMoney } from '@/utils/to-money'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'

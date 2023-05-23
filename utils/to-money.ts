@@ -1,4 +1,4 @@
-export function formatMoney(number: number) {
+export function toMoney(number: number) {
   // TODO?: support other currencies
   return new Intl.NumberFormat('en-CA', {
     style: 'currency',

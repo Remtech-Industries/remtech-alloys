@@ -7,7 +7,7 @@
         {{ product.title }}
       </h1>
 
-      <div class="text-slate-700">Price: {{ formatMoney(price) }} / inch</div>
+      <div class="text-slate-700">Price: {{ toMoney(price) }} / inch</div>
 
       <div class="flex gap-1 pt-2">
         <VariantSelector
@@ -61,7 +61,7 @@ import type { Ref } from 'vue'
 import type { Product } from '@/utils/storefront-api-types'
 import { useGetProductVariants } from '@/proxies/get-product-variants'
 import { itemsGenerator } from '@/utils/items-generator'
-import { formatMoney } from '~~/utils/format-money'
+import { toMoney } from '@/utils/to-money'
 
 const { params } = useRoute()
 

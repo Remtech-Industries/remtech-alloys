@@ -10,7 +10,7 @@
 
     <div class="flex gap-2">
       <p class="self-center">
-        {{ formatMoney(+cartLine.cost.totalAmount.amount) }}
+        {{ toMoney(+cartLine.cost.totalAmount.amount) }}
       </p>
 
       <div class="self-center">
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { formatMoney } from '@/utils/format-money'
+import { toMoney } from '@/utils/to-money'
 import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'

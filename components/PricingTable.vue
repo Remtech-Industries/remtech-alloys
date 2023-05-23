@@ -32,13 +32,13 @@
           </div>
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ formatMoney(row.pricePerPiece) }}
+          {{ toMoney(row.pricePerPiece) }}
         </td>
         <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
           {{ row.displayedQuantity }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ formatMoney(row.linePrice) }}
+          {{ toMoney(row.linePrice) }}
         </td>
       </tr>
     </tbody>
@@ -49,7 +49,7 @@
         <td />
         <td />
         <th class="px-6 py-3 text-right">
-          {{ formatMoney(totalPrice) }}
+          {{ toMoney(totalPrice) }}
         </th>
       </tr>
     </tfoot>
@@ -65,7 +65,7 @@
 import { computed } from 'vue'
 
 import { toInches } from '@/utils/to-inches'
-import { formatMoney } from '@/utils/format-money'
+import { toMoney } from '@/utils/to-money'
 
 import type { Item } from '@/utils/items-generator'
 

@@ -15,7 +15,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatMoney } from '@/utils/format-money'
 import type { ProductVariant } from '@/utils/storefront-api-types'
 
 interface Props {

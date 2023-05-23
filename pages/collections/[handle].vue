@@ -32,9 +32,7 @@
             </td>
 
             <td class="border-b py-1 px-4 text-slate-600">
-              {{
-                formatMoney(+node.priceRange.minVariantPrice.amount * mmInInch)
-              }}
+              {{ toMoney(+node.priceRange.minVariantPrice.amount * mmInInch) }}
             </td>
           </tr>
         </tbody>
@@ -48,7 +46,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
 import { mmInInch } from '@/utils/constants'
-import { formatMoney } from '@/utils/format-money'
+import { toMoney } from '@/utils/to-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
 const { params } = useRoute()
