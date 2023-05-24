@@ -102,9 +102,7 @@ const selectedVariant = computed(() => {
   }
 })
 
-const price = computed(() =>
-  toPricePerInch(+(selectedVariant.value?.priceV2.amount || 0), 'mm')
-)
+const price = computed(() => toPricePerInch(pricePerStockingUnit.value, 'mm'))
 
 const { cutToken } = await useGetCutToken()
 
@@ -114,4 +112,7 @@ const items = computed(() => {
 })
 
 const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
+const pricePerStockingUnit = computed(
+  () => +(selectedVariant.value?.price.amount || '0')
+)
 </script>

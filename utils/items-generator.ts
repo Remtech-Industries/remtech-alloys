@@ -2,9 +2,9 @@ import type { Attribute, Form } from '@/utils/types'
 import type { ProductVariant } from './storefront-api-types'
 interface VariantWithProduct extends ProductVariant {
   productTitle: string
-  cutWaste?: string
-  cutTokensPerCut: string
-  pricePerCutToken: number
+  cutWaste: number
+  cutTokensPerCut?: string
+  pricePerCutToken: string
 }
 
 export type Item = {
@@ -26,13 +26,13 @@ export function itemsGenerator(
   const {
     cutWaste = 0,
     productTitle,
-    cutTokensPerCut,
+    cutTokensPerCut = 0,
     pricePerCutToken,
   } = selectedVariant
 
   // product variant
   const actualLength = requestedLength + +cutWaste
-  const pricePerStockingUnit = +selectedVariant.priceV2.amount
+  const pricePerStockingUnit = +selectedVariant.price.amount
 
   const productVariantRow: Item = {
     id: selectedVariant.id,

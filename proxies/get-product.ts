@@ -14,9 +14,8 @@ query product($handle: String!) {
           id
           title
           quantityAvailable
-          priceV2 {
+          price {
             amount
-            currencyCode
           }
         }
       }
