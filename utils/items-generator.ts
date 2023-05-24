@@ -22,7 +22,7 @@ export function itemsGenerator(
   form: Form,
   selectedVariant: VariantWithProduct
 ) {
-  const { quantity: numberOfPieces, length: requestedLength } = form
+  const { numberOfPieces, length: requestedLength } = form
   const {
     cutWaste = 0,
     productTitle,

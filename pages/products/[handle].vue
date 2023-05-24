@@ -29,9 +29,9 @@
         @update:is-valid="form.lengthIsValid = $event"
       />
 
-      <QuantityInput
+      <NumberOfPiecesInput
         class="self-start"
-        @update:quantity="form.quantity = $event"
+        @update:quantity="form.numberOfPieces = $event"
         @update:is-valid="form.quantityIsValid = $event"
       />
 
@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
-import QuantityInput from '@/components/QuantityInput.vue'
+import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref } from 'vue'
@@ -66,7 +66,7 @@ import { toPricePerInch } from '@/utils/to-price-per-inch'
 const { params } = useRoute()
 
 const form: Ref<Form> = ref({
-  quantity: 0,
+  numberOfPieces: 0,
   quantityIsValid: false,
   length: 0,
   lengthIsValid: false,
@@ -86,8 +86,8 @@ const variants = computed(() => {
 const selectedVariant = computed(() => {
   if (!product) return null
 
-  const { length, quantity } = form.value
-  const totalAmount = (length + +cutWaste.value) * quantity
+  const { length, numberOfPieces } = form.value
+  const totalAmount = (length + +cutWaste.value) * numberOfPieces
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= totalAmount
   )
