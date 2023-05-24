@@ -19,13 +19,19 @@
 
             <ul v-if="row.requestedLength" class="ml-5 list-disc font-thin">
               <li>
-                Requested*: {{ toInches(row.requestedLength, 'mm') }}" x
+                Requested*:
+                {{ toInches(row.requestedLength, 'mm', 'roundIt') }}" x
                 {{ row.displayedQuantity }}
               </li>
               <li>
                 Length Charged&dagger;:
-                {{ toInches(row.cartQuantity / row.displayedQuantity, 'mm') }}"
-                x
+                {{
+                  toInches(
+                    row.cartQuantity / row.displayedQuantity,
+                    'mm',
+                    'roundIt'
+                  )
+                }}" x
                 {{ row.displayedQuantity }}
               </li>
             </ul>
@@ -56,8 +62,8 @@
   </table>
   <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
   <p class="text-xs font-thin" v-if="cutWaste > 0">
-    &dagger; {{ toInches(cutWaste, 'mm') }}" is added to each piece as an
-    additional waste charge
+    &dagger; {{ toInches(cutWaste, 'mm', 'roundIt') }}" is added to each piece
+    as an additional waste charge
   </p>
 </template>
 
