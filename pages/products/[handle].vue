@@ -9,6 +9,10 @@
 
       <div class="text-slate-700">Price: {{ toMoney(price) }} / inch</div>
 
+      <div class="bg-red-500">
+        {{ cutToken }}
+      </div>
+
       <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
@@ -49,6 +53,7 @@ import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref, onMounted } from 'vue'
+import { useGetCutToken } from '@/proxies/get-cut-token'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
 import type {
@@ -135,4 +140,6 @@ const price = computed(() => {
   }
   return 0 // or any other default value you prefer
 })
+
+const { cutToken } = await useGetCutToken()
 </script>
