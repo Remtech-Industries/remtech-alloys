@@ -6,9 +6,8 @@ query {
     variants(first: 1) {
       edges {
         node {
-          priceV2 {
+          price {
             amount
-            currencyCode
           }
         }
       }

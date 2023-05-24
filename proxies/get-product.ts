@@ -34,10 +34,10 @@ query product($handle: String!) {
     stockingUnit: metafield(namespace: "custom", key: "stocking_unit") {
       value
     }
-    cutFee: metafield(namespace: "custom", key: "cut_fee") {
+    cutTokensPerCut: metafield(namespace: "custom", key: "cut_tokens_per_cut") {
       value
     }
-    handlingFee: metafield(namespace: "custom", key: "handling_fee") {
+    handlingTokens: metafield(namespace: "custom", key: "handling_tokens") {
       value
     }
     cutWaste: metafield(namespace: "custom", key: "cut_waste") {
@@ -49,5 +49,5 @@ query product($handle: String!) {
 
 export async function useGetProduct(handle: string | string[]) {
   const { product } = await usePostToShopify(query, { handle: handle })
-  return product
+  return { product }
 }

@@ -52,19 +52,13 @@ import LengthInput from '@/components/LengthInput.vue'
 import QuantityInput from '@/components/QuantityInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useGetCutToken } from '@/proxies/get-cut-token'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type {
-  Addons,
-  Form,
-  MetafieldVariant,
-  CustomProductFields,
-} from '@/utils/types'
+import type { Form, CustomProductFields } from '@/utils/types'
 import type { Ref } from 'vue'
 import type { Product } from '@/utils/storefront-api-types'
-import { useGetProductVariants } from '@/proxies/get-product-variants'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toMoney } from '@/utils/to-money'
 
@@ -77,44 +71,22 @@ const form: Ref<Form> = ref({
   lengthIsValid: false,
 })
 
-const product = ref<(Product & CustomProductFields) | null>(null)
-const addons = ref<Addons | null>(null)
-
-onMounted(async () => {
-  {
-    // get product
-    const data = await useGetProduct(params.handle)
-    product.value = data
-  }
-  {
-    // get essential add-ons
-    if (!product.value?.cutFee || !product.value?.handlingFee) return
-    const data = await useGetProductVariants([
-      product.value.cutFee.value,
-      product.value.handlingFee.value,
-    ])
-    if (data.includes(null)) {
-      // send notification or alert that add-on does not exist
-      return
-    }
-    addons.value = data.reduce((acc: Addons, item: MetafieldVariant) => {
-      return { ...acc, [item.addonType.value]: item }
-    }, {})
-  }
-})
+const { product }: { product: Product & CustomProductFields } =
+  await useGetProduct(params.handle)
 
 const variants = computed(() => {
-  if (!product.value) return []
+  if (!product) return []
 
-  return product.value.variants.edges
+  return product.variants.edges
     .map(({ node }) => node)
     .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
 const selectedVariant = computed(() => {
-  if (!product.value) return null
+  if (!product) return null
 
-  const totalAmount = form.value.length * form.value.quantity
+  const totalAmount =
+    (form.value.length + +(product.cutWaste?.value || 0)) * form.value.quantity
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= totalAmount
   )
@@ -122,24 +94,23 @@ const selectedVariant = computed(() => {
 
   return {
     ...foundVariant,
-    productTitle: product.value.title,
-    cutWaste: product.value.cutWaste?.value,
+    productTitle: product.title,
+    cutWaste: product.cutWaste?.value,
+    cutTokensPerCut: product.cutTokensPerCut?.value,
+    pricePerCutToken: cutToken.price.amount,
   }
-})
-
-const items = computed(() => {
-  if (!selectedVariant.value) return []
-  if (!addons.value) return []
-
-  return itemsGenerator(form.value, selectedVariant.value, addons.value)
 })
 
 const price = computed(() => {
-  if (selectedVariant.value) {
-    return +selectedVariant.value.priceV2.amount * 25.4
-  }
+  if (selectedVariant.value) +selectedVariant.value.priceV2.amount * 25.4
+
   return 0 // or any other default value you prefer
 })
 
 const { cutToken } = await useGetCutToken()
+
+const items = computed(() => {
+  if (!selectedVariant.value) return []
+  return itemsGenerator(form.value, selectedVariant.value)
+})
 </script>

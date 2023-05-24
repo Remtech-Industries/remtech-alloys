@@ -1,6 +1,5 @@
 export type CustomProductFields = {
-  cutFee?: { value: string }
-  handlingFee?: { value: string }
+  cutTokensPerCut?: { value: string }
   stockingUnit?: { value: string }
   cutWaste?: { value: string }
 }
@@ -66,9 +65,4 @@ export type MetafieldVariant = {
   title: string
   price: Price
   addonType: { value: string }
-}
-
-export type Addons = {
-  cut_fee: MetafieldVariant
-  handling_fee: MetafieldVariant
 }

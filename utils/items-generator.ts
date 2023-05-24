@@ -1,8 +1,10 @@
-import type { Addons, Attribute, Form } from '@/utils/types'
+import type { Attribute, Form } from '@/utils/types'
 import type { ProductVariant } from './storefront-api-types'
 interface VariantWithProduct extends ProductVariant {
   productTitle: string
   cutWaste?: string
+  cutTokensPerCut: string
+  pricePerCutToken: number
 }
 
 export type Item = {
@@ -18,20 +20,23 @@ export type Item = {
 
 export function itemsGenerator(
   form: Form,
-  selectedVariant: VariantWithProduct,
-  addons: Addons
+  selectedVariant: VariantWithProduct
 ) {
-  const numberOfPieces = form.quantity
-  const requestedLength = form.length // requested length is always in specified stocking unit
+  const { quantity: numberOfPieces, length: requestedLength } = form
+  const {
+    cutWaste = 0,
+    productTitle,
+    cutTokensPerCut,
+    pricePerCutToken,
+  } = selectedVariant
 
   // product variant
-  const cutWaste = selectedVariant.cutWaste || 0
   const actualLength = requestedLength + +cutWaste
   const pricePerStockingUnit = +selectedVariant.priceV2.amount
 
   const productVariantRow: Item = {
     id: selectedVariant.id,
-    title: selectedVariant.productTitle,
+    title: productTitle,
     cartQuantity: numberOfPieces * actualLength,
     requestedLength: requestedLength,
     pricePerPiece: actualLength * pricePerStockingUnit,
@@ -46,28 +51,28 @@ export function itemsGenerator(
   }
 
   // handling fee
-  const handlingFeePrice = +addons.handling_fee.price.amount
+  const handlingFeePrice = 0
   const handlingFeeRow: Item = {
-    id: addons.handling_fee.id,
+    id: 'a',
     title: 'Handling Fee',
     cartQuantity: numberOfPieces > 0 ? 1 : 0,
     pricePerPiece: handlingFeePrice,
     linePrice: handlingFeePrice,
     displayedQuantity: 1,
-    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
+    attributes: [],
   }
 
   // cut fee
-  const cutFeeCost = +addons.cut_fee.price.amount
-  const cutFeePrice = cutFeeCost * numberOfPieces
+  const cutPricePerPiece = +pricePerCutToken * +cutTokensPerCut
+  console.log(pricePerCutToken)
   const cutFeeRow: Item = {
-    id: addons.cut_fee.id,
-    title: 'Cut Fee',
-    cartQuantity: numberOfPieces,
-    pricePerPiece: cutFeeCost,
-    linePrice: cutFeePrice,
+    id: 'b',
+    title: 'Cut Cost',
+    cartQuantity: numberOfPieces * +cutTokensPerCut,
+    pricePerPiece: cutPricePerPiece,
+    linePrice: numberOfPieces * cutPricePerPiece,
     displayedQuantity: numberOfPieces,
-    attributes: [{ key: '_parent_id', value: selectedVariant.id }],
+    attributes: [],
   }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
