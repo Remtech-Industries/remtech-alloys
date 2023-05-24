@@ -55,8 +55,8 @@
     </tfoot>
   </table>
   <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
-  <p class="text-xs font-thin" v-if="cutWaste">
-    &dagger; {{ toInches(+cutWaste, 'mm') }}" is added to each piece as an
+  <p class="text-xs font-thin" v-if="cutWaste > 0">
+    &dagger; {{ toInches(cutWaste, 'mm') }}" is added to each piece as an
     additional waste charge
   </p>
 </template>
@@ -69,7 +69,7 @@ import { toMoney } from '@/utils/to-money'
 
 import type { Item } from '@/utils/items-generator'
 
-const props = defineProps<{ items: Item[]; cutWaste?: string }>()
+const props = defineProps<{ items: Item[]; cutWaste: number }>()
 
 const totalPrice = computed(() =>
   props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)

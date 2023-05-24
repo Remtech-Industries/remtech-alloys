@@ -40,7 +40,7 @@
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
-        <PricingTable :items="items" :cut-waste="product.cutWaste?.value" />
+        <PricingTable :items="items" :cut-waste="cutWaste" />
       </div>
     </div>
   </div>
@@ -61,6 +61,7 @@ import type { Ref } from 'vue'
 import type { Product } from '@/utils/storefront-api-types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toMoney } from '@/utils/to-money'
+import { toPricePerInch } from '@/utils/to-price-per-inch'
 
 const { params } = useRoute()
 
@@ -85,8 +86,8 @@ const variants = computed(() => {
 const selectedVariant = computed(() => {
   if (!product) return null
 
-  const totalAmount =
-    (form.value.length + +(product.cutWaste?.value || 0)) * form.value.quantity
+  const { length, quantity } = form.value
+  const totalAmount = (length + +cutWaste.value) * quantity
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= totalAmount
   )
@@ -95,17 +96,15 @@ const selectedVariant = computed(() => {
   return {
     ...foundVariant,
     productTitle: product.title,
-    cutWaste: product.cutWaste?.value,
+    cutWaste: cutWaste.value,
     cutTokensPerCut: product.cutTokensPerCut?.value,
     pricePerCutToken: cutToken.price.amount,
   }
 })
 
-const price = computed(() => {
-  if (selectedVariant.value) +selectedVariant.value.priceV2.amount * 25.4
-
-  return 0 // or any other default value you prefer
-})
+const price = computed(() =>
+  toPricePerInch(+(selectedVariant.value?.priceV2.amount || 0), 'mm')
+)
 
 const { cutToken } = await useGetCutToken()
 
@@ -113,4 +112,6 @@ const items = computed(() => {
   if (!selectedVariant.value) return []
   return itemsGenerator(form.value, selectedVariant.value)
 })
+
+const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
 </script>
