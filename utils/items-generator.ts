@@ -1,43 +1,53 @@
+import { toInches } from '@/utils/to-inches'
 import type { Attribute } from '@/utils/types'
-import type { ProductVariant } from './storefront-api-types'
-interface VariantWithProduct extends ProductVariant {
+
+interface Input {
   absoluteLength: number
   actualLengthPerPiece: number
-  cutWaste: number
-  cutTokensPerCut?: string
+  cutTokenId: string
+  cutTokensPerCut: number
+  handlingTokenId: string
+  numberOfHandlingTokens: number
   numberOfPieces: number
-  pricePerCutToken: string
+  pricePerCutToken: number
+  pricePerHandlingToken: number
+  pricePerStockingUnit: number
   productTitle: string
   requestedLength: number
+  selectedVariantId: string
 }
 
 export type Item = {
-  id: string
-  title: string
-  cartQuantity: number
-  requestedLength?: number
-  pricePerPiece: number
-  linePrice: number
-  displayedQuantity: number
   attributes: Attribute[]
+  cartQuantity: number
+  displayedQuantity: number
+  id: string
+  linePrice: number
+  pricePerPiece: number
+  requestedLength?: number
+  title: string
 }
 
-export function itemsGenerator(selectedVariant: VariantWithProduct) {
+export function itemsGenerator(input: Input) {
   const {
     absoluteLength,
     actualLengthPerPiece,
-    cutTokensPerCut = 0,
+    cutTokenId,
+    cutTokensPerCut,
+    handlingTokenId,
+    numberOfHandlingTokens,
     numberOfPieces,
     pricePerCutToken,
+    pricePerHandlingToken,
+    pricePerStockingUnit,
     productTitle,
     requestedLength,
-  } = selectedVariant
+    selectedVariantId,
+  } = input
 
   // product variant
-  const pricePerStockingUnit = +selectedVariant.price.amount
-
   const productVariantRow: Item = {
-    id: selectedVariant.id,
+    id: selectedVariantId,
     title: productTitle,
     cartQuantity: absoluteLength,
     requestedLength: requestedLength,
@@ -47,29 +57,33 @@ export function itemsGenerator(selectedVariant: VariantWithProduct) {
     attributes: [
       {
         key: 'Pieces',
-        value: `${numberOfPieces} pcs @ ${requestedLength / 25.4} inches/ea.`,
+        value: `${numberOfPieces} pcs @ ${toInches(
+          requestedLength,
+          'mm',
+          'roundIt'
+        )} inches/ea.`,
       },
     ],
   }
 
   // handling fee
-  const handlingFeePrice = 0
+  const handlingPrice = pricePerHandlingToken * numberOfHandlingTokens
   const handlingFeeRow: Item = {
-    id: 'a',
+    id: handlingTokenId,
     title: 'Handling Fee',
     cartQuantity: numberOfPieces > 0 ? 1 : 0,
-    pricePerPiece: handlingFeePrice,
-    linePrice: handlingFeePrice,
+    pricePerPiece: handlingPrice,
+    linePrice: handlingPrice,
     displayedQuantity: 1,
     attributes: [],
   }
 
   // cut fee
-  const cutPricePerPiece = +pricePerCutToken * +cutTokensPerCut
+  const cutPricePerPiece = pricePerCutToken * cutTokensPerCut
   const cutFeeRow: Item = {
-    id: 'b',
+    id: cutTokenId,
     title: 'Cut Cost',
-    cartQuantity: numberOfPieces * +cutTokensPerCut,
+    cartQuantity: numberOfPieces * cutTokensPerCut,
     pricePerPiece: cutPricePerPiece,
     linePrice: numberOfPieces * cutPricePerPiece,
     displayedQuantity: numberOfPieces,

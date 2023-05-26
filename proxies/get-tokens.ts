@@ -12,16 +12,34 @@ query {
 
 fragment variant on Product {
   variants(first: 1) {
-    edges { node { price { amount } } }
+    edges { node { 
+      id
+      price { amount } 
+    } }
   }
 }
 `
 
-export async function getTokens() {
+type Tokens = {
+  cutToken: {
+    id: string
+    price: number
+  }
+  handlingToken: {
+    id: string
+    price: number
+  }
+}
+
+export async function getTokens(): Promise<Tokens> {
   const data = await usePostToShopify(query)
   return {
-    cutToken: { price: data.cutToken.variants.edges[0].node.price.amount },
+    cutToken: {
+      id: data.cutToken.variants.edges[0].node.id,
+      price: data.cutToken.variants.edges[0].node.price.amount,
+    },
     handlingToken: {
+      id: data.handlingToken.variants.edges[0].node.id,
       price: data.handlingToken.variants.edges[0].node.price.amount,
     },
   }

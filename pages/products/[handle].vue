@@ -18,7 +18,7 @@
           v-for="variant in variants"
           :key="variant.id"
           :variant="variant"
-          :activeId="selectedVariant?.id"
+          :activeId="selectedVariant?.selectedVariantId"
           :stockingUnit="product.stockingUnit?.value"
         />
       </div>
@@ -40,13 +40,20 @@
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
-        <PricingTable :items="items" :cut-waste="cutWaste" />
+        <PricingTable :items="items" />
+
+        <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
+        <p class="text-xs font-thin" v-if="cutWaste > 0">
+          &dagger; {{ toInches(cutWaste, 'mm', 'roundIt') }}" is added to each
+          piece as an additional waste charge
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { toInches } from '@/utils/to-inches'
 import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
 import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
@@ -87,28 +94,28 @@ const selectedVariant = computed(() => {
   if (!product) return null
 
   const { length: requestedLength, numberOfPieces } = form.value
-  const actualLengthPerPiece = requestedLength * cutWaste.value
+  const actualLengthPerPiece = requestedLength + cutWaste.value
   const absoluteLength = actualLengthPerPiece * numberOfPieces
 
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= absoluteLength
   )
   if (!foundVariant) return null
-  const pricePerStockingUnit = +(foundVariant.price.amount || '0')
 
   return {
-    ...foundVariant,
     absoluteLength,
     actualLengthPerPiece,
-    productTitle: product.title,
-    cutWaste: cutWaste.value,
-    cutTokensPerCut: product.cutTokensPerCut?.value,
-    handlingTokens: product.handlingTokens?.value,
+    cutTokenId: cutToken.id,
+    cutTokensPerCut: +(product.cutTokensPerCut?.value || 0),
+    handlingTokenId: handlingToken.id,
+    numberOfHandlingTokens: +(product.handlingTokens?.value || 0),
     numberOfPieces,
     pricePerCutToken: cutToken.price,
-    pricePerHandlingToken: handlingToken.price,
-    pricePerStockingUnit,
+    pricePerHandlingToken: +handlingToken.price,
+    pricePerStockingUnit: +(foundVariant.price.amount || 0),
+    productTitle: product.title,
     requestedLength,
+    selectedVariantId: foundVariant.id,
   }
 })
 

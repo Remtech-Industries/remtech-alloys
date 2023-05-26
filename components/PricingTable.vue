@@ -60,22 +60,15 @@
       </tr>
     </tfoot>
   </table>
-  <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
-  <p class="text-xs font-thin" v-if="cutWaste > 0">
-    &dagger; {{ toInches(cutWaste, 'mm', 'roundIt') }}" is added to each piece
-    as an additional waste charge
-  </p>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-
-import { toInches } from '@/utils/to-inches'
 import { toMoney } from '@/utils/to-money'
-
 import type { Item } from '@/utils/items-generator'
+import { toInches } from '@/utils/to-inches'
 
-const props = defineProps<{ items: Item[]; cutWaste: number }>()
+const props = defineProps<{ items: Item[] }>()
 
 const totalPrice = computed(() =>
   props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)
