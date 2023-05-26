@@ -1,10 +1,14 @@
-import type { Attribute, Form } from '@/utils/types'
+import type { Attribute } from '@/utils/types'
 import type { ProductVariant } from './storefront-api-types'
 interface VariantWithProduct extends ProductVariant {
-  productTitle: string
+  absoluteLength: number
+  actualLengthPerPiece: number
   cutWaste: number
   cutTokensPerCut?: string
+  numberOfPieces: number
   pricePerCutToken: string
+  productTitle: string
+  requestedLength: number
 }
 
 export type Item = {
@@ -18,29 +22,27 @@ export type Item = {
   attributes: Attribute[]
 }
 
-export function itemsGenerator(
-  form: Form,
-  selectedVariant: VariantWithProduct
-) {
-  const { numberOfPieces, length: requestedLength } = form
+export function itemsGenerator(selectedVariant: VariantWithProduct) {
   const {
-    cutWaste = 0,
-    productTitle,
+    absoluteLength,
+    actualLengthPerPiece,
     cutTokensPerCut = 0,
+    numberOfPieces,
     pricePerCutToken,
+    productTitle,
+    requestedLength,
   } = selectedVariant
 
   // product variant
-  const actualLength = requestedLength + +cutWaste
   const pricePerStockingUnit = +selectedVariant.price.amount
 
   const productVariantRow: Item = {
     id: selectedVariant.id,
     title: productTitle,
-    cartQuantity: numberOfPieces * actualLength,
+    cartQuantity: absoluteLength,
     requestedLength: requestedLength,
-    pricePerPiece: actualLength * pricePerStockingUnit,
-    linePrice: numberOfPieces * actualLength * pricePerStockingUnit,
+    pricePerPiece: actualLengthPerPiece * pricePerStockingUnit,
+    linePrice: absoluteLength * pricePerStockingUnit,
     displayedQuantity: numberOfPieces,
     attributes: [
       {
@@ -64,7 +66,6 @@ export function itemsGenerator(
 
   // cut fee
   const cutPricePerPiece = +pricePerCutToken * +cutTokensPerCut
-  console.log(pricePerCutToken)
   const cutFeeRow: Item = {
     id: 'b',
     title: 'Cut Cost',

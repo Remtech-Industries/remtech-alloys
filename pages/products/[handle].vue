@@ -7,11 +7,11 @@
         {{ product.title }}
       </h1>
 
-      <div class="text-slate-700">Price: {{ toMoney(price) }} / inch</div>
-
-      <div class="bg-red-500">
-        {{ cutToken }}
+      <div class="text-slate-700" if="price > 0">
+        Price: {{ toMoney(price) }} / inch
       </div>
+
+      <div class="bg-red-500">{{ cutToken }} <br /></div>
 
       <div class="flex gap-1 pt-2">
         <VariantSelector
@@ -53,11 +53,10 @@ import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref } from 'vue'
-import { useGetCutToken } from '@/proxies/get-cut-token'
+import { getTokens } from '~~/proxies/get-tokens'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
 import type { Form, CustomProductFields } from '@/utils/types'
-import type { Ref } from 'vue'
 import type { Product } from '@/utils/storefront-api-types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toMoney } from '@/utils/to-money'
@@ -65,7 +64,7 @@ import { toPricePerInch } from '@/utils/to-price-per-inch'
 
 const { params } = useRoute()
 
-const form: Ref<Form> = ref({
+const form = ref<Form>({
   numberOfPieces: 0,
   quantityIsValid: false,
   length: 0,
@@ -74,6 +73,7 @@ const form: Ref<Form> = ref({
 
 const { product }: { product: Product & CustomProductFields } =
   await useGetProduct(params.handle)
+const { cutToken, handlingToken } = await getTokens()
 
 const variants = computed(() => {
   if (!product) return []
@@ -86,33 +86,42 @@ const variants = computed(() => {
 const selectedVariant = computed(() => {
   if (!product) return null
 
-  const { length, numberOfPieces } = form.value
-  const totalAmount = (length + +cutWaste.value) * numberOfPieces
+  const { length: requestedLength, numberOfPieces } = form.value
+  const actualLengthPerPiece = requestedLength * cutWaste.value
+  const absoluteLength = actualLengthPerPiece * numberOfPieces
+
   const foundVariant = variants.value.find(
-    (variant) => (variant.quantityAvailable || 0) >= totalAmount
+    (variant) => (variant.quantityAvailable || 0) >= absoluteLength
   )
   if (!foundVariant) return null
+  const pricePerStockingUnit = +(foundVariant.price.amount || '0')
 
   return {
     ...foundVariant,
+    absoluteLength,
+    actualLengthPerPiece,
     productTitle: product.title,
     cutWaste: cutWaste.value,
     cutTokensPerCut: product.cutTokensPerCut?.value,
-    pricePerCutToken: cutToken.price.amount,
+    handlingTokens: product.handlingTokens?.value,
+    numberOfPieces,
+    pricePerCutToken: cutToken.price,
+    pricePerHandlingToken: handlingToken.price,
+    pricePerStockingUnit,
+    requestedLength,
   }
 })
 
-const price = computed(() => toPricePerInch(pricePerStockingUnit.value, 'mm'))
-
-const { cutToken } = await useGetCutToken()
+const price = computed(() => {
+  const p = selectedVariant.value?.pricePerStockingUnit
+  if (p) return toPricePerInch(p, 'mm')
+  return 0
+})
 
 const items = computed(() => {
   if (!selectedVariant.value) return []
-  return itemsGenerator(form.value, selectedVariant.value)
+  return itemsGenerator(selectedVariant.value)
 })
 
 const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
-const pricePerStockingUnit = computed(
-  () => +(selectedVariant.value?.price.amount || '0')
-)
 </script>

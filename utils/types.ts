@@ -1,5 +1,6 @@
 export type CustomProductFields = {
   cutTokensPerCut?: { value: string }
+  handlingTokens?: { value: string }
   stockingUnit?: { value: string }
   cutWaste?: { value: string }
 }
