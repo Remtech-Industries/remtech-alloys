@@ -54,7 +54,7 @@ export function itemsGenerator(input: Input) {
     title: productTitle,
     cartQuantity: absoluteLength,
     requestedLength: requestedLength,
-    pricePerPiece: actualLengthPerPiece * pricePerStockingUnit,
+    pricePerPiece: (absoluteLength / numberOfPieces) * pricePerStockingUnit,
     linePrice: absoluteLength * pricePerStockingUnit,
     displayedQuantity: numberOfPieces,
     attributes: [

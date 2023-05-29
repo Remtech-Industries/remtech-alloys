@@ -2,9 +2,9 @@
   <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
     <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
 
-    <!-- <button class="m-2 rounded bg-red-500 px-2 py-1" @click="flush()">
+    <button class="m-2 rounded bg-red-500 px-2 py-1" @click="flush()">
       Flush
-    </button> -->
+    </button>
     <!-- po -->
     <div class="mb-2 flex w-96">
       <div
