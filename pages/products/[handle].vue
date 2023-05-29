@@ -11,8 +11,6 @@
         Price: {{ toMoney(price) }} / inch
       </div>
 
-      <div class="bg-red-500">{{ cutToken }} <br /></div>
-
       <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
@@ -44,8 +42,7 @@
 
         <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
         <p class="text-xs font-thin" v-if="cutWaste > 0">
-          &dagger; {{ toInches(cutWaste, 'mm', 'roundIt') }}" is added to each
-          piece as an additional waste charge
+          &dagger; Length added to each piece as an additional waste charge
         </p>
       </div>
     </div>
