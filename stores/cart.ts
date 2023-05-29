@@ -1,6 +1,7 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import {
+  useUpdateCart,
   useAddToCart,
   useGetCart,
   usePatchPoNumber,
@@ -37,6 +38,13 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
+  async function updateCart(items: { id: string; quantity: number }[]) {
+    if (!cartId.value) return
+
+    const response = await useUpdateCart(items, cartId.value)
+    cart.value = response
+  }
+
   async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
@@ -67,5 +75,6 @@ export const useCartStore = defineStore('cart', () => {
     addToCart,
     removeFromCart,
     patchPoNumber,
+    updateCart,
   }
 })

@@ -67,7 +67,10 @@ mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
 }
 `
 
-export async function updateCart(items, cartId: string) {
+export async function useUpdateCart(
+  items: { id: string; quantity: number }[],
+  cartId: string
+) {
   const cart = await usePostToShopify(updateCartQuery, {
     cartId,
     lines: items,

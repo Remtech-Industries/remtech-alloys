@@ -44,12 +44,11 @@ import CartLineItem from '@/components/CartLineItem.vue'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { updateCart } from '@/proxies/cart'
 import { useHead } from '#app'
 import type { CartLine } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
-const { patchPoNumber } = useCartStore()
+const { patchPoNumber, updateCart } = useCartStore()
 
 const po = ref(
   cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
@@ -95,13 +94,15 @@ const totalHandlingTokens = computed(() => {
 function removeLine(line: CartLine) {
   if (!cart.value) return
 
-  const cutTokenId = cartItems.value.find(
-    (item) => item.merchandise.product.handle === 'cut-token'
-  )?.id
+  const cutTokenId =
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'cut-token'
+    )?.id || ''
 
-  const handlingTokenId = cartItems.value.find(
-    (item) => item.merchandise.product.handle === 'handling-token'
-  )?.id
+  const handlingTokenId =
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'handling-token'
+    )?.id || ''
 
   const cutTokensToMinus = () => {
     return +(
@@ -114,27 +115,21 @@ function removeLine(line: CartLine) {
     )
   }
 
-  updateCart(
-    [
-      { id: line.id, quantity: 0 },
-      {
-        id: cutTokenId,
-        quantity: totalCutTokens.value - cutTokensToMinus(),
-      },
-      {
-        id: handlingTokenId,
-        quantity: totalHandlingTokens.value - handlingTokensToMinus(),
-      },
-    ],
-    cart.value.id
-  )
+  updateCart([
+    { id: line.id, quantity: 0 },
+    {
+      id: cutTokenId,
+      quantity: totalCutTokens.value - cutTokensToMinus(),
+    },
+    {
+      id: handlingTokenId,
+      quantity: totalHandlingTokens.value - handlingTokensToMinus(),
+    },
+  ])
 }
 
 function flush() {
   if (!cart.value) return
-  updateCart(
-    cartItems.value.map((item) => ({ id: item.id, quantity: 0 })),
-    cart.value.id
-  )
+  updateCart(cartItems.value.map((item) => ({ id: item.id, quantity: 0 })))
 }
 </script>
