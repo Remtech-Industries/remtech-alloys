@@ -10,44 +10,101 @@
     </thead>
 
     <tbody>
-      <tr v-for="row in items" :key="row.id">
+      <!-- product -->
+      <tr v-if="product">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
           <div class="flex flex-col">
             <div>
-              {{ row.title }}
+              {{ product.title }}
             </div>
 
-            <ul v-if="row.requestedLength" class="ml-5 list-disc font-thin">
-              <li>
+            <ul class="ml-5 list-disc font-thin">
+              <li v-if="product.requestedLength">
                 Requested*:
-                {{ toInches(row.requestedLength, 'mm', 'roundIt') }}" x
-                {{ row.displayedQuantity }}
+                {{ toInches(product.requestedLength, 'mm', 'roundIt') }}" x
+                {{ product.displayedQuantity }}
               </li>
               <li>
                 Length Charged&dagger;:
                 {{
                   toInches(
-                    row.cartQuantity / row.displayedQuantity,
+                    product.cartQuantity / product.displayedQuantity,
                     'mm',
                     'roundIt'
                   )
                 }}" x
-                {{ row.displayedQuantity }}
+                {{ product.displayedQuantity }}
               </li>
-            </ul>
-            <ul class="ml-5 list-disc font-thin">
-              <li class="">10 tokens @ $1.00/token</li>
             </ul>
           </div>
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ toMoney(row.pricePerPiece) }}
+          {{ toMoney(product.pricePerPiece) }}
         </td>
         <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
-          {{ row.displayedQuantity }}
+          {{ product.displayedQuantity }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
-          {{ toMoney(row.linePrice) }}
+          {{ toMoney(product.linePrice) }}
+        </td>
+      </tr>
+
+      <!-- handling token -->
+      <tr v-if="handlingToken">
+        <td class="border-b px-6 py-2 font-medium text-slate-700">
+          <div class="flex flex-col">
+            <div>
+              {{ handlingToken.title }}
+            </div>
+
+            <ul class="ml-5 list-disc font-thin">
+              <li>
+                {{ handlingToken.cartQuantity }} tokens @
+                {{
+                  handlingToken.attributes.find(({ key }) => key === 'Price')
+                    ?.value
+                }}
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
+          {{ toMoney(handlingToken.pricePerPiece) }}
+        </td>
+        <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
+          {{ handlingToken.displayedQuantity }}
+        </td>
+        <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
+          {{ toMoney(handlingToken.linePrice) }}
+        </td>
+      </tr>
+
+      <!-- cut token -->
+      <tr v-if="cutToken">
+        <td class="border-b px-6 py-2 font-medium text-slate-700">
+          <div class="flex flex-col">
+            <div>
+              {{ cutToken.title }}
+            </div>
+
+            <ul class="ml-5 list-disc font-thin">
+              <li>
+                {{ cutToken.cartQuantity }} tokens @
+                {{
+                  cutToken.attributes.find(({ key }) => key === 'Price')?.value
+                }}
+              </li>
+            </ul>
+          </div>
+        </td>
+        <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
+          {{ toMoney(cutToken.pricePerPiece) }}
+        </td>
+        <td class="border-b px-6 py-2 text-center font-medium text-slate-700">
+          {{ cutToken.displayedQuantity }}
+        </td>
+        <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
+          {{ toMoney(cutToken.linePrice) }}
         </td>
       </tr>
     </tbody>
@@ -75,5 +132,17 @@ const props = defineProps<{ items: Item[] }>()
 
 const totalPrice = computed(() =>
   props.items.reduce((acc, { linePrice }) => acc + linePrice, 0)
+)
+
+const product = computed(() =>
+  props.items.find(({ anchor }) => anchor === 'product')
+)
+
+const cutToken = computed(() =>
+  props.items.find(({ anchor }) => anchor === 'cut-token')
+)
+
+const handlingToken = computed(() =>
+  props.items.find(({ anchor }) => anchor === 'handling-token')
 )
 </script>

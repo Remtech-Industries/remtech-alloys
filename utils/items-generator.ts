@@ -4,7 +4,6 @@ import { toMoney } from './to-money'
 
 interface Input {
   absoluteLength: number
-  actualLengthPerPiece: number
   cutTokenId: string
   cutTokensPerCut: number
   handlingTokenId: string
@@ -19,6 +18,7 @@ interface Input {
 }
 
 export type Item = {
+  anchor: 'product' | 'cut-token' | 'handling-token'
   attributes: Attribute[]
   cartQuantity: number
   displayedQuantity: number
@@ -32,7 +32,6 @@ export type Item = {
 export function itemsGenerator(input: Input) {
   const {
     absoluteLength,
-    actualLengthPerPiece,
     cutTokenId,
     cutTokensPerCut,
     handlingTokenId,
@@ -50,6 +49,7 @@ export function itemsGenerator(input: Input) {
 
   // product variant
   const productVariantRow: Item = {
+    anchor: 'product',
     id: selectedVariantId,
     title: productTitle,
     cartQuantity: absoluteLength,
@@ -80,6 +80,7 @@ export function itemsGenerator(input: Input) {
   // handling fee
   const handlingPrice = pricePerHandlingToken * numberOfHandlingTokens
   const handlingFeeRow: Item = {
+    anchor: 'handling-token',
     id: handlingTokenId,
     title: 'Handling Cost',
     cartQuantity: absoluteLength ? numberOfHandlingTokens : 0,
@@ -97,6 +98,7 @@ export function itemsGenerator(input: Input) {
   // cut fee
   const cutPricePerPiece = pricePerCutToken * cutTokensPerCut
   const cutFeeRow: Item = {
+    anchor: 'cut-token',
     id: cutTokenId,
     title: 'Cut Cost',
     cartQuantity: totalCutTokens,
