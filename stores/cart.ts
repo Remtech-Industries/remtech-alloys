@@ -1,5 +1,4 @@
 import { computed, ref } from 'vue'
-import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { defineStore } from 'pinia'
 import {
   useAddToCart,
@@ -8,6 +7,7 @@ import {
   useRemoveFromCart,
 } from '@/proxies/cart'
 import type { Cart, CartLineInput } from '@/utils/types'
+import { tokenHandles } from '@/utils/constants'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
@@ -15,7 +15,15 @@ export const useCartStore = defineStore('cart', () => {
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
-    return cart.value.lines.edges.length
+
+    const nonTokenItems = cart.value.lines.edges.filter(({ node }) => {
+      const handle = node.merchandise.product.handle as
+        | 'cut-token'
+        | 'handling-token'
+      return !tokenHandles.includes(handle)
+    })
+
+    return nonTokenItems?.length || 0
   })
 
   async function getCart() {

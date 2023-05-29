@@ -104,7 +104,6 @@ function removeLine(line: CartLine) {
   )?.id
 
   const cutTokensToMinus = () => {
-    console.log(line.attributes)
     return +(
       line.attributes.find((item) => item.key === 'Cut Tokens')?.value || 0
     )

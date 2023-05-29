@@ -35,6 +35,9 @@
                 {{ row.displayedQuantity }}
               </li>
             </ul>
+            <ul class="ml-5 list-disc font-thin">
+              <li class="">10 tokens @ $1.00/token</li>
+            </ul>
           </div>
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
