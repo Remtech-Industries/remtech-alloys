@@ -46,6 +46,8 @@ export function itemsGenerator(input: Input) {
     selectedVariantId,
   } = input
 
+  const totalCutTokens = numberOfPieces * cutTokensPerCut
+
   // product variant
   const productVariantRow: Item = {
     id: selectedVariantId,
@@ -70,7 +72,7 @@ export function itemsGenerator(input: Input) {
       },
       {
         key: 'Cut Tokens',
-        value: `${numberOfPieces * cutTokensPerCut}`,
+        value: `${totalCutTokens}`,
       },
     ],
   }
@@ -80,7 +82,7 @@ export function itemsGenerator(input: Input) {
   const handlingFeeRow: Item = {
     id: handlingTokenId,
     title: 'Handling Cost',
-    cartQuantity: numberOfHandlingTokens,
+    cartQuantity: absoluteLength ? numberOfHandlingTokens : 0,
     pricePerPiece: handlingPrice,
     linePrice: handlingPrice,
     displayedQuantity: 1,
@@ -97,7 +99,7 @@ export function itemsGenerator(input: Input) {
   const cutFeeRow: Item = {
     id: cutTokenId,
     title: 'Cut Cost',
-    cartQuantity: numberOfPieces * cutTokensPerCut,
+    cartQuantity: totalCutTokens,
     pricePerPiece: cutPricePerPiece,
     linePrice: numberOfPieces * cutPricePerPiece,
     displayedQuantity: numberOfPieces,
