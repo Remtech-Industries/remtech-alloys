@@ -95,7 +95,7 @@ const selectedVariant = computed(() => {
 
   const { length: requestedLength, numberOfPieces } = form.value
   const actualLengthPerPiece = requestedLength + cutWaste.value
-  const absoluteLength = actualLengthPerPiece * numberOfPieces
+  const absoluteLength = Math.ceil(actualLengthPerPiece * numberOfPieces)
 
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= absoluteLength

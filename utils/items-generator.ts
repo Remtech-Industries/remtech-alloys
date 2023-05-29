@@ -61,7 +61,7 @@ export function itemsGenerator(input: Input) {
           requestedLength,
           'mm',
           'roundIt'
-        )} inches/ea.`,
+        )} inches/ea. (${absoluteLength}mm)`,
       },
     ],
   }
@@ -70,8 +70,8 @@ export function itemsGenerator(input: Input) {
   const handlingPrice = pricePerHandlingToken * numberOfHandlingTokens
   const handlingFeeRow: Item = {
     id: handlingTokenId,
-    title: 'Handling Fee',
-    cartQuantity: numberOfPieces > 0 ? 1 : 0,
+    title: 'Handling Cost',
+    cartQuantity: numberOfHandlingTokens,
     pricePerPiece: handlingPrice,
     linePrice: handlingPrice,
     displayedQuantity: 1,
