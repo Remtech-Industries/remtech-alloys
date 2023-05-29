@@ -2,6 +2,9 @@
   <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
     <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
 
+    <!-- <button class="m-2 rounded bg-red-500 px-2 py-1" @click="flush()">
+      Flush
+    </button> -->
     <!-- po -->
     <div class="mb-2 flex w-96">
       <div
@@ -18,13 +21,11 @@
       />
     </div>
 
-    {{ cart }}
-
     <div
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
     >
-      <CartLineItem :cart-line="item" :cart-id="cart.id" />
+      <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
     </div>
 
     <button
@@ -41,10 +42,11 @@
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
-import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
+import { updateCart } from '@/proxies/cart'
 import { useHead } from '#app'
+import type { CartLine } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
 const { patchPoNumber } = useCartStore()
@@ -68,5 +70,72 @@ const toCheckoutLink = ref()
 async function onClick() {
   await patchPoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
+}
+
+const totalCutTokens = computed(() => {
+  if (!cart.value) return 0
+
+  return (
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'cut-token'
+    )?.quantity || 0
+  )
+})
+
+const totalHandlingTokens = computed(() => {
+  if (!cart.value) return 0
+
+  return (
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'handling-token'
+    )?.quantity || 0
+  )
+})
+
+function removeLine(line: CartLine) {
+  if (!cart.value) return
+
+  const cutTokenId = cartItems.value.find(
+    (item) => item.merchandise.product.handle === 'cut-token'
+  )?.id
+
+  const handlingTokenId = cartItems.value.find(
+    (item) => item.merchandise.product.handle === 'handling-token'
+  )?.id
+
+  const cutTokensToMinus = () => {
+    console.log(line.attributes)
+    return +(
+      line.attributes.find((item) => item.key === 'Cut Tokens')?.value || 0
+    )
+  }
+  const handlingTokensToMinus = () => {
+    return +(
+      line.attributes.find((item) => item.key === 'Handling Tokens')?.value || 0
+    )
+  }
+
+  updateCart(
+    [
+      { id: line.id, quantity: 0 },
+      {
+        id: cutTokenId,
+        quantity: totalCutTokens.value - cutTokensToMinus(),
+      },
+      {
+        id: handlingTokenId,
+        quantity: totalHandlingTokens.value - handlingTokensToMinus(),
+      },
+    ],
+    cart.value.id
+  )
+}
+
+function flush() {
+  if (!cart.value) return
+  updateCart(
+    cartItems.value.map((item) => ({ id: item.id, quantity: 0 })),
+    cart.value.id
+  )
 }
 </script>

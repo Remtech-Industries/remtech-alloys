@@ -1,5 +1,6 @@
 import { toInches } from '@/utils/to-inches'
 import type { Attribute } from '@/utils/types'
+import { toMoney } from './to-money'
 
 interface Input {
   absoluteLength: number
@@ -63,6 +64,14 @@ export function itemsGenerator(input: Input) {
           'roundIt'
         )} inches/ea. (${absoluteLength}mm)`,
       },
+      {
+        key: 'Handling Tokens',
+        value: `${numberOfHandlingTokens}`,
+      },
+      {
+        key: 'Cut Tokens',
+        value: `${numberOfPieces * cutTokensPerCut}`,
+      },
     ],
   }
 
@@ -75,7 +84,12 @@ export function itemsGenerator(input: Input) {
     pricePerPiece: handlingPrice,
     linePrice: handlingPrice,
     displayedQuantity: 1,
-    attributes: [],
+    attributes: [
+      {
+        key: 'Price',
+        value: `${toMoney(pricePerHandlingToken)}/token`,
+      },
+    ],
   }
 
   // cut fee
@@ -87,7 +101,12 @@ export function itemsGenerator(input: Input) {
     pricePerPiece: cutPricePerPiece,
     linePrice: numberOfPieces * cutPricePerPiece,
     displayedQuantity: numberOfPieces,
-    attributes: [],
+    attributes: [
+      {
+        key: 'Price',
+        value: `${toMoney(pricePerCutToken)}/token`,
+      },
+    ],
   }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(

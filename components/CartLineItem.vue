@@ -17,7 +17,7 @@
         <button
           v-if="!isAddon()"
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
-          @click="update()"
+          @click="emit('click:remove', cartLine)"
         >
           X
         </button>
@@ -31,9 +31,10 @@ import { toMoney } from '@/utils/to-money'
 import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
-import { updateCart } from '@/proxies/cart'
 
-const props = defineProps<{ cartLine: CartLine; cartId: string }>()
+const props = defineProps<{ cartLine: CartLine }>()
+
+const emit = defineEmits<{ (e: 'click:remove', value: CartLine): void }>()
 
 const pieces = computed(() => {
   const attributes = convertAttributesToObject(props.cartLine.attributes)
@@ -43,17 +44,5 @@ const pieces = computed(() => {
 function isAddon() {
   const handle = props.cartLine.merchandise.product.handle
   return ['cut-token', 'handling-token'].includes(handle)
-}
-
-function update() {
-  updateCart(
-    [
-      {
-        id: props.cartLine.id,
-        quantity: 0,
-      },
-    ],
-    props.cartId
-  )
 }
 </script>
