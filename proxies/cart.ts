@@ -59,6 +59,23 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
 
 const getCartQuery = `query getCart($cartId: ID!) { cart(id: $cartId) ${cart} }`
 
+const updateCartQuery = `
+mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+    cart ${cart}
+  }
+}
+`
+
+export async function updateCart(items, cartId: string) {
+  const cart = await usePostToShopify(updateCartQuery, {
+    cartId,
+    lines: items,
+  })
+
+  return cart.cartLinesUpdate.cart
+}
+
 export async function useAddToCart(items: CartLineInput[], cartId?: string) {
   if (cartId) {
     const cart = await usePostToShopify(addLineQuery, {

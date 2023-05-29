@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto flex max-w-2xl flex-col">
+  <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
     <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
 
     <!-- po -->
@@ -24,10 +24,7 @@
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
     >
-      <CartLineItem
-        :cart-line="item"
-        @click:remove="removeFromCart([item.id])"
-      />
+      <CartLineItem :cart-line="item" :cart-id="cart.id" />
     </div>
 
     <button
@@ -50,7 +47,7 @@ import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 
 const { cart } = storeToRefs(useCartStore())
-const { removeFromCart, patchPoNumber } = useCartStore()
+const { patchPoNumber } = useCartStore()
 
 const po = ref(
   cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
