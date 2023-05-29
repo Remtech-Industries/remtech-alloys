@@ -18,35 +18,16 @@
       />
     </div>
 
+    {{ cart }}
+
     <div
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
-      :key="item.id"
     >
       <CartLineItem
-        :cart-line="item.parent"
-        @click:remove="
-          removeFromCart([item.id, ...item.children.map(({ id }) => id)])
-        "
+        :cart-line="item"
+        @click:remove="removeFromCart([item.id])"
       />
-
-      <div
-        class="ml-5 divide-y divide-slate-300 border-l-8 border-yellow-500 pl-4"
-      >
-        <div
-          v-for="child in item.children"
-          :key="child.id"
-          class="flex justify-between"
-        >
-          <div class="font-oswald text-slate-800">
-            {{ child.merchandise.product.title }}
-          </div>
-
-          <div>
-            {{ toMoney(+child.cost.totalAmount.amount) }}
-          </div>
-        </div>
-      </div>
     </div>
 
     <button
@@ -62,7 +43,6 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { toMoney } from '@/utils/to-money'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
@@ -79,24 +59,7 @@ const po = ref(
 const cartItems = computed(() => {
   if (!cart.value) return []
 
-  const nodes = cart.value.lines.edges.map(({ node }) => node)
-  const parentItems = nodes.filter((node) => {
-    const attributes = convertAttributesToObject(node.attributes)
-    // not having a parent_id means it's a parent item
-    return !attributes._parent_id
-  })
-
-  return parentItems.map((item) => {
-    return {
-      id: item.id,
-      parent: item,
-      children: nodes.filter((node) => {
-        const attributes = convertAttributesToObject(node.attributes)
-        // having a parent_id means it's a child item
-        return attributes._parent_id === item.merchandise.id
-      }),
-    }
-  })
+  return cart.value.lines.edges.map(({ node }) => node)
 })
 
 const { getCart } = useCartStore()

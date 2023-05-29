@@ -19,15 +19,9 @@ const cart = `
           ... on ProductVariant {
             id
             title
-            image {
-              url
-              altText
-            }
             product {
+              handle
               title
-            }
-            addonType: metafield(namespace: "custom", key: "addon_type") {
-              value
             }
           }
         }

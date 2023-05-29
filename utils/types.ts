@@ -32,11 +32,7 @@ export type Attribute = {
 export type Merchandise = {
   id: string
   title: string
-  image?: { url: string; altText: string }
-  product: { title: string }
-  addonType: {
-    value: string | null
-  }
+  product: { title: string; handle: string }
 }
 
 export type CartLine = {

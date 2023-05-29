@@ -15,6 +15,7 @@
 
       <div class="self-center">
         <button
+          v-if="!isAddon()"
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
           @click="emit('click:remove')"
         >
@@ -39,4 +40,9 @@ const pieces = computed(() => {
   const attributes = convertAttributesToObject(props.cartLine.attributes)
   return attributes['Pieces']
 })
+
+function isAddon() {
+  const handle = props.cartLine.merchandise.product.handle
+  return ['cut-token', 'handling-token'].includes(handle)
+}
 </script>
