@@ -1,12 +1,12 @@
 export type CustomProductFields = {
-  cutFee?: { value: string }
-  handlingFee?: { value: string }
+  cutTokensPerCut?: { value: string }
+  handlingTokens?: { value: string }
   stockingUnit?: { value: string }
   cutWaste?: { value: string }
 }
 
 export type Form = {
-  quantity: number
+  numberOfPieces: number
   quantityIsValid: boolean
   length: number
   lengthIsValid: boolean
@@ -32,11 +32,7 @@ export type Attribute = {
 export type Merchandise = {
   id: string
   title: string
-  image?: { url: string; altText: string }
-  product: { title: string }
-  addonType: {
-    value: string | null
-  }
+  product: { title: string; handle: string }
 }
 
 export type CartLine = {
@@ -66,9 +62,4 @@ export type MetafieldVariant = {
   title: string
   price: Price
   addonType: { value: string }
-}
-
-export type Addons = {
-  cut_fee: MetafieldVariant
-  handling_fee: MetafieldVariant
 }

@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import QuantityInput from './QuantityInput.vue'
+import NumberOfPiecesInput from './NumberOfPiecesInput.vue'
 
 describe('Quantity Input', () => {
   it('should include the word Quantity', () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     expect(wrapper.text()).toContain('Quantity')
   })
 
   it('should display no errors and emit value of 1 when 1 is entered', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = '1'
     await $input.trigger('input')
@@ -21,7 +21,7 @@ describe('Quantity Input', () => {
   })
 
   it('should say quantity is required if input is blank', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = ''
     await $input.trigger('input')
@@ -33,7 +33,7 @@ describe('Quantity Input', () => {
   })
 
   it('should say quantity is required if input is 0', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = '0'
     await $input.trigger('input')
@@ -45,7 +45,7 @@ describe('Quantity Input', () => {
   })
 
   it('should say quantity is required to be more than 0 if user enters negative number', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = '-1'
     await $input.trigger('input')
@@ -57,7 +57,7 @@ describe('Quantity Input', () => {
   })
 
   it('should reset the error when user corrects the input', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = '0'
     await $input.trigger('input')
@@ -73,7 +73,7 @@ describe('Quantity Input', () => {
   })
 
   it('should warn about whole numbers and emit not valid when decimal number is entered', async () => {
-    const wrapper = mount(QuantityInput)
+    const wrapper = mount(NumberOfPiecesInput)
     const $input = wrapper.get('input')
     $input.element.value = '1.5'
     await $input.trigger('input')

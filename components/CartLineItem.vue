@@ -15,8 +15,9 @@
 
       <div class="self-center">
         <button
+          v-if="!isAddon()"
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
-          @click="emit('click:remove')"
+          @click="emit('click:remove', cartLine)"
         >
           X
         </button>
@@ -33,10 +34,15 @@ import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 
 const props = defineProps<{ cartLine: CartLine }>()
 
-const emit = defineEmits<{ (e: 'click:remove'): void }>()
+const emit = defineEmits<{ (e: 'click:remove', value: CartLine): void }>()
 
 const pieces = computed(() => {
   const attributes = convertAttributesToObject(props.cartLine.attributes)
   return attributes['Pieces']
 })
+
+function isAddon() {
+  const handle = props.cartLine.merchandise.product.handle
+  return ['cut-token', 'handling-token'].includes(handle)
+}
 </script>

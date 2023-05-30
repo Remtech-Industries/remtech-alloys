@@ -7,14 +7,16 @@
         {{ product.title }}
       </h1>
 
-      <div class="text-slate-700">Price: {{ toMoney(price) }} / inch</div>
+      <div class="text-slate-700" if="price > 0">
+        Price: {{ toMoney(price) }} / inch
+      </div>
 
       <div class="flex gap-1 pt-2">
         <VariantSelector
           v-for="variant in variants"
           :key="variant.id"
           :variant="variant"
-          :activeId="selectedVariant?.id"
+          :activeId="selectedVariant?.selectedVariantId"
           :stockingUnit="product.stockingUnit?.value"
         />
       </div>
@@ -25,9 +27,9 @@
         @update:is-valid="form.lengthIsValid = $event"
       />
 
-      <QuantityInput
+      <NumberOfPiecesInput
         class="self-start"
-        @update:quantity="form.quantity = $event"
+        @update:quantity="form.numberOfPieces = $event"
         @update:is-valid="form.quantityIsValid = $event"
       />
 
@@ -36,103 +38,94 @@
       <div v-if="items.length">
         <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
-        <PricingTable :items="items" :cut-waste="product.cutWaste?.value" />
+        <PricingTable :items="items" />
+
+        <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
+        <p class="text-xs font-thin" v-if="cutWaste > 0">
+          &dagger; Length added to each piece as an additional waste charge
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { toInches } from '@/utils/to-inches'
 import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
-import QuantityInput from '@/components/QuantityInput.vue'
+import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
+import { getTokens } from '~~/proxies/get-tokens'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type {
-  Addons,
-  Form,
-  MetafieldVariant,
-  CustomProductFields,
-} from '@/utils/types'
-import type { Ref } from 'vue'
+import type { Form, CustomProductFields } from '@/utils/types'
 import type { Product } from '@/utils/storefront-api-types'
-import { useGetProductVariants } from '@/proxies/get-product-variants'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toMoney } from '@/utils/to-money'
+import { toPricePerInch } from '@/utils/to-price-per-inch'
 
 const { params } = useRoute()
 
-const form: Ref<Form> = ref({
-  quantity: 0,
+const form = ref<Form>({
+  numberOfPieces: 0,
   quantityIsValid: false,
   length: 0,
   lengthIsValid: false,
 })
 
-const product = ref<(Product & CustomProductFields) | null>(null)
-const addons = ref<Addons | null>(null)
-
-onMounted(async () => {
-  {
-    // get product
-    const data = await useGetProduct(params.handle)
-    product.value = data
-  }
-  {
-    // get essential add-ons
-    if (!product.value?.cutFee || !product.value?.handlingFee) return
-    const data = await useGetProductVariants([
-      product.value.cutFee.value,
-      product.value.handlingFee.value,
-    ])
-    if (data.includes(null)) {
-      // send notification or alert that add-on does not exist
-      return
-    }
-    addons.value = data.reduce((acc: Addons, item: MetafieldVariant) => {
-      return { ...acc, [item.addonType.value]: item }
-    }, {})
-  }
-})
+const { product }: { product: Product & CustomProductFields } =
+  await useGetProduct(params.handle)
+const { cutToken, handlingToken } = await getTokens()
 
 const variants = computed(() => {
-  if (!product.value) return []
+  if (!product) return []
 
-  return product.value.variants.edges
+  return product.variants.edges
     .map(({ node }) => node)
     .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
 const selectedVariant = computed(() => {
-  if (!product.value) return null
+  if (!product) return null
 
-  const totalAmount = form.value.length * form.value.quantity
+  const { length: requestedLength, numberOfPieces } = form.value
+  const actualLengthPerPiece = requestedLength + cutWaste.value
+  const absoluteLength = Math.ceil(actualLengthPerPiece * numberOfPieces)
+
   const foundVariant = variants.value.find(
-    (variant) => (variant.quantityAvailable || 0) >= totalAmount
+    (variant) => (variant.quantityAvailable || 0) >= absoluteLength
   )
   if (!foundVariant) return null
 
   return {
-    ...foundVariant,
-    productTitle: product.value.title,
-    cutWaste: product.value.cutWaste?.value,
+    absoluteLength,
+    actualLengthPerPiece,
+    cutTokenId: cutToken.id,
+    cutTokensPerCut: +(product.cutTokensPerCut?.value || 0),
+    handlingTokenId: handlingToken.id,
+    numberOfHandlingTokens: +(product.handlingTokens?.value || 0),
+    numberOfPieces,
+    pricePerCutToken: cutToken.price,
+    pricePerHandlingToken: +handlingToken.price,
+    pricePerStockingUnit: +(foundVariant.price.amount || 0),
+    productTitle: product.title,
+    requestedLength,
+    selectedVariantId: foundVariant.id,
   }
+})
+
+const price = computed(() => {
+  const p = selectedVariant.value?.pricePerStockingUnit
+  if (p) return toPricePerInch(p, 'mm')
+  return 0
 })
 
 const items = computed(() => {
   if (!selectedVariant.value) return []
-  if (!addons.value) return []
-
-  return itemsGenerator(form.value, selectedVariant.value, addons.value)
+  return itemsGenerator(selectedVariant.value)
 })
 
-const price = computed(() => {
-  if (selectedVariant.value) {
-    return +selectedVariant.value.priceV2.amount * 25.4
-  }
-  return 0 // or any other default value you prefer
-})
+const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
 </script>

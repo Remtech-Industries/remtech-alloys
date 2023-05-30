@@ -19,15 +19,9 @@ const cart = `
           ... on ProductVariant {
             id
             title
-            image {
-              url
-              altText
-            }
             product {
+              handle
               title
-            }
-            addonType: metafield(namespace: "custom", key: "addon_type") {
-              value
             }
           }
         }
@@ -64,6 +58,26 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
 }`
 
 const getCartQuery = `query getCart($cartId: ID!) { cart(id: $cartId) ${cart} }`
+
+const updateCartQuery = `
+mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+    cart ${cart}
+  }
+}
+`
+
+export async function useUpdateCart(
+  items: { id: string; quantity: number }[],
+  cartId: string
+) {
+  const cart = await usePostToShopify(updateCartQuery, {
+    cartId,
+    lines: items,
+  })
+
+  return cart.cartLinesUpdate.cart
+}
 
 export async function useAddToCart(items: CartLineInput[], cartId?: string) {
   if (cartId) {

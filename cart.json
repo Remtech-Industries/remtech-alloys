@@ -1,0 +1,60 @@
+{
+  "id": "gid://shopify/Cart/c1-dd5ed149ee427ad74a8e8303743839ed",
+  "checkoutUrl": "https://remtech-dev.myshopify.com/cart/c/c1-dd5ed149ee427ad74a8e8303743839ed",
+  "cost": { "totalAmount": { "amount": "91.35" } },
+  "lines": {
+    "edges": [
+      {
+        "node": {
+          "id": "gid://shopify/CartLine/23bf39a6-d9a9-48f5-941c-34fd38836375?cart=c1-dd5ed149ee427ad74a8e8303743839ed",
+          "quantity": 35,
+          "merchandise": {
+            "id": "gid://shopify/ProductVariant/44361876341047",
+            "title": "HSD8RET",
+            "product": {
+              "handle": "316-ss-5-00-127mm",
+              "title": "316 SS 5.00 (127MM)"
+            },
+            "addonType": null
+          },
+          "cost": { "totalAmount": { "amount": "34.65" } },
+          "attributes": [
+            { "key": "Pieces", "value": "1 pcs @ 1 inches/ea. (35mm)" }
+          ]
+        }
+      },
+      {
+        "node": {
+          "id": "gid://shopify/CartLine/acc6fe90-ca70-4c6f-91f6-bb22a465a610?cart=c1-dd5ed149ee427ad74a8e8303743839ed",
+          "quantity": 20,
+          "merchandise": {
+            "id": "gid://shopify/ProductVariant/45446647185719",
+            "title": "Default Title",
+            "product": {
+              "handle": "handling-token",
+              "title": "Handling Token"
+            },
+            "addonType": null
+          },
+          "cost": { "totalAmount": { "amount": "20.0" } },
+          "attributes": []
+        }
+      },
+      {
+        "node": {
+          "id": "gid://shopify/CartLine/1d603d66-4428-4ce1-814f-dd5a216daa15?cart=c1-dd5ed149ee427ad74a8e8303743839ed",
+          "quantity": 20,
+          "merchandise": {
+            "id": "gid://shopify/ProductVariant/45440610894135",
+            "title": "Default Title",
+            "product": { "handle": "cut-token", "title": "Cut Token" },
+            "addonType": null
+          },
+          "cost": { "totalAmount": { "amount": "21.8" } },
+          "attributes": []
+        }
+      }
+    ]
+  },
+  "attributes": []
+}

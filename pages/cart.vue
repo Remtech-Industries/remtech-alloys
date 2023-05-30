@@ -1,7 +1,10 @@
 <template>
-  <div class="mx-auto flex max-w-2xl flex-col">
+  <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
     <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
 
+    <button class="m-2 rounded bg-red-500 px-2 py-1" @click="flush()">
+      Flush
+    </button>
     <!-- po -->
     <div class="mb-2 flex w-96">
       <div
@@ -21,32 +24,8 @@
     <div
       v-for="item in cartItems"
       class="mb-4 flex flex-col gap-1 rounded border p-2"
-      :key="item.id"
     >
-      <CartLineItem
-        :cart-line="item.parent"
-        @click:remove="
-          removeFromCart([item.id, ...item.children.map(({ id }) => id)])
-        "
-      />
-
-      <div
-        class="ml-5 divide-y divide-slate-300 border-l-8 border-yellow-500 pl-4"
-      >
-        <div
-          v-for="child in item.children"
-          :key="child.id"
-          class="flex justify-between"
-        >
-          <div class="font-oswald text-slate-800">
-            {{ child.merchandise.product.title }}
-          </div>
-
-          <div>
-            {{ toMoney(+child.cost.totalAmount.amount) }}
-          </div>
-        </div>
-      </div>
+      <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
     </div>
 
     <button
@@ -62,15 +41,14 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { toMoney } from '@/utils/to-money'
 import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
-import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
+import type { CartLine } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
-const { removeFromCart, patchPoNumber } = useCartStore()
+const { patchPoNumber, updateCart } = useCartStore()
 
 const po = ref(
   cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
@@ -79,24 +57,7 @@ const po = ref(
 const cartItems = computed(() => {
   if (!cart.value) return []
 
-  const nodes = cart.value.lines.edges.map(({ node }) => node)
-  const parentItems = nodes.filter((node) => {
-    const attributes = convertAttributesToObject(node.attributes)
-    // not having a parent_id means it's a parent item
-    return !attributes._parent_id
-  })
-
-  return parentItems.map((item) => {
-    return {
-      id: item.id,
-      parent: item,
-      children: nodes.filter((node) => {
-        const attributes = convertAttributesToObject(node.attributes)
-        // having a parent_id means it's a child item
-        return attributes._parent_id === item.merchandise.id
-      }),
-    }
-  })
+  return cart.value.lines.edges.map(({ node }) => node)
 })
 
 const { getCart } = useCartStore()
@@ -108,5 +69,67 @@ const toCheckoutLink = ref()
 async function onClick() {
   await patchPoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
+}
+
+const totalCutTokens = computed(() => {
+  if (!cart.value) return 0
+
+  return (
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'cut-token'
+    )?.quantity || 0
+  )
+})
+
+const totalHandlingTokens = computed(() => {
+  if (!cart.value) return 0
+
+  return (
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'handling-token'
+    )?.quantity || 0
+  )
+})
+
+function removeLine(line: CartLine) {
+  if (!cart.value) return
+
+  const cutTokenId =
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'cut-token'
+    )?.id || ''
+
+  const handlingTokenId =
+    cartItems.value.find(
+      (item) => item.merchandise.product.handle === 'handling-token'
+    )?.id || ''
+
+  const cutTokensToMinus = () => {
+    return +(
+      line.attributes.find((item) => item.key === 'Cut Tokens')?.value || 0
+    )
+  }
+  const handlingTokensToMinus = () => {
+    return +(
+      line.attributes.find((item) => item.key === 'Handling Tokens')?.value || 0
+    )
+  }
+
+  updateCart([
+    { id: line.id, quantity: 0 },
+    {
+      id: cutTokenId,
+      quantity: totalCutTokens.value - cutTokensToMinus(),
+    },
+    {
+      id: handlingTokenId,
+      quantity: totalHandlingTokens.value - handlingTokensToMinus(),
+    },
+  ])
+}
+
+function flush() {
+  if (!cart.value) return
+  updateCart(cartItems.value.map((item) => ({ id: item.id, quantity: 0 })))
 }
 </script>
