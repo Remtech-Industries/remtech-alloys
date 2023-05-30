@@ -2,7 +2,7 @@
   <div v-if="show">
     <Header />
 
-    <div class="container mx-auto">
+    <div class="container mx-auto max-w-screen-xl">
       <NuxtPage />
     </div>
   </div>
