@@ -21,5 +21,5 @@
 <script setup lang="ts">
 import { useGetCollections } from '@/proxies/get-collections'
 
-const { collections } = await useGetCollections()
+const collections = await useGetCollections()
 </script>
