@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show">
+  <div v-if="show" class="h-screen bg-slate-50">
     <Header />
 
     <div class="container mx-auto max-w-screen-xl">

@@ -2,23 +2,23 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="p-3">
+    <div class="m-6 w-full rounded-xl bg-white p-6">
       <table class="text-slate-700">
-        <thead>
-          <tr class="border-b">
-            <th class="border-r py-1">Name</th>
-            <th class="py-1"># of Products</th>
+        <thead class="rounded">
+          <tr class="border-b border-slate-300 bg-slate-100">
+            <th class="p-3 text-left font-normal">Type</th>
+            <th class="p-3 text-left font-normal">Qty. Types</th>
           </tr>
         </thead>
 
         <tbody>
           <tr class="border-b" v-for="{ node } in collections">
-            <td class="border-r pr-6">
+            <td class="border-r p-3">
               <NuxtLink :to="`/collections/${node.handle}`">
                 {{ node.title }}
               </NuxtLink>
             </td>
-            <td>{{ node.products.edges.length }}</td>
+            <td class="p-3">{{ node.products.edges.length }}</td>
           </tr>
         </tbody>
       </table>
