@@ -50,7 +50,6 @@
 </template>
 
 <script setup lang="ts">
-import { toInches } from '@/utils/to-inches'
 import VariantSelector from '@/components/VariantSelector.vue'
 import LengthInput from '@/components/LengthInput.vue'
 import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
