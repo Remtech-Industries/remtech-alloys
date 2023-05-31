@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest'
-import { toInches } from './to-inches'
+import { toInches } from './conversion'
 
 describe('toInches', () => {
   describe('when unit is mm', () => {
