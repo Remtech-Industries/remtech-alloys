@@ -7,7 +7,7 @@ query collection($handle: String!) {
     handle
     title
     description
-    products(first: 100) {
+    products(first: 100, sortKey: TITLE) {
       edges {
         node {
           id
@@ -15,9 +15,6 @@ query collection($handle: String!) {
           handle
           priceRange {
             minVariantPrice {
-              amount
-            }
-            maxVariantPrice {
               amount
             }
           }
@@ -28,6 +25,6 @@ query collection($handle: String!) {
 }`
 
 export async function useGetCollection(handle: string) {
-  const shopifyResponse = await usePostToShopify(query, { handle: handle })
-  return shopifyResponse
+  const response = await usePostToShopify(query, { handle: handle })
+  return response
 }

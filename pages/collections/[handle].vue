@@ -2,8 +2,8 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="p-2" v-if="collection">
-      <div class="mb-3 flex items-baseline">
+    <div class="p-6" v-if="collection">
+      <div class="mb-6 flex items-baseline">
         <h1
           class="border-b-4 border-yellow-500 text-center font-oswald text-3xl font-bold text-slate-600"
         >
@@ -13,30 +13,37 @@
         <p class="pl-4 text-sm font-thin">{{ collection.description }}</p>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th class="border-b py-1 font-semibold text-slate-700">Size</th>
-            <th class="border-b py-1 font-semibold text-slate-700">
-              Price/Inch
-            </th>
-          </tr>
-        </thead>
+      <div class="w-full rounded-xl bg-white p-6">
+        <table class="text-slate-700">
+          <thead>
+            <tr class="border-b border-slate-300 bg-slate-100">
+              <th class="p-3 text-left font-normal">Size</th>
+              <th class="p-3 text-left font-normal">Price/Inch</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="{ node } in products" :key="node.id">
-            <td class="border-b py-1 px-4 text-slate-600">
-              <NuxtLink :to="`/products/${node.handle}`">
-                {{ node.title }}
-              </NuxtLink>
-            </td>
+          <tbody>
+            <tr v-for="{ node } in products" :key="node.id" class="border-b">
+              <td class="border-r p-3">
+                <NuxtLink :to="`/products/${node.handle}`">
+                  {{ node.title }}
+                </NuxtLink>
+              </td>
 
-            <td class="border-b py-1 px-4 text-slate-600">
-              {{ toMoney(+node.priceRange.minVariantPrice.amount * mmInInch) }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td class="p-3">
+                {{
+                  toMoney(
+                    toPricePerInch(
+                      +node.priceRange.minVariantPrice.amount,
+                      'mm'
+                    )
+                  )
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -45,10 +52,10 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
-import { mmInInch } from '@/utils/constants'
 import { toMoney } from '@/utils/to-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
+import { toPricePerInch } from '@/utils/to-price-per-inch'
 const { params } = useRoute()
 
 const collection = ref<Collection | null>(null)
