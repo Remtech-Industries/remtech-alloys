@@ -42,10 +42,9 @@ import Column from 'primevue/column'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
-import { toMoney } from '@/utils/to-money'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
-import { toPricePerInch } from '@/utils/to-price-per-inch'
+import { toPricePerInch, toMoney } from '@/utils/conversion'
 const { params } = useRoute()
 
 const collection = ref<Collection | null>(null)

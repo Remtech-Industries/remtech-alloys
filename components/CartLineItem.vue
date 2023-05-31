@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { toMoney } from '@/utils/to-money'
+import { toMoney } from '@/utils/conversion'
 import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
 import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'

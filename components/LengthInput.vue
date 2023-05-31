@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { toMm } from '@/utils/to-mm'
+import { toMm } from '@/utils/conversion'
 
 const message = ref('')
 

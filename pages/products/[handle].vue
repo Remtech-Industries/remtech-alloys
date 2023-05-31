@@ -62,8 +62,7 @@ import { useRoute } from 'vue-router'
 import type { Form, CustomProductFields } from '@/utils/types'
 import type { Product } from '@/utils/storefront-api-types'
 import { itemsGenerator } from '@/utils/items-generator'
-import { toMoney } from '@/utils/to-money'
-import { toPricePerInch } from '@/utils/to-price-per-inch'
+import { toPricePerInch, toMoney } from '@/utils/conversion'
 
 const { params } = useRoute()
 

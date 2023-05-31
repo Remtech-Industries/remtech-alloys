@@ -124,9 +124,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { toMoney } from '@/utils/to-money'
 import type { Item } from '@/utils/items-generator'
-import { toInches } from '@/utils/conversion'
+import { toInches, toMoney } from '@/utils/conversion'
 
 const props = defineProps<{ items: Item[] }>()
 

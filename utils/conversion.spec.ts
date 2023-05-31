@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest'
-import { toInches } from './conversion'
+import { toInches, toMm, toPricePerInch } from './conversion'
 
 describe('toInches', () => {
   describe('when unit is mm', () => {
@@ -17,6 +17,22 @@ describe('toInches', () => {
 
     it('rounds up to 3 decimal places', () => {
       expect(toInches(1.6, 'mm', 'roundIt')).toBe(0.063)
+    })
+  })
+})
+
+describe('toMm', () => {
+  describe('when unit is inch', () => {
+    it('converts a number from inches to mm', () => {
+      expect(toMm(1, 'inch')).toBe(25.4)
+    })
+  })
+})
+
+describe('toPricePerInch', () => {
+  describe('when unit is mm', () => {
+    it('converts a number from mm to price per inch', () => {
+      expect(toPricePerInch(1.0, 'mm')).toBe(25.4)
     })
   })
 })

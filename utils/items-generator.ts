@@ -1,6 +1,5 @@
-import { toInches } from '@/utils/conversion'
+import { toInches, toMoney } from '@/utils/conversion'
 import type { Attribute } from '@/utils/types'
-import { toMoney } from './to-money'
 
 interface Input {
   absoluteLength: number
