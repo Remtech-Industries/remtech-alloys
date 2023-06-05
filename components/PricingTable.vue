@@ -1,6 +1,8 @@
 <template>
   <table class="w-full text-sm text-slate-700">
-    <thead class="bg-slate-100 text-left text-xs uppercase text-slate-700">
+    <thead
+      class="border-b bg-slate-100 text-left text-xs uppercase text-slate-700"
+    >
       <tr>
         <th class="px-6 py-3">Item</th>
         <th class="px-6 py-3 text-right">Each</th>

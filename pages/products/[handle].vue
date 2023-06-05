@@ -2,7 +2,7 @@
   <div class="flex">
     <CollectionSidebar />
 
-    <div class="flex flex-col gap-2 p-5" v-if="product">
+    <div class="flex w-full flex-col gap-2 p-5" v-if="product">
       <h1 class="border-b pb-2 font-oswald text-2xl font-bold text-slate-700">
         {{ product.title }}
       </h1>
@@ -35,9 +35,9 @@
 
       <AddToCartButton :items="items" />
 
-      <div v-if="items.length">
-        <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
+      <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
 
+      <div v-if="items.length" class="w-full rounded-xl bg-white p-6">
         <PricingTable :items="items" />
 
         <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
