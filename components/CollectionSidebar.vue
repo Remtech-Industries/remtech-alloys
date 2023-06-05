@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-60 flex-col border-r border-gray-300 p-6">
+  <div class="flex w-64 flex-col border-r border-gray-300 p-6">
     <div class="mb-3 border-b border-slate-300 font-thin text-slate-900">
       Choose a material type
     </div>
