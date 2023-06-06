@@ -54,21 +54,7 @@
       <!-- handling token -->
       <tr v-if="handlingToken">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
-          <div class="flex flex-col">
-            <div>
-              {{ handlingToken.title }}
-            </div>
-
-            <ul class="ml-5 list-disc font-thin">
-              <li>
-                {{ handlingToken.cartQuantity }} tokens @
-                {{
-                  handlingToken.attributes.find(({ key }) => key === 'Price')
-                    ?.value
-                }}
-              </li>
-            </ul>
-          </div>
+          {{ handlingToken.title }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
           {{ toMoney(handlingToken.pricePerPiece) }}
@@ -84,20 +70,7 @@
       <!-- cut token -->
       <tr v-if="cutToken">
         <td class="border-b px-6 py-2 font-medium text-slate-700">
-          <div class="flex flex-col">
-            <div>
-              {{ cutToken.title }}
-            </div>
-
-            <ul class="ml-5 list-disc font-thin">
-              <li>
-                {{ cutToken.cartQuantity }} tokens @
-                {{
-                  cutToken.attributes.find(({ key }) => key === 'Price')?.value
-                }}
-              </li>
-            </ul>
-          </div>
+          {{ cutToken.title }}
         </td>
         <td class="border-b px-6 py-2 text-right font-medium text-slate-700">
           {{ toMoney(cutToken.pricePerPiece) }}

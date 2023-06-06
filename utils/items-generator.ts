@@ -65,14 +65,6 @@ export function itemsGenerator(input: Input) {
           'roundIt'
         )} inches/ea. (${absoluteLength}mm)`,
       },
-      {
-        key: 'Handling Tokens',
-        value: `${numberOfHandlingTokens}`,
-      },
-      {
-        key: 'Cut Tokens',
-        value: `${totalCutTokens}`,
-      },
     ],
   }
 
@@ -86,12 +78,7 @@ export function itemsGenerator(input: Input) {
     pricePerPiece: handlingPrice,
     linePrice: handlingPrice,
     displayedQuantity: 1,
-    attributes: [
-      {
-        key: 'Price',
-        value: `${toMoney(pricePerHandlingToken)}/token`,
-      },
-    ],
+    attributes: [],
   }
 
   // cut fee
@@ -104,12 +91,7 @@ export function itemsGenerator(input: Input) {
     pricePerPiece: cutPricePerPiece,
     linePrice: numberOfPieces * cutPricePerPiece,
     displayedQuantity: numberOfPieces,
-    attributes: [
-      {
-        key: 'Price',
-        value: `${toMoney(pricePerCutToken)}/token`,
-      },
-    ],
+    attributes: [],
   }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
