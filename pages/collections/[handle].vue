@@ -10,7 +10,7 @@
           {{ collection.title }}
         </h1>
 
-        <p class="pl-4 text-sm font-thin">{{ collection.description }}</p>
+        <p class="pl-4 text-sm font-light">{{ collection.description }}</p>
       </div>
 
       <div class="rounded-xl bg-white p-6">
@@ -21,6 +21,7 @@
           @row-click="({ data }) => $router.push(`/products/${data.handle}`)"
         >
           <Column field="title" header="Size" />
+
           <Column header="Price/Inch">
             <template #body="{ data }">
               {{
@@ -29,6 +30,19 @@
                 )
               }}
             </template>
+          </Column>
+
+          <Column header="Stock" #body="{ data }">
+            <span
+              v-if="data.totalInventory > 0"
+              class="text-sm font-light text-green-600"
+            >
+              In Stock
+            </span>
+
+            <span v-else class="text-sm font-light text-red-600">
+              Out of Stock
+            </span>
           </Column>
         </DataTable>
       </div>

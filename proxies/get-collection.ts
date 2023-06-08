@@ -13,6 +13,7 @@ query collection($handle: String!) {
           id
           title
           handle
+          totalInventory
           priceRange {
             minVariantPrice {
               amount
