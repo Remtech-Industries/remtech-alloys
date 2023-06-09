@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <CollectionSidebar />
+    <CollectionSidebar class="hidden md:block" />
 
     <div class="flex w-full flex-col gap-2 p-5" v-if="product">
       <h1 class="border-b pb-2 font-oswald text-2xl font-bold text-slate-700">

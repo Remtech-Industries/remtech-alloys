@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <CollectionSidebar />
+    <CollectionSidebar class="hidden md:block" />
 
     <div class="w-full p-6" v-if="collection">
       <div class="mb-6 flex items-baseline">

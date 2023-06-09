@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <CollectionSidebar />
+    <CollectionSidebar class="hidden md:block" />
 
     <div class="m-6 w-full rounded-xl bg-white p-6">
       <DataTable
