@@ -43,6 +43,7 @@ import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 import type { CartLine } from '@/utils/types'
+import { tokenHandles } from '@/utils/constants'
 
 const { cart } = storeToRefs(useCartStore())
 const { patchPoNumber, updateCart, getCart } = useCartStore()
@@ -57,6 +58,13 @@ const cartItems = computed(() => {
   return cart.value.lines.edges.map(({ node }) => node)
 })
 
+const productItems = computed(() => {
+  return cartItems.value.filter(({ merchandise }) => {
+    const handle = merchandise.product.handle
+    return !tokenHandles.includes(handle)
+  })
+})
+
 const po = ref(
   cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
 )
@@ -66,61 +74,59 @@ async function onClick() {
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 
-const totalCutTokens = computed(() => {
-  if (!cart.value) return 0
-
-  return (
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'cut-token'
-    )?.quantity || 0
+const cutTokens = computed(() => {
+  const item = cartItems.value.find(
+    ({ merchandise }) => merchandise.product.handle === 'cut-token'
   )
+
+  return { quantity: item?.quantity || 0, id: item?.id || '' }
 })
 
-const totalHandlingTokens = computed(() => {
-  if (!cart.value) return 0
-
-  return (
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'handling-token'
-    )?.quantity || 0
+const handlingTokens = computed(() => {
+  const item = cartItems.value.find(
+    ({ merchandise }) => merchandise.product.handle === 'handling-token'
   )
+
+  return { quantity: item?.quantity || 0, id: item?.id || '' }
 })
+
+const isLastItem = computed(() => productItems.value.length <= 1)
 
 function removeLine(line: CartLine) {
   if (!cart.value) return
 
-  const cutTokenId =
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'cut-token'
-    )?.id || ''
+  const remainingCutTokens = () => {
+    const cutTokensOnItem =
+      line.attributes.find(({ key }) => key === '_cutTokens')?.value || 0
 
-  const handlingTokenId =
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'handling-token'
-    )?.id || ''
+    let quantity
+    if (isLastItem.value) {
+      quantity = 0
+    } else {
+      quantity = cutTokens.value.quantity - +cutTokensOnItem
+    }
 
-  const cutTokensToMinus = () => {
-    return +(
-      line.attributes.find((item) => item.key === '_cutTokens')?.value || 0
-    )
+    return { id: cutTokens.value.id, quantity }
   }
 
-  const handlingTokensToMinus = () => {
-    return +(
-      line.attributes.find((item) => item.key === '_handlingTokens')?.value || 0
-    )
+  const remainingHandlingTokens = () => {
+    const handlingTokensOnItem =
+      line.attributes.find(({ key }) => key === '_handlingTokens')?.value || 0
+
+    let quantity
+    if (isLastItem.value) {
+      quantity = 0
+    } else {
+      quantity = handlingTokens.value.quantity - +handlingTokensOnItem
+    }
+
+    return { id: handlingTokens.value.id, quantity }
   }
 
   updateCart([
     { id: line.id, quantity: 0 },
-    {
-      id: cutTokenId,
-      quantity: totalCutTokens.value - cutTokensToMinus(),
-    },
-    {
-      id: handlingTokenId,
-      quantity: totalHandlingTokens.value - handlingTokensToMinus(),
-    },
+    remainingCutTokens(),
+    remainingHandlingTokens(),
   ])
 }
 
