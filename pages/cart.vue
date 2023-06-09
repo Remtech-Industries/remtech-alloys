@@ -18,15 +18,12 @@
       />
     </div>
 
-    <div
-      v-for="item in cartItems"
-      class="mb-4 flex flex-col gap-1 rounded border p-2"
-    >
+    <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
       <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
     </div>
 
     <button
-      class="rounded bg-slate-800 py-2 px-1 text-center text-slate-100"
+      class="rounded bg-slate-700 py-2 px-1 text-center text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
       @click="onClick()"
     >
       Checkout
