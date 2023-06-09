@@ -7,7 +7,7 @@ query collection($handle: String!) {
     handle
     title
     description
-    products(first: 100, sortKey: TITLE) {
+    products(first: 100, sortKey: PRICE) {
       edges {
         node {
           id
