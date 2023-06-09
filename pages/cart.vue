@@ -18,15 +18,12 @@
       />
     </div>
 
-    <div
-      v-for="item in cartItems"
-      class="mb-4 flex flex-col gap-1 rounded border p-2"
-    >
+    <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
       <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
     </div>
 
     <button
-      class="rounded bg-slate-800 py-2 px-1 text-center text-slate-100"
+      class="rounded bg-slate-700 py-2 px-1 text-center text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
       @click="onClick()"
     >
       Checkout
@@ -43,13 +40,14 @@ import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 import type { CartLine } from '@/utils/types'
+import { tokenHandles } from '@/utils/constants'
 
 const { cart } = storeToRefs(useCartStore())
-const { patchPoNumber, updateCart } = useCartStore()
+const { patchPoNumber, updateCart, getCart } = useCartStore()
 
-const po = ref(
-  cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
-)
+useHead({ title: 'Cart' })
+onMounted(() => getCart())
+onBeforeUnmount(() => patchPoNumber(po.value))
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -57,71 +55,75 @@ const cartItems = computed(() => {
   return cart.value.lines.edges.map(({ node }) => node)
 })
 
-const { getCart } = useCartStore()
-onMounted(() => getCart())
-useHead({ title: 'Cart' })
-onBeforeUnmount(() => patchPoNumber(po.value))
+const productItems = computed(() => {
+  return cartItems.value.filter(({ merchandise }) => {
+    const handle = merchandise.product.handle
+    return !tokenHandles.includes(handle)
+  })
+})
 
+const po = ref(
+  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
+)
 const toCheckoutLink = ref()
 async function onClick() {
   await patchPoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 
-const totalCutTokens = computed(() => {
-  if (!cart.value) return 0
-
-  return (
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'cut-token'
-    )?.quantity || 0
+const cutTokens = computed(() => {
+  const item = cartItems.value.find(
+    ({ merchandise }) => merchandise.product.handle === 'cut-token'
   )
+
+  return { quantity: item?.quantity || 0, id: item?.id || '' }
 })
 
-const totalHandlingTokens = computed(() => {
-  if (!cart.value) return 0
-
-  return (
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'handling-token'
-    )?.quantity || 0
+const handlingTokens = computed(() => {
+  const item = cartItems.value.find(
+    ({ merchandise }) => merchandise.product.handle === 'handling-token'
   )
+
+  return { quantity: item?.quantity || 0, id: item?.id || '' }
 })
+
+const isLastItem = computed(() => productItems.value.length <= 1)
 
 function removeLine(line: CartLine) {
   if (!cart.value) return
 
-  const cutTokenId =
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'cut-token'
-    )?.id || ''
+  const remainingCutTokens = () => {
+    const cutTokensOnItem =
+      line.attributes.find(({ key }) => key === '_cutTokens')?.value || 0
 
-  const handlingTokenId =
-    cartItems.value.find(
-      (item) => item.merchandise.product.handle === 'handling-token'
-    )?.id || ''
+    let quantity
+    if (isLastItem.value) {
+      quantity = 0
+    } else {
+      quantity = cutTokens.value.quantity - +cutTokensOnItem
+    }
 
-  const cutTokensToMinus = () => {
-    return +(
-      line.attributes.find((item) => item.key === 'Cut Tokens')?.value || 0
-    )
+    return { id: cutTokens.value.id, quantity }
   }
-  const handlingTokensToMinus = () => {
-    return +(
-      line.attributes.find((item) => item.key === 'Handling Tokens')?.value || 0
-    )
+
+  const remainingHandlingTokens = () => {
+    const handlingTokensOnItem =
+      line.attributes.find(({ key }) => key === '_handlingTokens')?.value || 0
+
+    let quantity
+    if (isLastItem.value) {
+      quantity = 0
+    } else {
+      quantity = handlingTokens.value.quantity - +handlingTokensOnItem
+    }
+
+    return { id: handlingTokens.value.id, quantity }
   }
 
   updateCart([
     { id: line.id, quantity: 0 },
-    {
-      id: cutTokenId,
-      quantity: totalCutTokens.value - cutTokensToMinus(),
-    },
-    {
-      id: handlingTokenId,
-      quantity: totalHandlingTokens.value - handlingTokensToMinus(),
-    },
+    remainingCutTokens(),
+    remainingHandlingTokens(),
   ])
 }
 

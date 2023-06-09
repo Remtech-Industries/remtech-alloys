@@ -10,7 +10,7 @@ const cart = `
       amount
     }
   }
-  lines(first: 100) {
+  lines(first: 200) {
     edges {
       node {
         id

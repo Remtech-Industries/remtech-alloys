@@ -65,6 +65,14 @@ export function itemsGenerator(input: Input) {
           'roundIt'
         )} inches/ea. (${absoluteLength}mm)`,
       },
+      {
+        key: '_handlingTokens',
+        value: `${numberOfHandlingTokens}`,
+      },
+      {
+        key: '_cutTokens',
+        value: `${totalCutTokens}`,
+      },
     ],
   }
 
