@@ -45,11 +45,11 @@ import { useHead } from '#app'
 import type { CartLine } from '@/utils/types'
 
 const { cart } = storeToRefs(useCartStore())
-const { patchPoNumber, updateCart } = useCartStore()
+const { patchPoNumber, updateCart, getCart } = useCartStore()
 
-const po = ref(
-  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
-)
+useHead({ title: 'Cart' })
+onMounted(() => getCart())
+onBeforeUnmount(() => patchPoNumber(po.value))
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -57,11 +57,9 @@ const cartItems = computed(() => {
   return cart.value.lines.edges.map(({ node }) => node)
 })
 
-const { getCart } = useCartStore()
-onMounted(() => getCart())
-useHead({ title: 'Cart' })
-onBeforeUnmount(() => patchPoNumber(po.value))
-
+const po = ref(
+  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
+)
 const toCheckoutLink = ref()
 async function onClick() {
   await patchPoNumber(po.value)
