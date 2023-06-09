@@ -16,11 +16,12 @@
       <div class="rounded-xl bg-white p-6">
         <DataTable
           row-hover
+          scrollable
           class="p-datatable-sm"
           :value="products.map(({ node }) => node)"
           @row-click="({ data }) => $router.push(`/products/${data.handle}`)"
         >
-          <Column field="title" header="Size" />
+          <Column field="title" frozen header="Size" style="min-width: 180px" />
 
           <Column header="Price/Inch">
             <template #body="{ data }">
@@ -32,7 +33,7 @@
             </template>
           </Column>
 
-          <Column header="Stock" #body="{ data }">
+          <Column header="Stock" #body="{ data }" style="min-width: 100px">
             <span
               v-if="data.totalInventory > 0"
               class="text-sm font-light text-green-600"
