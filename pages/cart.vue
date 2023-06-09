@@ -48,7 +48,7 @@ const { cart } = storeToRefs(useCartStore())
 const { patchPoNumber, updateCart } = useCartStore()
 
 const po = ref(
-  cart.value?.attributes.find((item) => item.key === 'PO #')?.value || ''
+  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
 )
 
 const cartItems = computed(() => {
@@ -103,12 +103,13 @@ function removeLine(line: CartLine) {
 
   const cutTokensToMinus = () => {
     return +(
-      line.attributes.find((item) => item.key === 'Cut Tokens')?.value || 0
+      line.attributes.find((item) => item.key === '_cutTokens')?.value || 0
     )
   }
+
   const handlingTokensToMinus = () => {
     return +(
-      line.attributes.find((item) => item.key === 'Handling Tokens')?.value || 0
+      line.attributes.find((item) => item.key === '_handlingTokens')?.value || 0
     )
   }
 
