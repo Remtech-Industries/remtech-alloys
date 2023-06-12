@@ -17,10 +17,21 @@
         <DataTable
           row-hover
           scrollable
+          v-model:filters="filters"
           class="p-datatable-sm"
           :value="products.map(({ node }) => node)"
           @row-click="({ data }) => $router.push(`/products/${data.handle}`)"
         >
+          <template #header>
+            <div class="flex justify-end">
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
+                class="p-inputtext-sm"
+              />
+            </div>
+          </template>
+
           <Column field="title" frozen header="Size" style="min-width: 180px" />
 
           <Column header="Price/Inch">
@@ -54,6 +65,8 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
+import InputText from 'primevue/inputtext'
+import { FilterMatchMode } from 'primevue/api'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
@@ -62,6 +75,12 @@ import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
 const { params } = useRoute()
 
+const filters = ref({
+  global: {
+    value: '',
+    matchMode: FilterMatchMode.CONTAINS,
+  },
+})
 const collection = ref<Collection | null>(null)
 const products = ref<ProductEdge[]>([])
 
