@@ -21,6 +21,10 @@
         />
       </div>
 
+      <div v-if="!selectedVariant" class="rounded border bg-yellow-500 p-3">
+        You have selected more material than we have on our longest bar.
+      </div>
+
       <LengthInput
         class="self-start"
         @update:length="form.length = $event"
@@ -35,9 +39,9 @@
 
       <AddToCartButton :items="items" />
 
-      <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
-
       <div v-if="items.length" class="w-full rounded-xl bg-white p-6">
+        <h3 class="font-medium text-slate-700">Price Breakdown:</h3>
+
         <PricingTable :items="items" />
 
         <p class="mt-3 text-xs font-thin">* Our tolerance is -0.000 / +0.250</p>
@@ -95,6 +99,7 @@ const selectedVariant = computed(() => {
   const foundVariant = variants.value.find(
     (variant) => (variant.quantityAvailable || 0) >= absoluteLength
   )
+
   if (!foundVariant) return null
 
   return {
