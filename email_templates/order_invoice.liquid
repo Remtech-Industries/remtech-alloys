@@ -156,6 +156,13 @@
 
                                     {% if line.variant.title != 'Default Title' %}
                                       <span class='order-list__item-variant'>{{ line.variant.title }}</span><br>
+                                      <a
+                                        class='order-list__item-variant'
+                                        href='http://remtechalloys.com/mtr?v={{ line.variant.id }}'
+                                      >
+                                        Download MTR
+                                      </a>
+                                      <br>
                                     {% endif %}
 
                                     {% if line.gift_card and line.properties.__shopify_send_gift_card_to_recipient %}

@@ -221,6 +221,13 @@
                                     {% if line.line_item.variant.title != 'Default Title' %}
                                       <span class='order-list__item-variant'>{{ line.line_item.variant.title }}</span>
                                       <br>
+                                      <a
+                                        class='order-list__item-variant'
+                                        href='http://remtechalloys.com/mtr?v={{ line.line_item.variant.id }}'
+                                      >
+                                        Download MTR
+                                      </a>
+                                      <br>
                                     {% endif %}
 
                                     {% assign mtr = line.line_item.variant.attributes.mtr %}

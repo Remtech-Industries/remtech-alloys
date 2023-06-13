@@ -225,9 +225,7 @@
 
                                     <span class='order-list__item-title'>{{ line_title }}</span><br>
 
-                                    {% if line.variant.title != 'Default Title'
-                                      and line.variant.metafields.custom.addon_type == null
-                                    %}
+                                    {% if line.variant.title != 'Default Title' %}
                                       <span class='order-list__item-variant'>{{ line.variant.title }}</span><br>
                                     {% endif %}
 
