@@ -49,7 +49,7 @@
               v-if="data.totalInventory > 0"
               class="text-sm font-light text-green-600"
             >
-              In Stock
+              {{ toInches(+data.totalInventory, 'mm', 'roundIt') }}" In Stock
             </span>
 
             <span v-else class="text-sm font-light text-red-600">
@@ -72,7 +72,7 @@ import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
-import { toPricePerInch, toMoney } from '@/utils/conversion'
+import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 const { params } = useRoute()
 
 const filters = ref({
