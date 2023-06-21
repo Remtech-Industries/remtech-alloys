@@ -49,7 +49,9 @@
               v-if="data.totalInventory > 0"
               class="text-sm font-light text-green-600"
             >
-              {{ toInches(+data.totalInventory, 'mm', 'roundIt') }}" In Stock
+              &#8776;
+              {{ Math.floor(toInches(+data.totalInventory, 'mm', 'roundIt')) }}"
+              In Stock
             </span>
 
             <span v-else class="text-sm font-light text-red-600">
