@@ -1,5 +1,11 @@
 <template>
   <div v-if="show" class="h-screen bg-slate-50">
+    <div class="flex justify-center bg-yellow-500">
+      <div class="font-bold">
+        Currently only shipping within Canada. USA coming soon. Rem-Tech Alloys
+        is under heavy development. Thank you for your patience.
+      </div>
+    </div>
     <Header />
 
     <div class="container mx-auto max-w-screen-xl">
