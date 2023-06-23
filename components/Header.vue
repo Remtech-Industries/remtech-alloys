@@ -1,26 +1,25 @@
 <template>
   <div ref="navbar" class="bg-slate-800 p-2 shadow-lg">
     <div class="container mx-auto flex items-stretch justify-between">
-      <div
-        class="relative flex w-full justify-between sm:static sm:block sm:w-auto sm:justify-start"
-      >
-        <div class="flex items-center">
-          <NuxtLink to="/">
-            <img
-              src="/logo.png"
-              alt="Rem-Tech Alloys Logo"
-              width="200"
-              class="ml-8"
-            />
-          </NuxtLink>
-          <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
-            Offering Prompt Delivery of Custom-Sized Stainless Steels and
-            Specialty Alloys
-          </div>
-        </div>
+      <div class="flex flex-grow items-center self-start">
+        <NuxtLink to="/">
+          <img
+            src="/logo.png"
+            alt="Rem-Tech Alloys Logo"
+            width="200"
+            class="sm:ml-8"
+          />
+        </NuxtLink>
 
+        <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
+          Offering Prompt Delivery of Custom-Sized Stainless Steels and
+          Specialty Alloys
+        </div>
+      </div>
+
+      <div class="flex flex-col">
         <button
-          class="block rounded border-gray-600 px-3 py-1 text-xl leading-none text-gray-400 sm:hidden"
+          class="block self-end rounded border border-gray-600 px-3 py-1 text-xl leading-none text-gray-400 sm:hidden"
           type="button"
           @click="toggleNavbar()"
         >
@@ -42,14 +41,14 @@
             />
           </svg>
         </button>
-      </div>
 
-      <div
-        :class="{ hidden: !showMenu, flex: showMenu }"
-        class="items-center sm:flex sm:flex-grow"
-      >
-        <div class="ml-auto flex flex-col text-slate-50">
-          <div class="flex justify-end gap-5 font-oswald">
+        <div
+          :class="{ hidden: !showMenu, flex: showMenu }"
+          class="mt-2 items-center sm:flex sm:flex-grow"
+        >
+          <div
+            class="ml-auto flex flex-col items-end gap-2 font-oswald text-slate-50 sm:flex-row sm:gap-5"
+          >
             <NuxtLink to="/about" class="tracking-widest">ABOUT</NuxtLink>
 
             <div class="flex items-baseline">
@@ -65,21 +64,23 @@
                 />
               </svg>
 
-              <div class="ml-1 tracking-widest">(519) 773-3455</div>
+              <div class="ml-1 whitespace-nowrap tracking-widest">
+                (519) 773-3455
+              </div>
             </div>
           </div>
+        </div>
 
-          <div class="mt-4 flex justify-end">
-            <div v-show="showAddedToCartAlert" class="mr-2">Added to cart!</div>
+        <div class="mt-2 flex justify-end text-slate-50">
+          <div v-show="showAddedToCartAlert" class="mr-2">Added to cart!</div>
 
-            <NuxtLink to="/cart" class="font-semibold">
-              <span class="mr-1">Cart</span>
+          <NuxtLink to="/cart" class="font-semibold">
+            <span class="mr-1">Cart</span>
 
-              <span class="rounded bg-yellow-500 px-1 text-sm text-slate-900">
-                {{ itemCount }}
-              </span>
-            </NuxtLink>
-          </div>
+            <span class="rounded bg-yellow-500 px-1 text-sm text-slate-900">
+              {{ itemCount }}
+            </span>
+          </NuxtLink>
         </div>
       </div>
     </div>
