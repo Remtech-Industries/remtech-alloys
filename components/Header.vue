@@ -44,7 +44,7 @@
 
         <div
           :class="{ hidden: !showMenu, flex: showMenu }"
-          class="mt-2 items-center sm:flex sm:flex-grow"
+          class="mt-2 items-center sm:flex"
         >
           <div
             class="ml-auto flex flex-col items-end gap-2 font-oswald text-slate-50 sm:flex-row sm:gap-5"
