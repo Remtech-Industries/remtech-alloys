@@ -38,8 +38,11 @@
         </p>
       </div>
 
-      <div class="my-8">
-        <img src="/inventory.jpg" />
+      <div class="my-8 grid grid-cols-2">
+        <img src="/overhead.jpg" />
+        <img src="/medium close.jpg" />
+        <img src="/extremely close.jpg" />
+        <img src="/side.jpg" />
       </div>
     </div>
   </div>
