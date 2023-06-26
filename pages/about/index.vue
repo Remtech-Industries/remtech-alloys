@@ -15,8 +15,8 @@
         <p>
           MTR's (Material Test Reports) are maintained for traceability to the
           mill, and PMI (Positive Material Identification) is performed with an
-          XRF (X-Ray fluorescent) analyzer to verify the chemical composition of
-          all stainless steels and high nickel alloys.
+          XRF (X-Ray fluorescent) analyzer to verify the elemental composition
+          of all stainless steels and high nickel alloys.
         </p>
 
         <h2 class="mt-8 mb-3 font-extrabold">Contact Details</h2>
