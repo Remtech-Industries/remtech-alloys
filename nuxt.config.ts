@@ -18,7 +18,4 @@ export default defineNuxtConfig({
     'primevue/resources/themes/saga-blue/theme.css',
     'primevue/resources/primevue.css',
   ],
-  gtag: {
-    id: 'G-KBN3C4VJDY',
-  },
 })
