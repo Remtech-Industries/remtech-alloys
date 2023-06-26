@@ -62,7 +62,8 @@
             * Our tolerance is -0.000 / +0.250
           </p>
           <p class="text-xs font-thin" v-if="cutWaste > 0">
-            &dagger; Length added to each piece as an additional waste charge
+            &dagger; Length added to each piece as an additional cutting waste
+            charge
           </p>
         </div>
       </div>
