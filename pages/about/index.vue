@@ -26,7 +26,7 @@
           <br />
           Aylmer, Ontario, Canada
           <br />
-          N5H 3B4
+          N5H 3G3
         </p>
 
         <p>
