@@ -49,7 +49,6 @@
               v-if="data.totalInventory > 0"
               class="text-sm font-light text-green-600"
             >
-              &#8776;
               {{ Math.floor(toInches(+data.totalInventory, 'mm', 'roundIt')) }}"
               In Stock
             </span>

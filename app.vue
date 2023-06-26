@@ -6,6 +6,7 @@
         is under heavy development. Thank you for your patience.
       </div>
     </div>
+
     <Header />
 
     <div class="container mx-auto max-w-screen-xl">
