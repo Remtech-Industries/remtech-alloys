@@ -40,8 +40,8 @@
 
       <div class="my-8 grid grid-cols-2">
         <img src="/overhead.jpg" />
-        <img src="/medium close.jpg" />
-        <img src="/extremely close.jpg" />
+        <img src="/medium_close.jpg" />
+        <img src="/extremely_close.jpg" />
         <img src="/side.jpg" />
       </div>
     </div>
