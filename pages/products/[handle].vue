@@ -85,6 +85,7 @@ import type { Form, CustomProductFields } from '@/utils/types'
 import type { Product } from '@/utils/storefront-api-types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
+import { useHead } from 'nuxt/app'
 
 const { params } = useRoute()
 
@@ -154,4 +155,8 @@ const items = computed(() => {
 })
 
 const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
+
+useHead({
+  title: product?.title,
+})
 </script>

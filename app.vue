@@ -17,7 +17,13 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
+import { useHead } from 'nuxt/app'
 import { useCartStore } from '@/stores/cart'
 const { getCart } = useCartStore()
 getCart()
+
+useHead({
+  title: 'Rem-Tech Alloys',
+  titleTemplate: '%s - Rem-Tech Alloys',
+})
 </script>

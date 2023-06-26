@@ -44,3 +44,10 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useHead } from 'nuxt/app'
+useHead({
+  title: 'About',
+})
+</script>

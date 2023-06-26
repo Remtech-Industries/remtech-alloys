@@ -36,6 +36,11 @@ import { usePostToShopify } from '@/proxies/post-to-shopify'
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { GenericFile, ProductVariant } from '~~/utils/storefront-api-types'
+import { useHead } from 'nuxt/app'
+
+useHead({
+  title: 'MTR Download',
+})
 
 const { query } = useRoute()
 const variantId = ref(query.v)

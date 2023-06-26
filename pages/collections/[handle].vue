@@ -74,6 +74,7 @@ import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
+import { useHead } from 'nuxt/app'
 const { params } = useRoute()
 
 const filters = ref({
@@ -91,5 +92,9 @@ onMounted(async () => {
   const response = await useGetCollection(handle)
   collection.value = response.collection
   products.value = response.collection.products.edges
+})
+
+useHead({
+  title: collection?.value?.title,
 })
 </script>
