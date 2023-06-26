@@ -15,7 +15,7 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.2.8",
     "jsdom": "^21.1.0",
-    "nuxt": "^3.1.0",
+    "nuxt": "^3.1.1",
     "nuxt-gtag": "^0.5.7",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "vitest": "^0.28.3"
