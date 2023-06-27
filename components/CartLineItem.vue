@@ -31,20 +31,17 @@
 import { toMoney } from '@/utils/conversion'
 import type { CartLine } from '@/utils/types'
 import { computed } from 'vue'
-import { convertAttributesToObject } from '@/utils/convert-attributes-to-object'
 
 const props = defineProps<{ cartLine: CartLine }>()
 
 const emit = defineEmits<{ (e: 'click:remove', value: CartLine): void }>()
 
 const pieces = computed(() => {
-  const attributes = convertAttributesToObject(props.cartLine.attributes)
-  return attributes['Pieces']
+  return props.cartLine.attributes.find(({ key }) => key === 'Pieces')?.value
 })
 
 const tagNumber = computed(() => {
-  const attributes = convertAttributesToObject(props.cartLine.attributes)
-  return attributes['Tag#']
+  return props.cartLine.attributes.find(({ key }) => key === 'Tag#')?.value
 })
 
 function isAddon() {
