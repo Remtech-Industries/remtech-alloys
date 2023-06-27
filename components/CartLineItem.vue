@@ -5,7 +5,8 @@
         {{ cartLine.merchandise.product.title }}
       </p>
 
-      <div v-if="pieces">{{ pieces }}</div>
+      <div class="font-light" v-if="pieces">{{ pieces }}</div>
+      <div class="font-light" v-if="tagNumber">Tag#: {{ tagNumber }}</div>
     </div>
 
     <div class="flex gap-2">
@@ -39,6 +40,11 @@ const emit = defineEmits<{ (e: 'click:remove', value: CartLine): void }>()
 const pieces = computed(() => {
   const attributes = convertAttributesToObject(props.cartLine.attributes)
   return attributes['Pieces']
+})
+
+const tagNumber = computed(() => {
+  const attributes = convertAttributesToObject(props.cartLine.attributes)
+  return attributes['Tag#']
 })
 
 function isAddon() {

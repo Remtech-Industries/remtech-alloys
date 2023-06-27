@@ -10,6 +10,7 @@ export type Form = {
   quantityIsValid: boolean
   requestedLength: number
   lengthIsValid: boolean
+  tagNumber?: string
 }
 
 // cart
