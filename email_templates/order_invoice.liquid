@@ -42,7 +42,12 @@
                               <tr>
                                 <td class='order-number__cell'>
                                   <span class='order-number__text'> Invoice {{ order_name }} </span><br>
-                                  <span class='order-number__text'> PO# {{ attributes['PO #'] }} </span>
+
+                                  {%- if attributes['PO #'] %}
+                                    <span class='order-number__text'> PO# {{ attributes['PO #'] }} </span><br>
+                                  {% endif %}
+
+                                  <span class='order-number__text'> HST# 76341 0818 RT0001 </span><br>
                                 </td>
                               </tr>
                               {%- if po_number %}
@@ -128,17 +133,6 @@
                             <tr class='order-list__item'>
                               <td class='order-list__item__cell'>
                                 <table>
-                                  <td>
-                                    {% if line.image %}
-                                      <img
-                                        src='{{ line | img_url: 'compact_cropped' }}'
-                                        align='left'
-                                        width='60'
-                                        height='60'
-                                        class='order-list__product-image'
-                                      >
-                                    {% endif %}
-                                  </td>
                                   <td class='order-list__product-description-cell'>
                                     {% if line.product.title %}
                                       {% assign line_title = line.product.title %}
@@ -156,6 +150,16 @@
 
                                     {% if line.variant.title != 'Default Title' %}
                                       <span class='order-list__item-variant'>{{ line.variant.title }}</span><br>
+
+                                      {% assign heat_number = line.variant.metafields.custom.heat_number %}
+                                      {% if heat_number %}
+                                        <span class='order-list__item-variant'>HT# {{ heat_number }}</span><br>
+                                      {% endif %}
+
+                                      {% if line.properties.Pieces %}
+                                        <span>{{ line.properties.Pieces }}</span><br>
+                                      {% endif %}
+
                                       <a href='http://remtechalloys.com/mtr?v={{ line.variant.id }}'> Download MTR </a>
                                       <br>
                                     {% endif %}
