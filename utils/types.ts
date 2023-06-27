@@ -8,7 +8,7 @@ export type CustomProductFields = {
 export type Form = {
   numberOfPieces: number
   quantityIsValid: boolean
-  length: number
+  requestedLength: number
   lengthIsValid: boolean
 }
 

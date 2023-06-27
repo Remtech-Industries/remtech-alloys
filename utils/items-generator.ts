@@ -1,4 +1,4 @@
-import { toInches, toMoney } from '@/utils/conversion'
+import { toInches } from '@/utils/conversion'
 import type { Attribute } from '@/utils/types'
 
 interface Input {

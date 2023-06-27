@@ -41,7 +41,7 @@
 
         <LengthInput
           class="self-start"
-          @update:length="form.length = $event"
+          @update:length="form.requestedLength = $event"
           @update:is-valid="form.lengthIsValid = $event"
         />
 
@@ -92,7 +92,7 @@ const { params } = useRoute()
 const form = ref<Form>({
   numberOfPieces: 0,
   quantityIsValid: false,
-  length: 0,
+  requestedLength: 0,
   lengthIsValid: false,
 })
 
@@ -116,7 +116,7 @@ const isOutOfStock = computed(() => {
 const selectedVariant = computed(() => {
   if (!product) return null
 
-  const { length: requestedLength, numberOfPieces } = form.value
+  const { requestedLength, numberOfPieces } = form.value
   const actualLengthPerPiece = requestedLength + cutWaste.value
   const absoluteLength = Math.ceil(actualLengthPerPiece * numberOfPieces)
 
