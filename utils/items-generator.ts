@@ -14,6 +14,7 @@ interface Input {
   productTitle: string
   requestedLength: number
   selectedVariantId: string
+  tagNumber?: string | null
 }
 
 export type Item = {
@@ -42,6 +43,7 @@ export function itemsGenerator(input: Input) {
     productTitle,
     requestedLength,
     selectedVariantId,
+    tagNumber,
   } = input
 
   const totalCutTokens = numberOfPieces * cutTokensPerCut
@@ -74,6 +76,13 @@ export function itemsGenerator(input: Input) {
         value: `${totalCutTokens}`,
       },
     ],
+  }
+
+  if (tagNumber) {
+    productVariantRow.attributes.push({
+      key: 'Tag#',
+      value: tagNumber,
+    })
   }
 
   // handling fee

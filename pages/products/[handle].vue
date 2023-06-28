@@ -51,6 +51,16 @@
           @update:is-valid="form.quantityIsValid = $event"
         />
 
+        <div class="flex">
+          <div class="rounded-l bg-slate-600 px-2 py-1 text-slate-50">Tag#</div>
+
+          <input
+            class="rounded-r border px-2 py-1 shadow-inner"
+            v-model="form.tagNumber"
+            placeholder="Tag# (optional)"
+          />
+        </div>
+
         <AddToCartButton :items="items" />
 
         <div v-if="items.length" class="w-full rounded-xl bg-white p-6">
@@ -116,7 +126,7 @@ const isOutOfStock = computed(() => {
 const selectedVariant = computed(() => {
   if (!product) return null
 
-  const { requestedLength, numberOfPieces } = form.value
+  const { requestedLength, numberOfPieces, tagNumber } = form.value
   const actualLengthPerPiece = requestedLength + cutWaste.value
   const absoluteLength = Math.ceil(actualLengthPerPiece * numberOfPieces)
 
@@ -140,6 +150,7 @@ const selectedVariant = computed(() => {
     productTitle: product.title,
     requestedLength,
     selectedVariantId: foundVariant.id,
+    tagNumber,
   }
 })
 

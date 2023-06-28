@@ -15,6 +15,7 @@ describe('itemsGenerator', () => {
     productTitle: 'c',
     requestedLength: 1,
     selectedVariantId: 'd',
+    tagNumber: 'e',
   }
 
   describe('product variant', () => {
@@ -53,25 +54,41 @@ describe('itemsGenerator', () => {
     })
 
     describe('attributes', () => {
+      const attributes = product?.attributes
+
       it('should return Pieces attribute', () => {
-        expect(product?.attributes[0]).toEqual({
+        const attribute = attributes?.find(({ key }) => key === 'Pieces')
+        expect(attribute).toEqual({
           key: 'Pieces',
           value: '1 pcs @ 0.039 inches/ea. (1mm)',
         })
       })
 
-      it('should return _handlingTokens attribute', () => {
-        expect(product?.attributes[1]).toEqual({
-          key: '_handlingTokens',
-          value: '1',
+      describe('tag number', () => {
+        const attribute = attributes?.find(({ key }) => key === 'Tag#')
+
+        it('should return Tag Number attribute when entered', () => {
+          expect(attribute).toEqual({ key: 'Tag#', value: 'e' })
+        })
+
+        it('attribute to be undefined when there is no tag number', () => {
+          const attribute = itemsGenerator({ ...input, tagNumber: null })
+            ?.find(({ anchor }) => anchor === 'product')
+            ?.attributes?.find(({ key }) => key === 'Tag#')
+          expect(attribute).toBeUndefined()
         })
       })
 
+      it('should return _handlingTokens attribute', () => {
+        const attribute = attributes?.find(
+          ({ key }) => key === '_handlingTokens'
+        )
+        expect(attribute).toEqual({ key: '_handlingTokens', value: '1' })
+      })
+
       it('should return _cutTokens attribute', () => {
-        expect(product?.attributes[2]).toEqual({
-          key: '_cutTokens',
-          value: '1',
-        })
+        const attribute = attributes?.find(({ key }) => key === '_cutTokens')
+        expect(attribute).toEqual({ key: '_cutTokens', value: '1' })
       })
     })
   })

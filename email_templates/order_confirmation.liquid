@@ -234,8 +234,13 @@
                                       <span class='order-list__item-variant'>HT# {{ heat_number }}</span><br>
                                     {% endif %}
 
+                                    {% if line.properties['Tag#'] %}
+                                      <span class='order-list__item-variant'>Tag# {{ line.properties['Tag#'] }} </span>
+                                      <br>
+                                    {% endif %}
+
                                     {% if line.properties.Pieces %}
-                                      <span>{{ line.properties.Pieces }}</span><br>
+                                      <span class='order-list__item-variant'>{{ line.properties.Pieces }}</span><br>
                                     {% endif %}
 
                                     {% if line.gift_card and line.properties.__shopify_send_gift_card_to_recipient %}
