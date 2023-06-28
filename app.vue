@@ -2,8 +2,8 @@
   <div class="bg-slate-50">
     <div class="flex justify-center bg-yellow-500 px-2">
       <div class="font-bold">
-        Currently only shipping within Canada. USA coming soon. Rem-Tech Alloys
-        is under heavy development. Thank you for your patience.
+        Rem-Tech Alloys is under heavy development. We are currently offering
+        local pickup only. Thank you for your patience.
       </div>
     </div>
 
