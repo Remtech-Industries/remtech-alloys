@@ -3,7 +3,7 @@
     <CollectionSidebar class="hidden md:block" />
 
     <div class="w-full p-6" v-if="collection">
-      <div class="mb-6 flex items-baseline">
+      <div class="mb-6 flex flex-col items-baseline">
         <h1
           class="border-b-4 border-yellow-500 text-center font-oswald text-3xl font-bold text-slate-600"
         >
