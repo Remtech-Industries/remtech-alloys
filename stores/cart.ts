@@ -60,7 +60,7 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  async function patchPoNumber(poNumber: string) {
+  async function updatePoNumber(poNumber: string) {
     if (!cartId.value) return
 
     const { cart } = await cartAttributesUpdate(cartId.value, [
@@ -76,7 +76,7 @@ export const useCartStore = defineStore('cart', () => {
     getCart,
     addToCart,
     removeFromCart,
-    patchPoNumber,
+    updatePoNumber,
     updateCart,
   }
 })

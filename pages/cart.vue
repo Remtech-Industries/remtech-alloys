@@ -53,12 +53,12 @@ import type { CartLine } from '@/utils/types'
 import { tokenHandles } from '@/utils/constants'
 
 const { cart } = storeToRefs(useCartStore())
-const { patchPoNumber, updateCart, getCart } = useCartStore()
+const { updatePoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
 onBeforeUnmount(async () => {
-  await patchPoNumber(po.value)
+  await updatePoNumber(po.value)
 })
 
 const cartItems = computed(() => {
@@ -79,7 +79,7 @@ const po = ref(
 )
 const toCheckoutLink = ref()
 async function onClick() {
-  await patchPoNumber(po.value)
+  await updatePoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 
