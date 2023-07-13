@@ -14,9 +14,12 @@ export async function usePostToShopify(query: string, variables = {}) {
       body: JSON.stringify({ query, variables }),
     }).then((res) => res.json())
 
-    // TODO: Figure out how to handle errors
+    // https://shopify.dev/docs/api/storefront#status_and_error_codes
+    //
+    // The Storefront API can return a 200 OK response code in cases that would typically produce 4xx errors in REST.
+    // console logging results.errors can give you very good details to debug the response
     if (result.errors) {
-      console.log('test', { errors: result.errors })
+      console.log('errors', { errors: result.errors })
     } else if (!result || !result.data) {
       console.log('usePostToShopify if', { result })
       return 'No results found.'
