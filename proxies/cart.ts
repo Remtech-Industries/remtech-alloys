@@ -1,5 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Cart, CartLine, CartLineInput } from '@/utils/types'
+import type { Attribute, CartLineInput } from '@/utils/types'
 
 const cart = `
 { 
@@ -119,16 +119,23 @@ export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
   return response.cartLinesRemove.cart
 }
 
-export async function usePatchPoNumber(cartId: string, poNumber: string) {
-  const response = await usePostToShopify(
+export async function cartAttributesUpdate(
+  cartId: string,
+  attributes: Attribute[]
+) {
+  const { cartAttributesUpdate } = await usePostToShopify(
     `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
       cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
         cart ${cart}
+        userErrors {
+          code
+          field
+          message
+        }
       }
     }
     `,
-    { cartId, attributes: [{ key: 'PO #', value: poNumber }] }
+    { cartId, attributes }
   )
-
-  return response.cartAttributesUpdate.cart
+  return cartAttributesUpdate
 }
