@@ -49,7 +49,7 @@ import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
-import type { CartLine } from '@/utils/types'
+import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { tokenHandles } from '@/utils/constants'
 
 const { cart, po } = storeToRefs(useCartStore())
@@ -98,7 +98,7 @@ const handlingTokens = computed(() => {
 
 const isLastItem = computed(() => productItems.value.length <= 1)
 
-function removeLine(line: CartLine) {
+function removeLine(line: BaseCartLine) {
   if (!cart.value) return
 
   const remainingCutTokens = () => {

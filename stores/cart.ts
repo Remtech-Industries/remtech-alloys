@@ -1,22 +1,23 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import {
+import type {
+  Attribute,
   CartLineUpdateInput,
   CartLineInput,
+  Cart,
 } from '@/utils/storefront-api-types'
 import {
   cartLinesUpdate,
-  useAddToCart,
+  cartLinesAdd,
   useGetCart,
   cartAttributesUpdate,
 } from '@/proxies/cart'
-import type { Cart } from '@/utils/types'
 import { tokenHandles } from '@/utils/constants'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
   const cartId = computed(() => cart?.value?.id)
-  const po = ref<string | undefined>()
+  const po = ref<Attribute['value']>()
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
@@ -55,9 +56,10 @@ export const useCartStore = defineStore('cart', () => {
   async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
-    const response = await useAddToCart(items, cartId.value)
-    window.localStorage.setItem('cartId', JSON.stringify(response.id))
-    cart.value = response
+    const { cart: c } = await cartLinesAdd(items, cartId.value)
+    window.localStorage.setItem('cartId', JSON.stringify(c.id))
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
   }
 
   async function updatePoNumber(poNumber: string) {
