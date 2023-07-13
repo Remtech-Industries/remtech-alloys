@@ -9,7 +9,6 @@ import {
   useAddToCart,
   useGetCart,
   cartAttributesUpdate,
-  useRemoveFromCart,
 } from '@/proxies/cart'
 import type { Cart } from '@/utils/types'
 import { tokenHandles } from '@/utils/constants'
@@ -61,13 +60,6 @@ export const useCartStore = defineStore('cart', () => {
     cart.value = response
   }
 
-  async function removeFromCart(lineIds: string[]) {
-    if (!cartId.value) return
-
-    const response = await useRemoveFromCart(cartId.value, lineIds)
-    cart.value = response
-  }
-
   async function updatePoNumber(poNumber: string) {
     if (!cartId.value) return
 
@@ -86,7 +78,6 @@ export const useCartStore = defineStore('cart', () => {
     getCart,
     addToCart,
     po,
-    removeFromCart,
     updatePoNumber,
     updateCart,
   }

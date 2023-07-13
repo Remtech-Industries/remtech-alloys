@@ -102,20 +102,6 @@ export async function useGetCart(cartId: string): Promise<{ cart: Cart }> {
   return cart
 }
 
-export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
-  const response = await usePostToShopify(
-    ` mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
-      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-        cart ${cartQuery}
-      }
-    }
-  `,
-    { cartId, lineIds: lineIds }
-  )
-
-  return response.cartLinesRemove.cart
-}
-
 export async function cartAttributesUpdate(
   cartId: string,
   attributes: Attribute[]
