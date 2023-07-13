@@ -34,8 +34,9 @@ export const useCartStore = defineStore('cart', () => {
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
-      const { cart: response } = await useGetCart(cartId)
-      cart.value = response
+      const { cart: c } = await useGetCart(cartId)
+      cart.value = c
+      po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
     }
   }
 

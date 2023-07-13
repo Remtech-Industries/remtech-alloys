@@ -1,7 +1,7 @@
 import { usePostToShopify } from './post-to-shopify'
 import type { Cart, Attribute, CartLineInput } from '@/utils/types'
 
-const cart = `
+const cartQuery = `
 { 
   id
   checkoutUrl
@@ -46,23 +46,21 @@ const cart = `
 const createQuery = `
 mutation createCart($cartInput: CartInput) {
   cartCreate(input: $cartInput) {
-    cart ${cart}
+    cart ${cartQuery}
   }
 }`
 
 const addLineQuery = `
 mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
   cartLinesAdd(cartId: $cartId, lines: $lines) {
-    cart ${cart}
+    cart ${cartQuery}
   }
 }`
-
-const getCartQuery = `query getCart($cartId: ID!) { cart(id: $cartId) ${cart} }`
 
 const updateCartQuery = `
 mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
   cartLinesUpdate(cartId: $cartId, lines: $lines) {
-    cart ${cart}
+    cart ${cartQuery}
   }
 }
 `
@@ -99,9 +97,12 @@ export async function useAddToCart(items: CartLineInput[], cartId?: string) {
   }
 }
 
-export async function useGetCart(cartId: string) {
-  const { cart } = await usePostToShopify(getCartQuery, { cartId: cartId })
-  return { cart }
+export async function useGetCart(cartId: string): Promise<{ cart: Cart }> {
+  const cart = await usePostToShopify(
+    `query getCart($cartId: ID!) { cart(id: $cartId) ${cartQuery} }`,
+    { cartId: cartId }
+  )
+  return cart
 }
 
 export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
@@ -109,7 +110,7 @@ export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
     `
     mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
-        cart ${cart}
+        cart ${cartQuery}
       }
     }
   `,
@@ -126,7 +127,7 @@ export async function cartAttributesUpdate(
   const { cartAttributesUpdate } = await usePostToShopify(
     `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
       cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
-        cart ${cart}
+        cart ${cartQuery}
         userErrors {
           code
           field
