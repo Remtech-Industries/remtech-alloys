@@ -1,35 +1,45 @@
 <template>
-  <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
-    <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
+  <div class="mx-auto max-w-3xl" v-if="cart">
+    <h1
+      class="mb-2 border-b-2 border-yellow-500 font-oswald text-3xl font-bold"
+    >
+      Cart
+    </h1>
 
-    <!-- po -->
-    <div class="mb-2 flex w-96">
-      <div
-        class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
-      >
-        PO #
+    <div class="flex gap-3">
+      <div class="w-4/6">
+        <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
+          <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
+        </div>
       </div>
 
-      <input
-        v-model="po"
-        type="text"
-        placeholder="(optional)"
-        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-      />
+      <div class="w-2/6">
+        <!-- po -->
+        <div class="mb-2 flex w-full">
+          <div
+            class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
+          >
+            PO #
+          </div>
+
+          <input
+            v-model="po"
+            type="text"
+            placeholder="(optional)"
+            class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+          />
+        </div>
+
+        <button
+          class="w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
+          @click="onClick()"
+        >
+          Checkout
+        </button>
+
+        <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
+      </div>
     </div>
-
-    <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
-      <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
-    </div>
-
-    <button
-      class="rounded bg-slate-700 py-2 px-1 text-center text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
-      @click="onClick()"
-    >
-      Checkout
-    </button>
-
-    <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
   </div>
 </template>
 
@@ -47,7 +57,9 @@ const { patchPoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
-onBeforeUnmount(() => patchPoNumber(po.value))
+onBeforeUnmount(async () => {
+  await patchPoNumber(po.value)
+})
 
 const cartItems = computed(() => {
   if (!cart.value) return []
