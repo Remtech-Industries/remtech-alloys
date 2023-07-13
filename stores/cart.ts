@@ -13,6 +13,7 @@ import { tokenHandles } from '@/utils/constants'
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
   const cartId = computed(() => cart?.value?.id)
+  const po = ref<string | undefined>()
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
@@ -63,10 +64,12 @@ export const useCartStore = defineStore('cart', () => {
   async function updatePoNumber(poNumber: string) {
     if (!cartId.value) return
 
-    const { cart } = await cartAttributesUpdate(cartId.value, [
+    const { cart: c } = await cartAttributesUpdate(cartId.value, [
       { key: 'PO #', value: poNumber },
     ])
-    cart.value = cart
+
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
   }
 
   return {
@@ -75,6 +78,7 @@ export const useCartStore = defineStore('cart', () => {
     cartId,
     getCart,
     addToCart,
+    po,
     removeFromCart,
     updatePoNumber,
     updateCart,

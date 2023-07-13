@@ -52,13 +52,13 @@ import { useHead } from '#app'
 import type { CartLine } from '@/utils/types'
 import { tokenHandles } from '@/utils/constants'
 
-const { cart } = storeToRefs(useCartStore())
+const { cart, po } = storeToRefs(useCartStore())
 const { updatePoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
 onBeforeUnmount(async () => {
-  await updatePoNumber(po.value)
+  if (po.value) updatePoNumber(po.value)
 })
 
 const cartItems = computed(() => {
@@ -74,12 +74,9 @@ const productItems = computed(() => {
   })
 })
 
-const po = ref(
-  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
-)
 const toCheckoutLink = ref()
 async function onClick() {
-  await updatePoNumber(po.value)
+  if (po.value) await updatePoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 

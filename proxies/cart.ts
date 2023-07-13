@@ -1,5 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Attribute, CartLineInput } from '@/utils/types'
+import type { Cart, Attribute, CartLineInput } from '@/utils/types'
 
 const cart = `
 { 
@@ -122,7 +122,7 @@ export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
 export async function cartAttributesUpdate(
   cartId: string,
   attributes: Attribute[]
-) {
+): Promise<{ cart: Cart }> {
   const { cartAttributesUpdate } = await usePostToShopify(
     `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
       cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
