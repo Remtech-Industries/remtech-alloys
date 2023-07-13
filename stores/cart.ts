@@ -4,7 +4,7 @@ import {
   useUpdateCart,
   useAddToCart,
   useGetCart,
-  usePatchPoNumber,
+  cartAttributesUpdate,
   useRemoveFromCart,
 } from '@/proxies/cart'
 import type { Cart, CartLineInput } from '@/utils/types'
@@ -63,8 +63,10 @@ export const useCartStore = defineStore('cart', () => {
   async function patchPoNumber(poNumber: string) {
     if (!cartId.value) return
 
-    const response = await usePatchPoNumber(cartId.value, poNumber)
-    cart.value = response
+    const { cart } = await cartAttributesUpdate(cartId.value, [
+      { key: 'PO #', value: poNumber },
+    ])
+    cart.value = cart
   }
 
   return {
