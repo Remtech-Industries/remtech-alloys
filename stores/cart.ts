@@ -1,13 +1,17 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import {
-  useUpdateCart,
+  CartLineUpdateInput,
+  CartLineInput,
+} from '@/utils/storefront-api-types'
+import {
+  cartLinesUpdate,
   useAddToCart,
   useGetCart,
   cartAttributesUpdate,
   useRemoveFromCart,
 } from '@/proxies/cart'
-import type { Cart, CartLineInput } from '@/utils/types'
+import type { Cart } from '@/utils/types'
 import { tokenHandles } from '@/utils/constants'
 
 export const useCartStore = defineStore('cart', () => {
@@ -40,11 +44,13 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function updateCart(items: { id: string; quantity: number }[]) {
+  async function updateCart(items: CartLineUpdateInput[]) {
     if (!cartId.value) return
 
-    const response = await useUpdateCart(items, cartId.value)
-    cart.value = response
+    const { cart: c } = await cartLinesUpdate(cartId.value, items)
+
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
   }
 
   async function addToCart(items: CartLineInput[]) {

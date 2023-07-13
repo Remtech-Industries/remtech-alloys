@@ -46,12 +46,6 @@ export type CartLine = {
   attributes: Attribute[]
 }
 
-export type CartLineInput = {
-  quantity: number
-  merchandiseId: string
-  attributes: Attribute[]
-}
-
 // other
 export type Price = {
   amount: string

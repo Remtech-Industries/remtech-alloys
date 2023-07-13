@@ -1,5 +1,6 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Cart, Attribute, CartLineInput } from '@/utils/types'
+import type { Cart, Attribute } from '@/utils/types'
+import type { CartLineUpdateInput } from '~~/utils/storefront-api-types'
 
 const cartQuery = `
 { 
@@ -57,24 +58,20 @@ mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
   }
 }`
 
-const updateCartQuery = `
-mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-  cartLinesUpdate(cartId: $cartId, lines: $lines) {
-    cart ${cartQuery}
-  }
-}
-`
+export async function cartLinesUpdate(
+  cartId: string,
+  items: CartLineUpdateInput[]
+): Promise<{ cart: Cart }> {
+  const { cartLinesUpdate } = await usePostToShopify(
+    `mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart ${cartQuery}
+      }
+    }`,
+    { cartId, lines: items }
+  )
 
-export async function useUpdateCart(
-  items: { id: string; quantity: number }[],
-  cartId: string
-) {
-  const cart = await usePostToShopify(updateCartQuery, {
-    cartId,
-    lines: items,
-  })
-
-  return cart.cartLinesUpdate.cart
+  return cartLinesUpdate
 }
 
 export async function useAddToCart(items: CartLineInput[], cartId?: string) {
@@ -107,8 +104,7 @@ export async function useGetCart(cartId: string): Promise<{ cart: Cart }> {
 
 export async function useRemoveFromCart(cartId: string, lineIds: string[]) {
   const response = await usePostToShopify(
-    `
-    mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    ` mutation cartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
       cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
         cart ${cartQuery}
       }

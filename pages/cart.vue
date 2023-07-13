@@ -129,11 +129,11 @@ function removeLine(line: CartLine) {
     return { id: handlingTokens.value.id, quantity }
   }
 
-  updateCart([
-    { id: line.id, quantity: 0 },
-    remainingCutTokens(),
-    remainingHandlingTokens(),
-  ])
+  const items = [{ id: line.id, quantity: 0 }]
+  if (remainingCutTokens().id) items.push(remainingCutTokens())
+  if (remainingHandlingTokens().id) items.push(remainingHandlingTokens())
+
+  updateCart(items)
 }
 
 function flush() {
