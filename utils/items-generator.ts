@@ -1,5 +1,5 @@
 import { toInches } from '@/utils/conversion'
-import type { Attribute } from '@/utils/types'
+import type { AttributeInput, Merchandise } from '@/utils/storefront-api-types'
 
 interface Input {
   absoluteLength: number
@@ -19,10 +19,10 @@ interface Input {
 
 export type Item = {
   anchor: 'product' | 'cut-token' | 'handling-token'
-  attributes: Attribute[]
+  attributes: AttributeInput[]
   cartQuantity: number
   displayedQuantity: number
-  id: string
+  id: Merchandise['id']
   linePrice: number
   pricePerPiece: number
   requestedLength?: number

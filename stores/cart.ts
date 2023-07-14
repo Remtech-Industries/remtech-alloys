@@ -1,18 +1,23 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+import type {
+  Attribute,
+  CartLineUpdateInput,
+  CartLineInput,
+  Cart,
+} from '@/utils/storefront-api-types'
 import {
-  useUpdateCart,
-  useAddToCart,
+  cartLinesUpdate,
+  cartLinesAdd,
   useGetCart,
-  usePatchPoNumber,
-  useRemoveFromCart,
+  cartAttributesUpdate,
 } from '@/proxies/cart'
-import type { Cart, CartLineInput } from '@/utils/types'
-import { tokenHandles } from '@/utils/constants'
+import { tokenHandles, poKey } from '@/utils/constants'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
-  const cartId = computed(() => cart?.value?.id)
+  const cartId = computed(() => cart.value?.id)
+  const po = ref<Attribute['value']>()
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
@@ -33,38 +38,40 @@ export const useCartStore = defineStore('cart', () => {
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
-      const { cart: response } = await useGetCart(cartId)
-      cart.value = response
+      const { cart: c } = await useGetCart(cartId)
+      cart.value = c
+      po.value = c.attributes.find(({ key }) => key === poKey)?.value
     }
   }
 
-  async function updateCart(items: { id: string; quantity: number }[]) {
+  async function updateCart(items: CartLineUpdateInput[]) {
     if (!cartId.value) return
 
-    const response = await useUpdateCart(items, cartId.value)
-    cart.value = response
+    const { cart: c } = await cartLinesUpdate(cartId.value, items)
+
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
   async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
-    const response = await useAddToCart(items, cartId.value)
-    window.localStorage.setItem('cartId', JSON.stringify(response.id))
-    cart.value = response
+    const { cart: c } = await cartLinesAdd(items, cartId.value)
+    window.localStorage.setItem('cartId', JSON.stringify(c.id))
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
-  async function removeFromCart(lineIds: string[]) {
+  async function updatePoNumber(poNumber: string | null | undefined) {
     if (!cartId.value) return
 
-    const response = await useRemoveFromCart(cartId.value, lineIds)
-    cart.value = response
-  }
+    if (!poNumber) poNumber = '#'
+    const { cart: c } = await cartAttributesUpdate(cartId.value, [
+      { key: poKey, value: poNumber },
+    ])
 
-  async function patchPoNumber(poNumber: string) {
-    if (!cartId.value) return
-
-    const response = await usePatchPoNumber(cartId.value, poNumber)
-    cart.value = response
+    cart.value = c
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
   return {
@@ -73,8 +80,8 @@ export const useCartStore = defineStore('cart', () => {
     cartId,
     getCart,
     addToCart,
-    removeFromCart,
-    patchPoNumber,
+    po,
+    updatePoNumber,
     updateCart,
   }
 })

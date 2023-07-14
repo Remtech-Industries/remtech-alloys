@@ -1,35 +1,76 @@
 <template>
-  <div class="mx-auto flex max-w-2xl flex-col" v-if="cart">
-    <h1 class="mb-2 font-oswald text-3xl font-bold">Cart</h1>
+  <div class="mx-auto max-w-3xl">
+    <h1
+      class="mb-2 border-b-2 border-yellow-500 font-oswald text-3xl font-bold"
+    >
+      Cart
+    </h1>
 
-    <!-- po -->
-    <div class="mb-2 flex w-96">
-      <div
-        class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
-      >
-        PO #
+    <div v-if="cartItems.length === 0" class="text-2xl">Cart is empty.</div>
+
+    <div class="flex gap-3" v-if="cartItems.length">
+      <div class="w-4/6">
+        <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
+          <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
+        </div>
       </div>
 
-      <input
-        v-model="po"
-        type="text"
-        placeholder="(optional)"
-        class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-      />
+      <div class="w-2/6 rounded-lg bg-slate-200 p-3">
+        <!-- po -->
+        <div class="mb-2 flex w-full">
+          <div
+            class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
+          >
+            PO #
+          </div>
+
+          <input
+            v-model="po"
+            type="text"
+            placeholder="(optional)"
+            class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
+          />
+        </div>
+
+        <div
+          class="flex justify-between"
+          v-if="
+            cart?.cost.subtotalAmount.amount !== cart?.cost.totalAmount.amount
+          "
+        >
+          <div class="font-light">Subtotal</div>
+          <div>
+            {{ cart?.cost.subtotalAmount.currencyCode }}
+            {{ cart?.cost.subtotalAmount.amount }}
+          </div>
+        </div>
+
+        <div class="flex justify-between" v-if="cart?.cost.totalTaxAmount">
+          <div class="font-light">Taxes</div>
+          <div>
+            {{ cart?.cost.totalTaxAmount.currencyCode }}
+            {{ cart?.cost.totalTaxAmount.amount }}
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <div class="font-light">Total Amount</div>
+          <div class="font-bold">
+            {{ cart?.cost.totalAmount.currencyCode }}
+            {{ cart?.cost.totalAmount.amount }}
+          </div>
+        </div>
+
+        <button
+          class="w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
+          @click="onClick()"
+        >
+          Checkout
+        </button>
+
+        <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
+      </div>
     </div>
-
-    <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
-      <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
-    </div>
-
-    <button
-      class="rounded bg-slate-700 py-2 px-1 text-center text-slate-200 hover:bg-yellow-500 hover:text-slate-700"
-      @click="onClick()"
-    >
-      Checkout
-    </button>
-
-    <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
   </div>
 </template>
 
@@ -39,15 +80,17 @@ import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
-import type { CartLine } from '@/utils/types'
+import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { tokenHandles } from '@/utils/constants'
 
-const { cart } = storeToRefs(useCartStore())
-const { patchPoNumber, updateCart, getCart } = useCartStore()
+const { cart, po } = storeToRefs(useCartStore())
+const { updatePoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
-onBeforeUnmount(() => patchPoNumber(po.value))
+onBeforeUnmount(() => {
+  updatePoNumber(po.value)
+})
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -62,12 +105,9 @@ const productItems = computed(() => {
   })
 })
 
-const po = ref(
-  cart.value?.attributes.find(({ key }) => key === 'PO #')?.value || ''
-)
 const toCheckoutLink = ref()
 async function onClick() {
-  await patchPoNumber(po.value)
+  await updatePoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 
@@ -89,7 +129,7 @@ const handlingTokens = computed(() => {
 
 const isLastItem = computed(() => productItems.value.length <= 1)
 
-function removeLine(line: CartLine) {
+function removeLine(line: BaseCartLine) {
   if (!cart.value) return
 
   const remainingCutTokens = () => {
@@ -120,11 +160,11 @@ function removeLine(line: CartLine) {
     return { id: handlingTokens.value.id, quantity }
   }
 
-  updateCart([
-    { id: line.id, quantity: 0 },
-    remainingCutTokens(),
-    remainingHandlingTokens(),
-  ])
+  const items = [{ id: line.id, quantity: 0 }]
+  if (remainingCutTokens().id) items.push(remainingCutTokens())
+  if (remainingHandlingTokens().id) items.push(remainingHandlingTokens())
+
+  updateCart(items)
 }
 
 function flush() {

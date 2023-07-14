@@ -29,12 +29,12 @@
 
 <script setup lang="ts">
 import { toMoney } from '@/utils/conversion'
-import type { CartLine } from '@/utils/types'
+import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { computed } from 'vue'
 
-const props = defineProps<{ cartLine: CartLine }>()
+const props = defineProps<{ cartLine: BaseCartLine }>()
 
-const emit = defineEmits<{ (e: 'click:remove', value: CartLine): void }>()
+const emit = defineEmits<{ (e: 'click:remove', value: BaseCartLine): void }>()
 
 const pieces = computed(() => {
   return props.cartLine.attributes.find(({ key }) => key === 'Pieces')?.value
