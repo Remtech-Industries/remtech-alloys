@@ -11,8 +11,17 @@ const cartQuery = `
   id
   checkoutUrl
   cost {
+    subtotalAmount {
+      amount
+      currencyCode
+    }
+    totalTaxAmount {
+      amount
+      currencyCode
+    }
     totalAmount {
       amount
+      currencyCode
     }
   }
   lines(first: 200) {

@@ -1,19 +1,21 @@
 <template>
-  <div class="mx-auto max-w-3xl" v-if="cart">
+  <div class="mx-auto max-w-3xl">
     <h1
       class="mb-2 border-b-2 border-yellow-500 font-oswald text-3xl font-bold"
     >
       Cart
     </h1>
 
-    <div class="flex gap-3">
+    <div v-if="cartItems.length === 0" class="text-2xl">Cart is empty.</div>
+
+    <div class="flex gap-3" v-if="cartItems.length">
       <div class="w-4/6">
         <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
           <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
         </div>
       </div>
 
-      <div class="w-2/6">
+      <div class="w-2/6 rounded-lg bg-slate-200 p-3">
         <!-- po -->
         <div class="mb-2 flex w-full">
           <div
@@ -28,6 +30,35 @@
             placeholder="(optional)"
             class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
           />
+        </div>
+
+        <div
+          class="flex justify-between"
+          v-if="
+            cart?.cost.subtotalAmount.amount !== cart?.cost.totalAmount.amount
+          "
+        >
+          <div class="font-light">Subtotal</div>
+          <div>
+            {{ cart?.cost.subtotalAmount.currencyCode }}
+            {{ cart?.cost.subtotalAmount.amount }}
+          </div>
+        </div>
+
+        <div class="flex justify-between" v-if="cart?.cost.totalTaxAmount">
+          <div class="font-light">Taxes</div>
+          <div>
+            {{ cart?.cost.totalTaxAmount.currencyCode }}
+            {{ cart?.cost.totalTaxAmount.amount }}
+          </div>
+        </div>
+
+        <div class="flex justify-between">
+          <div class="font-light">Total Amount</div>
+          <div class="font-bold">
+            {{ cart?.cost.totalAmount.currencyCode }}
+            {{ cart?.cost.totalAmount.amount }}
+          </div>
         </div>
 
         <button
