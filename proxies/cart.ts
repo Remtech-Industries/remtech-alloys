@@ -1,6 +1,6 @@
 import { usePostToShopify } from './post-to-shopify'
 import type {
-  Attribute,
+  AttributeInput,
   Cart,
   CartLineUpdateInput,
   CartLineInput,
@@ -65,6 +65,11 @@ export async function cartLinesUpdate(
     `mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
         cart ${cartQuery}
+        userErrors {
+          code
+          field
+          message
+        }
       }
     }`,
     { cartId, lines: items }
@@ -82,6 +87,11 @@ export async function cartLinesAdd(
       `mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
         cartLinesAdd(cartId: $cartId, lines: $lines) {
           cart ${cartQuery}
+          userErrors {
+            code
+            field
+            message
+          }
         }
       }`,
       { cartId, lines: items }
@@ -94,6 +104,11 @@ export async function cartLinesAdd(
       `mutation createCart($cartInput: CartInput) {
         cartCreate(input: $cartInput) {
           cart ${cartQuery}
+          userErrors {
+            code
+            field
+            message
+          }
         }
       }`,
       { cartInput: { lines: items } }
@@ -113,7 +128,7 @@ export async function useGetCart(cartId: string): Promise<{ cart: Cart }> {
 
 export async function cartAttributesUpdate(
   cartId: string,
-  attributes: Attribute[]
+  attributes: AttributeInput[]
 ): Promise<{ cart: Cart }> {
   const { cartAttributesUpdate } = await usePostToShopify(
     `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {

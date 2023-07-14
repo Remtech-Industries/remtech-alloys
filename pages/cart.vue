@@ -88,8 +88,8 @@ const { updatePoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
-onBeforeUnmount(async () => {
-  if (po.value) updatePoNumber(po.value)
+onBeforeUnmount(() => {
+  updatePoNumber(po.value)
 })
 
 const cartItems = computed(() => {
@@ -107,7 +107,7 @@ const productItems = computed(() => {
 
 const toCheckoutLink = ref()
 async function onClick() {
-  if (po.value) await updatePoNumber(po.value)
+  await updatePoNumber(po.value)
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 

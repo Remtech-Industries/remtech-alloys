@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-slate-50">
+  <div>
     <div class="flex justify-center bg-yellow-500 px-2">
       <div class="font-bold">
         Rem-Tech Alloys is under heavy development. We are currently offering

@@ -18,4 +18,9 @@ export default defineNuxtConfig({
     'primevue/resources/themes/saga-blue/theme.css',
     'primevue/resources/primevue.css',
   ],
+  app: {
+    head: {
+      style: [{ children: 'body { background-color: #f8fafc' }],
+    },
+  },
 })

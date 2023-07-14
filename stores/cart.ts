@@ -62,9 +62,10 @@ export const useCartStore = defineStore('cart', () => {
     po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
-  async function updatePoNumber(poNumber: string) {
+  async function updatePoNumber(poNumber: string | null | undefined) {
     if (!cartId.value) return
 
+    if (!poNumber) poNumber = '#'
     const { cart: c } = await cartAttributesUpdate(cartId.value, [
       { key: poKey, value: poNumber },
     ])
