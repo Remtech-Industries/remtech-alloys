@@ -57,7 +57,7 @@
           <input
             class="rounded-r border px-2 py-1 shadow-inner"
             v-model="form.tagNumber"
-            placeholder="Tag# (optional)"
+            placeholder="(optional)"
           />
         </div>
 
