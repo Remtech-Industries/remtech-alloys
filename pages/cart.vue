@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-3xl">
+  <div class="mx-auto mt-6 max-w-3xl text-slate-600">
     <h1
       class="mb-2 border-b-2 border-yellow-500 font-oswald text-3xl font-bold"
     >
@@ -15,7 +15,7 @@
         </div>
       </div>
 
-      <div class="w-2/6 rounded-lg bg-slate-200 p-3">
+      <div class="w-2/6 rounded-lg bg-slate-200 p-3 shadow">
         <!-- po -->
         <div class="mb-2 flex w-full">
           <div
@@ -40,9 +40,6 @@
         >
           <div class="font-light">Subtotal</div>
           <div v-if="cart?.cost.subtotalAmount">
-            <span class="mr-1 text-xs font-light">
-              {{ cart?.cost.subtotalAmount.currencyCode }}
-            </span>
             {{ toMoney(+cart?.cost.subtotalAmount.amount) }}
           </div>
         </div>
@@ -50,9 +47,6 @@
         <div class="flex justify-between" v-if="cart?.cost.totalTaxAmount">
           <div class="font-light">Taxes</div>
           <div>
-            <span class="mr-1 text-xs font-light">
-              {{ cart?.cost.totalTaxAmount.currencyCode }}
-            </span>
             {{ toMoney(+cart?.cost.totalTaxAmount.amount) }}
           </div>
         </div>
@@ -60,10 +54,10 @@
         <div class="flex justify-between" v-if="cart?.cost.totalAmount">
           <div class="font-light">Total Amount</div>
           <div>
-            <span class="mr-1 text-xs font-light">
+            <span class="mr-1 text-xs font-light text-slate-500">
               {{ cart?.cost.totalAmount.currencyCode }}
             </span>
-            <span class="font-bold">
+            <span class="font-bold text-slate-700">
               {{ toMoney(+cart?.cost.totalAmount.amount) }}
             </span>
           </div>
