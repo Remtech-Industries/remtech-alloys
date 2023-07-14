@@ -1,5 +1,5 @@
 import { toInches } from '@/utils/conversion'
-import type { Attribute } from '@/utils/types'
+import type { Attribute } from '@/utils/storefront-api-types'
 
 interface Input {
   absoluteLength: number

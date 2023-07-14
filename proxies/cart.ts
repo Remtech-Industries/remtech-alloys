@@ -1,6 +1,6 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Attribute } from '@/utils/storefront-api-types'
 import type {
+  Attribute,
   Cart,
   CartLineUpdateInput,
   CartLineInput,
