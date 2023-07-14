@@ -39,30 +39,38 @@
           "
         >
           <div class="font-light">Subtotal</div>
-          <div>
-            {{ cart?.cost.subtotalAmount.currencyCode }}
-            {{ cart?.cost.subtotalAmount.amount }}
+          <div v-if="cart?.cost.subtotalAmount">
+            <span class="mr-1 text-xs font-light">
+              {{ cart?.cost.subtotalAmount.currencyCode }}
+            </span>
+            {{ toMoney(+cart?.cost.subtotalAmount.amount) }}
           </div>
         </div>
 
         <div class="flex justify-between" v-if="cart?.cost.totalTaxAmount">
           <div class="font-light">Taxes</div>
           <div>
-            {{ cart?.cost.totalTaxAmount.currencyCode }}
-            {{ cart?.cost.totalTaxAmount.amount }}
+            <span class="mr-1 text-xs font-light">
+              {{ cart?.cost.totalTaxAmount.currencyCode }}
+            </span>
+            {{ toMoney(+cart?.cost.totalTaxAmount.amount) }}
           </div>
         </div>
 
-        <div class="flex justify-between">
+        <div class="flex justify-between" v-if="cart?.cost.totalAmount">
           <div class="font-light">Total Amount</div>
-          <div class="font-bold">
-            {{ cart?.cost.totalAmount.currencyCode }}
-            {{ cart?.cost.totalAmount.amount }}
+          <div>
+            <span class="mr-1 text-xs font-light">
+              {{ cart?.cost.totalAmount.currencyCode }}
+            </span>
+            <span class="font-bold">
+              {{ toMoney(+cart?.cost.totalAmount.amount) }}
+            </span>
           </div>
         </div>
 
         <button
-          class="w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
+          class="mt-3 w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
           @click="onClick()"
         >
           Checkout
@@ -82,6 +90,7 @@ import { useCartStore } from '@/stores/cart'
 import { useHead } from '#app'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { tokenHandles } from '@/utils/constants'
+import { toMoney } from '@/utils/conversion'
 
 const { cart, po } = storeToRefs(useCartStore())
 const { updatePoNumber, updateCart, getCart } = useCartStore()

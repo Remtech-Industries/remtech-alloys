@@ -18,10 +18,10 @@ export function toPricePerInch(price: number, unit: 'mm') {
   return price
 }
 
-export function toMoney(number: number) {
+export function toMoney(number: number, currency = 'CAD') {
   // TODO?: support other currencies
   return new Intl.NumberFormat('en-CA', {
     style: 'currency',
-    currency: 'CAD',
+    currency: currency,
   }).format(number)
 }
