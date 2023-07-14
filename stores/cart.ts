@@ -12,11 +12,11 @@ import {
   useGetCart,
   cartAttributesUpdate,
 } from '@/proxies/cart'
-import { tokenHandles } from '@/utils/constants'
+import { tokenHandles, poKey } from '@/utils/constants'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Cart | null>(null)
-  const cartId = computed(() => cart?.value?.id)
+  const cartId = computed(() => cart.value?.id)
   const po = ref<Attribute['value']>()
 
   const itemCount = computed(() => {
@@ -40,7 +40,7 @@ export const useCartStore = defineStore('cart', () => {
     if (cartId) {
       const { cart: c } = await useGetCart(cartId)
       cart.value = c
-      po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
+      po.value = c.attributes.find(({ key }) => key === poKey)?.value
     }
   }
 
@@ -50,7 +50,7 @@ export const useCartStore = defineStore('cart', () => {
     const { cart: c } = await cartLinesUpdate(cartId.value, items)
 
     cart.value = c
-    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
   async function addToCart(items: CartLineInput[]) {
@@ -59,18 +59,18 @@ export const useCartStore = defineStore('cart', () => {
     const { cart: c } = await cartLinesAdd(items, cartId.value)
     window.localStorage.setItem('cartId', JSON.stringify(c.id))
     cart.value = c
-    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
   async function updatePoNumber(poNumber: string) {
     if (!cartId.value) return
 
     const { cart: c } = await cartAttributesUpdate(cartId.value, [
-      { key: 'PO #', value: poNumber },
+      { key: poKey, value: poNumber },
     ])
 
     cart.value = c
-    po.value = c.attributes.find(({ key }) => key === 'PO #')?.value
+    po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
   return {
