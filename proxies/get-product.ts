@@ -1,15 +1,15 @@
 import { usePostToShopify } from './post-to-shopify'
-import type { Product } from '@/utils/storefront-api-types'
+import type { Product, ProductVariantsArgs } from '@/utils/storefront-api-types'
 
 const query = `
-query product($handle: String!) {
+query product($handle: String!, $first: Int!) {
   product(handle: $handle) {
     id
     handle
     description
     title
     totalInventory
-    variants(first: 5) {
+    variants(first: $first) {
       edges {
         node {
           id
@@ -54,8 +54,16 @@ type CustomProductFields = {
   cutWaste?: { value: string }
 }
 
-export async function useGetProduct(handle: string | string[]) {
-  const { product }: { product: Product & CustomProductFields } =
-    await usePostToShopify(query, { handle: handle })
+type Variables = {
+  handle: Product['handle']
+} & ProductVariantsArgs
+
+export async function getProduct(
+  handle: string | string[]
+): Promise<{ product: Product & CustomProductFields }> {
+  const parsedHandle = Array.isArray(handle) ? handle[0] : handle
+  const variables = { handle: parsedHandle, first: 250 } as Variables
+
+  const { product } = await usePostToShopify(query, variables)
   return { product }
 }

@@ -7,9 +7,11 @@
         : 'bg-slate-50 text-slate-700'
     "
   >
-    <div>{{ variant.title }}</div>
+    <div class="whitespace-nowrap">{{ variant.title }}</div>
 
-    <div class="text-xs font-thin">Bar Length: {{ quantityAvailable }}</div>
+    <div class="whitespace-nowrap text-xs font-light">
+      Bar Length: {{ quantityAvailable }}
+    </div>
   </div>
 </template>
 

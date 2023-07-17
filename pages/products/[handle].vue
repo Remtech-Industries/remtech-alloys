@@ -24,7 +24,7 @@
           Price: {{ toMoney(price) }} / inch
         </div>
 
-        <div class="flex gap-1 pt-2">
+        <div class="flex gap-1 overflow-x-auto pt-2">
           <VariantSelector
             v-for="variant in variants"
             :key="variant.id"
@@ -89,7 +89,7 @@ import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
 import { computed, ref } from 'vue'
 import { getTokens } from '@/proxies/get-tokens'
-import { useGetProduct } from '@/proxies/get-product'
+import { getProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
 import type { Form } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
@@ -105,7 +105,7 @@ const form = ref<Form>({
   lengthIsValid: false,
 })
 
-const { product } = await useGetProduct(params.handle)
+const { product } = await getProduct(params.handle)
 const { cutToken, handlingToken } = await getTokens()
 
 const variants = computed(() => {
