@@ -91,8 +91,7 @@ import { computed, ref } from 'vue'
 import { getTokens } from '@/proxies/get-tokens'
 import { useGetProduct } from '@/proxies/get-product'
 import { useRoute } from 'vue-router'
-import type { Form, CustomProductFields } from '@/utils/types'
-import type { Product } from '@/utils/storefront-api-types'
+import type { Form } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
 import { useHead } from 'nuxt/app'
@@ -106,8 +105,7 @@ const form = ref<Form>({
   lengthIsValid: false,
 })
 
-const { product }: { product: Product & CustomProductFields } =
-  await useGetProduct(params.handle)
+const { product } = await useGetProduct(params.handle)
 const { cutToken, handlingToken } = await getTokens()
 
 const variants = computed(() => {

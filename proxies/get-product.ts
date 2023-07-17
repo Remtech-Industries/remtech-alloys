@@ -1,4 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
+import type { Product } from '@/utils/storefront-api-types'
 
 const query = `
 query product($handle: String!) {
@@ -46,7 +47,15 @@ query product($handle: String!) {
 }
 `
 
+type CustomProductFields = {
+  cutTokensPerCut?: { value: string }
+  handlingTokens?: { value: string }
+  stockingUnit?: { value: string }
+  cutWaste?: { value: string }
+}
+
 export async function useGetProduct(handle: string | string[]) {
-  const { product } = await usePostToShopify(query, { handle: handle })
+  const { product }: { product: Product & CustomProductFields } =
+    await usePostToShopify(query, { handle: handle })
   return { product }
 }
