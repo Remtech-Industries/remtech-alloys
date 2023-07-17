@@ -1,32 +1,39 @@
 import { toInches } from '@/utils/conversion'
-import type { AttributeInput, Merchandise } from '@/utils/storefront-api-types'
+import type {
+  AttributeInput,
+  ProductVariant,
+  Product,
+  CartLineInput,
+  CartLine,
+} from '@/utils/storefront-api-types'
 
 interface Input {
   absoluteLength: number
-  cutTokenId: string
+  cutTokenId: ProductVariant['id']
   cutTokensPerCut: number
-  handlingTokenId: string
+  handlingTokenId: ProductVariant['id']
   numberOfHandlingTokens: number
   numberOfPieces: number
   pricePerCutToken: number
   pricePerHandlingToken: number
   pricePerStockingUnit: number
-  productTitle: string
+  productTitle: Product['title']
   requestedLength: number
-  selectedVariantId: string
+  selectedVariantId: ProductVariant['id']
   tagNumber?: string | null
 }
 
 export type Item = {
+  /** Anchor is for searching. */
   anchor: 'product' | 'cut-token' | 'handling-token'
   attributes: AttributeInput[]
-  cartQuantity: number
+  cartQuantity: CartLineInput['quantity']
   displayedQuantity: number
-  id: Merchandise['id']
+  id: ProductVariant['id']
   linePrice: number
   pricePerPiece: number
   requestedLength?: number
-  title: string
+  title: Product['title']
 }
 
 export function itemsGenerator(input: Input) {
@@ -112,6 +119,6 @@ export function itemsGenerator(input: Input) {
   }
 
   return [productVariantRow, handlingFeeRow, cutFeeRow].filter(
-    ({ cartQuantity }) => cartQuantity > 0
+    (item) => item?.cartQuantity != null && item.cartQuantity > 0
   )
 }
