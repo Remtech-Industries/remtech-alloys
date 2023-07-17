@@ -7,10 +7,20 @@ export default defineNuxtConfig({
     '@nuxt/devtools',
     'nuxt-gtag',
   ],
+  extends: ['nuxt-seo-kit'],
+  routeRules: {
+    '/about': { prerender: true },
+    '/cart': { index: false },
+    '/mtr': { index: false },
+  },
   runtimeConfig: {
     public: {
       shopifyStore: process.env.SHOPIFY_STORE,
       publicAccessToken: process.env.PUBLIC_ACCESS_TOKEN,
+      siteUrl: 'https://remtechalloys.com',
+      siteName: 'Rem-Tech Alloys',
+      siteDescription:
+        'Offering Prompt Delivery of Custom-Sized Stainless Steels and Specialty Alloys',
     },
   },
   build: { transpile: ['primevue'] },
@@ -20,7 +30,7 @@ export default defineNuxtConfig({
   ],
   app: {
     head: {
-      style: [{ children: 'body { background-color: #f8fafc' }],
+      style: [{ children: 'body { background-color: #f8fafc }' }],
     },
   },
 })
