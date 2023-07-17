@@ -1,4 +1,4 @@
-import { defineNuxtPlugin } from '#app'
+import { defineNuxtPlugin } from '#imports'
 import PrimeVue from 'primevue/config'
 
 export default defineNuxtPlugin((nuxtApp) => {
