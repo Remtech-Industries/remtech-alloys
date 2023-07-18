@@ -92,7 +92,9 @@
                               <tr>
                                 <td class='order-number__cell'>
                                   <span class='order-number__text'> Order {{ order_name }} </span><br>
-                                  <span class='order-number__text'> PO# {{ attributes['PO #'] }} </span>
+                                  {% if attributes['PO #'] %}
+                                    <span class='order-number__text'> PO# {{ attributes['PO #'] }} </span>
+                                  {% endif %}
                                 </td>
                               </tr>
                               {%- if po_number %}
@@ -146,49 +148,6 @@
                             {% endif %}
                           {% endfor %}
                         {% endif %}
-
-                        {% if order_status_url %}
-                          <table class='row actions'>
-                            <tr>
-                              <td class='empty-line'>&nbsp;</td>
-                            </tr>
-                            <tr>
-                              <td class='actions__cell'>
-                                <table class='button main-action-cell'>
-                                  <tr>
-                                    <td class='button__cell'>
-                                      <a href='{{ order_status_url }}' class='button__text'>View your order</a>
-                                    </td>
-                                  </tr>
-                                </table>
-                                {% if shop.url %}
-                                  <table class='link secondary-action-cell'>
-                                    <tr>
-                                      <td class='link__cell'>or <a href='{{ shop.url }}'>Visit our store</a></td>
-                                    </tr>
-                                  </table>
-                                {% endif %}
-                              </td>
-                            </tr>
-                          </table>
-
-                        {% else %}
-                          {% if shop.url %}
-                            <table class='row actions'>
-                              <tr>
-                                <td class='actions__cell'>
-                                  <table class='button main-action-cell'>
-                                    <tr>
-                                      <td class='button__cell'>
-                                        <a href='{{ shop.url }}' class='button__text'>Visit our store</a>
-                                      </td>
-                                    </tr>
-                                  </table>
-                                </td>
-                              </tr>
-                            </table>
-                          {% endif %}
-                        {% endif %}
                       </td>
                     </tr>
                   </table>
@@ -222,6 +181,10 @@
                                     {% else %}
                                       {% assign line_title = line.title %}
                                     {% endif %}
+                                    {% assign heat_number = line.variant.metafields.custom.heat_number %}
+                                    {% assign mtr_id = line.variant.metafields.custom.mtr_id %}
+                                    {% assign tagno = line.properties['Tag#'] %}
+                                    {% assign pieces = line.properties.Pieces %}
 
                                     <span class='order-list__item-title'>{{ line_title }}</span><br>
 
@@ -229,18 +192,23 @@
                                       <span class='order-list__item-variant'>{{ line.variant.title }}</span>
                                     {% endif %}
 
-                                    {% assign heat_number = line.variant.metafields.custom.heat_number %}
-                                    {% if heat_number %}
-                                      <span class='order-list__item-variant'>HT# {{ heat_number }}</span><br>
-                                    {% endif %}
+                                    {%- if heat_number -%}
+                                      <span class='order-list__item-variant'>&nbsp;|&nbsp; HT# {{ heat_number }}</span>
+                                    {%- endif -%}
 
-                                    {% if line.properties['Tag#'] %}
-                                      <span class='order-list__item-variant'>Tag# {{ line.properties['Tag#'] }} </span>
+                                    {%- if mtr_id -%}
+                                      <span class='order-list__item-variant'>-{{ mtr_id }}</span>
+                                    {%- endif -%}
+
+                                    <br>
+
+                                    {% if tagno %}
+                                      <span class='order-list__item-variant'>Tag# {{ tagno }} </span>
                                       <br>
                                     {% endif %}
 
-                                    {% if line.properties.Pieces %}
-                                      <span class='order-list__item-variant'>{{ line.properties.Pieces }}</span><br>
+                                    {% if pieces %}
+                                      <span class='order-list__item-variant'>{{ pieces }}</span><br>
                                     {% endif %}
 
                                     {% if line.gift_card and line.properties.__shopify_send_gift_card_to_recipient %}
@@ -266,8 +234,9 @@
 
                                     {% if line.selling_plan_allocation %}
                                       <span class='order-list__item-variant'>
-                                        {{- line.selling_plan_allocation.selling_plan.name -}}</span
-                                      ><br>
+                                        {{- line.selling_plan_allocation.selling_plan.name -}}
+                                      </span>
+                                      <br>
                                     {% endif %}
 
                                     {% if line.refunded_quantity > 0 %}
