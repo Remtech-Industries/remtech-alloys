@@ -7,8 +7,9 @@ import type {
   CartLine,
 } from '@/utils/storefront-api-types'
 
+type MM = number
 interface Input {
-  absoluteLength: number
+  absoluteLength: MM
   cutTokenId: ProductVariant['id']
   cutTokensPerCut: number
   handlingTokenId: ProductVariant['id']
@@ -18,7 +19,8 @@ interface Input {
   pricePerHandlingToken: number
   pricePerStockingUnit: number
   productTitle: Product['title']
-  requestedLength: number
+  /** This is the value in MM requested by the customer in the product form. */
+  requestedLength: MM
   selectedVariantId: ProductVariant['id']
   tagNumber?: string | null
 }
@@ -66,24 +68,21 @@ export function itemsGenerator(input: Input) {
     linePrice: absoluteLength * pricePerStockingUnit,
     displayedQuantity: numberOfPieces,
     attributes: [
-      {
-        key: 'Pieces',
-        value: `${numberOfPieces} pcs @ ${toInches(
-          requestedLength,
-          'mm',
-          'roundIt'
-        )} inches/ea. (${absoluteLength}mm)`,
-      },
-      {
-        key: '_handlingTokens',
-        value: `${numberOfHandlingTokens}`,
-      },
-      {
-        key: '_cutTokens',
-        value: `${totalCutTokens}`,
-      },
+      { key: '_handlingTokens', value: `${numberOfHandlingTokens}` },
+      { key: '_cutTokens', value: `${totalCutTokens}` },
     ],
   }
+
+  const pcs = (n: number) => (n === 1 ? 'pc' : 'pcs')
+  const ea = (n: number) => (n === 1 ? '' : '/ea.')
+  productVariantRow.attributes.push({
+    key: 'Pieces',
+    value: `${numberOfPieces} ${pcs(numberOfPieces)} @ ${toInches(
+      requestedLength,
+      'mm',
+      'roundIt'
+    )} inches${ea(numberOfPieces)} (${absoluteLength}mm)`,
+  })
 
   if (tagNumber) {
     productVariantRow.attributes.push({
