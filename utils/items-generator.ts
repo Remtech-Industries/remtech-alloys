@@ -85,10 +85,7 @@ export function itemsGenerator(input: Input) {
   })
 
   if (tagNumber) {
-    productVariantRow.attributes.push({
-      key: 'Tag#',
-      value: tagNumber,
-    })
+    productVariantRow.attributes.push({ key: 'Tag#', value: tagNumber })
   }
 
   // handling fee

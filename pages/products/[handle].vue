@@ -94,7 +94,7 @@ import { useRoute } from 'vue-router'
 import type { Form } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
-import { useHead } from 'nuxt/app'
+import { useHead } from '#imports'
 
 const { params } = useRoute()
 

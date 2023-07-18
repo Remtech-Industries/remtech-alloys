@@ -45,6 +45,9 @@ function onInput(event: Event) {
     return
   }
 
+  // emit mm without rounding
+  // if customer were to order many pieces, rounding would add up
+  // eg. 1.5mm rounded up to 2mm, 10 pieces would be 5mm extra length
   emit('update:length', toMm(+length, 'inch'))
   emit('update:isValid', true)
 }
