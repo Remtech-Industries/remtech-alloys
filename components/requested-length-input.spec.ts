@@ -1,15 +1,15 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
-import LengthInput from './LengthInput.vue'
+import RequestedLengthInput from './RequestedLengthInput.vue'
 
 describe('Length Input', () => {
   it('should include the word Length', () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     expect(wrapper.text()).toContain('Length')
   })
 
   it('should say length is required if input is blank', async () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     const $input = wrapper.get('input')
     $input.element.value = ''
     await $input.trigger('input')
@@ -21,7 +21,7 @@ describe('Length Input', () => {
   })
 
   it('should say length must be more than 0 if input is 0', async () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     const $input = wrapper.get('input')
     $input.element.value = '0'
     await $input.trigger('input')
@@ -33,7 +33,7 @@ describe('Length Input', () => {
   })
 
   it('should say length must be more than 0 if input is a negative number', async () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     const $input = wrapper.get('input')
     $input.element.value = '-1'
     await $input.trigger('input')
@@ -45,7 +45,7 @@ describe('Length Input', () => {
   })
 
   it('should reset the error when user corrects the input', async () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     const $input = wrapper.get('input')
     $input.element.value = '0'
     await $input.trigger('input')
@@ -61,7 +61,7 @@ describe('Length Input', () => {
   })
 
   it('should display no errors and emit value when valid', async () => {
-    const wrapper = mount(LengthInput)
+    const wrapper = mount(RequestedLengthInput)
     const $input = wrapper.get('input')
     $input.element.value = '1'
     await $input.trigger('input')

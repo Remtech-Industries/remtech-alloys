@@ -39,7 +39,7 @@
           You have selected more material than we have on our longest bar.
         </div>
 
-        <LengthInput
+        <RequestedLengthInput
           class="self-start"
           @update:length="form.requestedLength = $event"
           @update:is-valid="form.lengthIsValid = $event"
@@ -83,7 +83,7 @@
 
 <script setup lang="ts">
 import VariantSelector from '@/components/VariantSelector.vue'
-import LengthInput from '@/components/LengthInput.vue'
+import RequestedLengthInput from '@/components/RequestedLengthInput.vue'
 import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
