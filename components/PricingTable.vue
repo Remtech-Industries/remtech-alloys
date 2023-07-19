@@ -30,7 +30,7 @@
                 Length Charged&dagger;:
                 {{
                   toInches(
-                    product.cartQuantity / product.displayedQuantity,
+                    (product.cartQuantity || 0) / product.displayedQuantity,
                     'mm',
                     'roundIt'
                   )

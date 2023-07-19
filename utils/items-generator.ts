@@ -1,4 +1,4 @@
-import { toInches } from '@/utils/conversion'
+import { toMoney, toInches } from '@/utils/conversion'
 import type {
   AttributeInput,
   ProductVariant,
@@ -92,8 +92,13 @@ export function itemsGenerator(input: Input) {
     productVariantRow.attributes.push({ key: 'Tag#', value: tagNumber })
   }
 
-  const tempPrice = `1`
-  productVariantRow.attributes.push({ key: 'Cost', value: tempPrice })
+  const tempPrice = `${toMoney(
+    (productLinePrice + handlingLinePrice + cutLinePrice) / numberOfPieces
+  )}`
+  productVariantRow.attributes.push({
+    key: '_costPerPiece',
+    value: tempPrice,
+  })
 
   // handling fee
   const handlingFeeRow: Item = {

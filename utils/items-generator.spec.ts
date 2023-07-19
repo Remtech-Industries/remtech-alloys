@@ -102,6 +102,39 @@ describe('itemsGenerator', () => {
         })
       })
 
+      describe('_costPerPiece', () => {
+        const when = (v = {}) => {
+          return attributes(v)?.find(({ key }) => key === '_costPerPiece')
+            ?.value
+        }
+
+        it('return cost per piece, including handling and cut cost', () => {
+          const params = {
+            absoluteLength: 1,
+            pricePerStockingUnit: 1,
+            pricePerHandlingToken: 1,
+            numberOfHandlingTokens: 1,
+            pricePerCutToken: 1,
+            cutTokensPerCut: 1,
+            numberOfPieces: 1,
+          }
+          expect(when(params)).toEqual('$3.00')
+        })
+
+        it('return cost per piece, including handling and cut cost', () => {
+          const params = {
+            absoluteLength: 9,
+            pricePerStockingUnit: 1.27,
+            pricePerHandlingToken: 1.02,
+            numberOfHandlingTokens: 2,
+            pricePerCutToken: 1.03,
+            cutTokensPerCut: 2,
+            numberOfPieces: 4,
+          }
+          expect(when(params)).toEqual('$5.43')
+        })
+      })
+
       it('should return _handlingTokens attribute', () => {
         const attribute = attributes()?.find(
           ({ key }) => key === '_handlingTokens'
