@@ -4,7 +4,6 @@ import type {
   ProductVariant,
   Product,
   CartLineInput,
-  CartLine,
 } from '@/utils/storefront-api-types'
 
 type MM = number

@@ -32,8 +32,11 @@ describe('itemsGenerator', () => {
       expect(product()?.title).toEqual('c')
     })
 
-    it('should return cartQuantity equal to absoluteLength', () => {
-      expect(product()?.cartQuantity).toEqual(1)
+    describe('cartQuantity', () => {
+      it('passes thru the absoluteLength', () => {
+        const params = { absoluteLength: 1 }
+        expect(product(params)?.cartQuantity).toEqual(1)
+      })
     })
 
     it('should return requestedLength equal to requestedLength', () => {
@@ -54,7 +57,7 @@ describe('itemsGenerator', () => {
       expect(product()?.displayedQuantity).toEqual(1)
     })
 
-    describe('product attributes', () => {
+    describe('attributes', () => {
       const attributes = (v = {}) => product(v)?.attributes
 
       describe('Pieces', () => {
@@ -119,8 +122,17 @@ describe('itemsGenerator', () => {
       expect(handlingFee()?.title).toEqual('Handling Cost')
     })
 
-    it('should return cartQuantity equal to numberOfHandlingTokens', () => {
-      expect(handlingFee()?.cartQuantity).toEqual(1)
+    describe('cartQuantity', () => {
+      it('passes thru numberOfHandlingTokens when there is an absoluteLength', () => {
+        // there is only one handling charge per line item, with many tokens
+        const params = { numberOfHandlingTokens: 3, absoluteLength: 1 }
+        expect(handlingFee(params)?.cartQuantity).toEqual(3)
+      })
+
+      it('is undefined when there is not an absoluteLength', () => {
+        const params = { numberOfHandlingTokens: 3, absoluteLength: null }
+        expect(handlingFee(params)?.cartQuantity).toBeUndefined()
+      })
     })
 
     it('should return pricePerPiece equal to handling price', () => {
@@ -141,37 +153,44 @@ describe('itemsGenerator', () => {
   })
 
   describe('cut fee', () => {
-    const cutFee = itemsGenerator(input).find(
-      ({ anchor }) => anchor === 'cut-token'
-    )
+    const cutFee = (v = {}) => {
+      return items(v).find(({ anchor }) => anchor === 'cut-token')
+    }
 
     it('should return id equal to cutTokenId', () => {
-      expect(cutFee?.id).toEqual('a')
+      expect(cutFee()?.id).toEqual('a')
     })
 
     it('should return title equal to "Cut Cost"', () => {
-      expect(cutFee?.title).toEqual('Cut Cost')
+      expect(cutFee()?.title).toEqual('Cut Cost')
     })
 
-    it('should return cartQuantity equal to totalCutTokens', () => {
-      // cut tokens per number of pieces
-      expect(cutFee?.cartQuantity).toEqual(1)
+    describe('cartQuantity', () => {
+      it('returns cartQuantity equal to cutTokensPerCut * numberOfPieces', () => {
+        const params = { cutTokensPerCut: 1, numberOfPieces: 1 }
+        expect(cutFee(params)?.cartQuantity).toEqual(1)
+      })
+
+      it('returns cartQuantity equal to cutTokensPerCut * numberOfPieces', () => {
+        const params = { cutTokensPerCut: 3, numberOfPieces: 4 }
+        expect(cutFee(params)?.cartQuantity).toEqual(12)
+      })
     })
 
     it('should return pricePerPiece equal to pricePerCutToken * tokens per cut', () => {
-      expect(cutFee?.pricePerPiece).toEqual(1)
+      expect(cutFee()?.pricePerPiece).toEqual(1)
     })
 
     it('should return linePrice equal to price per piece * number of pieces', () => {
-      expect(cutFee?.linePrice).toEqual(1)
+      expect(cutFee()?.linePrice).toEqual(1)
     })
 
     it('should return displayedQuantity equal to numberOfPieces', () => {
-      expect(cutFee?.displayedQuantity).toEqual(1)
+      expect(cutFee()?.displayedQuantity).toEqual(1)
     })
 
     it('should return attributes equal to []', () => {
-      expect(cutFee?.attributes).toEqual([])
+      expect(cutFee()?.attributes).toEqual([])
     })
   })
 })
