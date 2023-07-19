@@ -185,6 +185,7 @@
                                     {% assign mtr_id = line.variant.metafields.custom.mtr_id %}
                                     {% assign tagno = line.properties['Tag#'] %}
                                     {% assign pieces = line.properties.Pieces %}
+                                    {% assign cost_per_piece = line.properties._costPerPiece %}
 
                                     <span class='order-list__item-title'>{{ line_title }}</span><br>
 
@@ -209,6 +210,13 @@
 
                                     {% if pieces %}
                                       <span class='order-list__item-variant'>{{ pieces }}</span><br>
+                                    {% endif %}
+
+                                    {% if cost_per_piece %}
+                                      <span class='order-list__item-variant'>
+                                        Cost Per Piece {{ cost_per_piece }}
+                                      </span>
+                                      <br>
                                     {% endif %}
 
                                     {% if line.gift_card and line.properties.__shopify_send_gift_card_to_recipient %}
