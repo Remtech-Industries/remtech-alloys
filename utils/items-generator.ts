@@ -56,6 +56,11 @@ export function itemsGenerator(input: Input) {
 
   const totalCutTokens = numberOfPieces * cutTokensPerCut
 
+  const productLinePrice = absoluteLength * pricePerStockingUnit
+  const handlingLinePrice = pricePerHandlingToken * numberOfHandlingTokens
+  const cutPricePerPiece = pricePerCutToken * cutTokensPerCut
+  const cutLinePrice = numberOfPieces * cutPricePerPiece
+
   // product variant
   const productVariantRow: Item = {
     anchor: 'product',
@@ -64,7 +69,7 @@ export function itemsGenerator(input: Input) {
     cartQuantity: absoluteLength,
     requestedLength: requestedLength,
     pricePerPiece: (absoluteLength / numberOfPieces) * pricePerStockingUnit,
-    linePrice: absoluteLength * pricePerStockingUnit,
+    linePrice: productLinePrice,
     displayedQuantity: numberOfPieces,
     attributes: [
       { key: '_handlingTokens', value: `${numberOfHandlingTokens}` },
@@ -87,28 +92,29 @@ export function itemsGenerator(input: Input) {
     productVariantRow.attributes.push({ key: 'Tag#', value: tagNumber })
   }
 
+  const tempPrice = `1`
+  productVariantRow.attributes.push({ key: 'Cost', value: tempPrice })
+
   // handling fee
-  const handlingPrice = pricePerHandlingToken * numberOfHandlingTokens
   const handlingFeeRow: Item = {
     anchor: 'handling-token',
     id: handlingTokenId,
     title: 'Handling Cost',
     cartQuantity: absoluteLength ? numberOfHandlingTokens : 0,
-    pricePerPiece: handlingPrice,
-    linePrice: handlingPrice,
+    pricePerPiece: handlingLinePrice,
+    linePrice: handlingLinePrice,
     displayedQuantity: 1,
     attributes: [],
   }
 
   // cut fee
-  const cutPricePerPiece = pricePerCutToken * cutTokensPerCut
   const cutFeeRow: Item = {
     anchor: 'cut-token',
     id: cutTokenId,
     title: 'Cut Cost',
     cartQuantity: totalCutTokens,
     pricePerPiece: cutPricePerPiece,
-    linePrice: numberOfPieces * cutPricePerPiece,
+    linePrice: cutLinePrice,
     displayedQuantity: numberOfPieces,
     attributes: [],
   }
