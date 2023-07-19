@@ -19,7 +19,7 @@ const input = {
 const items = (v = {}) => itemsGenerator({ ...input, ...v })
 
 describe('itemsGenerator', () => {
-  describe('product variant', () => {
+  describe('product', () => {
     const product = (v = {}) => {
       return items(v).find(({ anchor }) => anchor === 'product')
     }
@@ -49,8 +49,15 @@ describe('itemsGenerator', () => {
       expect(product()?.pricePerPiece).toEqual(1)
     })
 
-    it('should return linePrice calculated from absoluteLength', () => {
-      expect(product()?.linePrice).toEqual(1)
+    describe('linePrice', () => {
+      it('returns linePrice calculated from absoluteLength * pricePerStockingUnit', () => {
+        const params = { absoluteLength: 1, pricePerStockingUnit: 1 }
+        expect(product(params)?.linePrice).toEqual(1)
+      })
+      it('returns linePrice calculated from absoluteLength * pricePerStockingUnit', () => {
+        const params = { absoluteLength: 3, pricePerStockingUnit: 2 }
+        expect(product(params)?.linePrice).toEqual(6)
+      })
     })
 
     it('should return displayedQuantity equal to numberOfPieces', () => {
@@ -139,8 +146,19 @@ describe('itemsGenerator', () => {
       expect(handlingFee()?.pricePerPiece).toEqual(1)
     })
 
-    it('should return linePrice equal to handling price', () => {
-      expect(handlingFee()?.linePrice).toEqual(1)
+    describe('linePrice', () => {
+      it('returns linePrice equal to numberOfTokens * pricePerToken', () => {
+        const params = { numberOfHandlingTokens: 1, pricePerHandlingToken: 1 }
+        expect(handlingFee(params)?.linePrice).toEqual(1)
+      })
+
+      it('returns linePrice equal to numberOfTokens * pricePerToken', () => {
+        const params = {
+          numberOfHandlingTokens: 3,
+          pricePerHandlingToken: 9.18,
+        }
+        expect(handlingFee(params)?.linePrice).toEqual(27.54)
+      })
     })
 
     it('should return displayedQuantity equal to 1', () => {
@@ -181,8 +199,24 @@ describe('itemsGenerator', () => {
       expect(cutFee()?.pricePerPiece).toEqual(1)
     })
 
-    it('should return linePrice equal to price per piece * number of pieces', () => {
-      expect(cutFee()?.linePrice).toEqual(1)
+    describe('linePrice', () => {
+      it('returns linePrice equal to pricePerToken * tokensPerCut * numberOfPieces', () => {
+        const params = {
+          numberOfPieces: 1,
+          pricePerCutToken: 1,
+          cutTokensPerCut: 1,
+        }
+        expect(cutFee(params)?.linePrice).toEqual(1)
+      })
+
+      it('returns linePrice equal to pricePerToken * tokensPerCut * numberOfPieces', () => {
+        const params = {
+          numberOfPieces: 2,
+          pricePerCutToken: 1.34,
+          cutTokensPerCut: 2,
+        }
+        expect(cutFee(params)?.linePrice).toEqual(5.36)
+      })
     })
 
     it('should return displayedQuantity equal to numberOfPieces', () => {
