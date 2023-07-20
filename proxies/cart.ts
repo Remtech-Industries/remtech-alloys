@@ -118,7 +118,9 @@ export async function cartLinesAdd(
   }
 }
 
-export async function useGetCart(cartId: string): Promise<{ cart: Cart }> {
+export async function useGetCart(
+  cartId: string
+): Promise<{ cart: Cart | null }> {
   const cart = await usePostToShopify(
     `query getCart($cartId: ID!) { cart(id: $cartId) ${cartQuery} }`,
     { cartId: cartId }
