@@ -28,6 +28,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
     "@vueuse/core": "^9.12.0",
+    "nuxt-bugsnag": "^6.5.2",
     "pinia": "^2.0.30",
     "primevue": "^3.29.2"
   }

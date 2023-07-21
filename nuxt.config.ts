@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/devtools',
     'nuxt-gtag',
+    'nuxt-bugsnag',
   ],
   extends: ['nuxt-seo-kit'],
   routeRules: {
@@ -31,6 +32,15 @@ export default defineNuxtConfig({
   app: {
     head: {
       style: [{ children: 'body { background-color: #f8fafc }' }],
+    },
+  },
+  bugsnag: {
+    baseUrl: 'https://remtechalloys.com',
+    publishRelease: true,
+    config: {
+      apiKey: 'c3a9f5d2f4c102d10bdff8a53bffc6fa',
+      enabledReleaseStages: ['production'],
+      releaseStage: process.env.NODE_ENV,
     },
   },
 })
