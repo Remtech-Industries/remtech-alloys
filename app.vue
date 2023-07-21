@@ -28,6 +28,4 @@ useHead({
   title: 'Rem-Tech Alloys',
   titleTemplate: '%s - Rem-Tech Alloys',
 })
-
-useBugsnag().notify('Test error')
 </script>
