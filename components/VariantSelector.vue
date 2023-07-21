@@ -9,7 +9,7 @@
   >
     <div class="whitespace-nowrap">{{ variant.title }}</div>
 
-    <div class="whitespace-nowrap text-xs font-light">
+    <div class="test whitespace-nowrap text-xs font-light">
       Bar Length: {{ quantityAvailable }}
     </div>
   </div>
