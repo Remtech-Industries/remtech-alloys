@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <span v-if="d" v-html="d.body"></span>
-  </div>
+  <span v-html="page?.body"></span>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useFetch, useRuntimeConfig } from '#imports'
 import { Page } from '@/utils/storefront-api-types'
 
@@ -32,7 +30,7 @@ query getPage($handle: String!) {
 }
 `
 
-const d = ref<Page>()
+const page = ref<Page>()
 
 const get = async () => {
   const { data } = await useFetch<{ data: { page: Page } }>(url, {
@@ -47,8 +45,7 @@ const get = async () => {
     },
   })
 
-  console.log(data.value)
-  d.value = data.value?.data.page
+  page.value = data.value?.data.page
 }
 
 get()
