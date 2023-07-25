@@ -1,22 +1,25 @@
 <template>
-  <span v-html="page?.body"></span>
+  <span class="custom-page-css" v-html="page?.body"></span>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useFetch, useRuntimeConfig, useHead } from '#imports'
+import { useFetch, useRuntimeConfig, useRoute, useHead } from '#imports'
 import { Page } from '@/utils/storefront-api-types'
 
 const config = useRuntimeConfig()
 const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-07/graphql.json`
+
+const { params } = useRoute()
+const pageHandle = Array.isArray(params.pageHandle)
+  ? params.pageHandle[0]
+  : params.pageHandle
 
 const string = `
 query getPage($handle: String!) {
   page(handle: $handle) {
     id
     body
-    bodySummary
-    createdAt
     handle
     onlineStoreUrl
     seo {
@@ -24,8 +27,6 @@ query getPage($handle: String!) {
       title
     }
     title
-    trackingParameters
-    updatedAt
   }
 }
 `
@@ -41,7 +42,7 @@ const get = async () => {
     },
     body: {
       query: string,
-      variables: { handle: 'rfq' },
+      variables: { handle: pageHandle },
     },
   })
 
@@ -57,3 +58,20 @@ useHead({
   meta: [{ name: 'description', content: description }],
 })
 </script>
+
+<style scoped>
+.custom-page-css :deep() {
+  h1 {
+    @apply text-3xl font-bold text-slate-700;
+  }
+  h2 {
+    @apply text-2xl font-bold text-slate-700;
+  }
+  h3 {
+    @apply text-xl font-bold text-slate-700;
+  }
+  p {
+    @apply text-slate-700;
+  }
+}
+</style>
