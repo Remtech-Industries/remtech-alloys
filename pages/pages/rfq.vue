@@ -3,8 +3,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useFetch, useRuntimeConfig } from '#imports'
+import { ref, computed } from 'vue'
+import { useFetch, useRuntimeConfig, useHead } from '#imports'
 import { Page } from '@/utils/storefront-api-types'
 
 const config = useRuntimeConfig()
@@ -49,4 +49,11 @@ const get = async () => {
 }
 
 get()
+
+const title = computed(() => page.value?.seo?.title || '')
+const description = computed(() => page.value?.seo?.description || '')
+useHead({
+  title,
+  meta: [{ name: 'description', content: description }],
+})
 </script>

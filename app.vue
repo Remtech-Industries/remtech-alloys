@@ -20,12 +20,10 @@
 import Header from '@/components/Header.vue'
 import { useHead } from '#imports'
 import { useCartStore } from '@/stores/cart'
-import { useBugsnag } from '#imports'
 const { getCart } = useCartStore()
 getCart()
 
 useHead({
   title: 'Rem-Tech Alloys',
-  titleTemplate: '%s - Rem-Tech Alloys',
 })
 </script>
