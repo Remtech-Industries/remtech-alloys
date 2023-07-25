@@ -1,8 +1,8 @@
-import { useRuntimeConfig } from 'nuxt/app'
+import { useRuntimeConfig } from '#imports'
 
 export async function usePostToShopify(query: string, variables = {}) {
   const config = useRuntimeConfig()
-  const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-01/graphql.json`
+  const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-07/graphql.json`
 
   try {
     const result = await fetch(url, {
