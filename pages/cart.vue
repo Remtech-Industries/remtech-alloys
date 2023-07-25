@@ -63,14 +63,16 @@
           </div>
         </div>
 
-        <button
-          class="mt-3 w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
-          @click="onClick()"
-        >
-          Checkout
-        </button>
+        <ClientOnly>
+          <button
+            class="mt-3 w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
+            @click="onClick()"
+          >
+            Checkout
+          </button>
 
-        <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
+          <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
+        </ClientOnly>
       </div>
     </div>
   </div>
