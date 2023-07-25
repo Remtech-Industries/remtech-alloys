@@ -11,6 +11,7 @@
     "Nuxt",
     "nuxtjs",
     "pinia",
+    "postcss",
     "primevue",
     "superalloys",
     "tailwindcss",
