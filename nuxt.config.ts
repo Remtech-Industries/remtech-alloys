@@ -1,5 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  site: {
+    url: 'https://remtechalloys.com',
+  },
   imports: { autoImport: false },
   modules: [
     '@nuxtjs/tailwindcss',
