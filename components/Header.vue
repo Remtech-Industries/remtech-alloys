@@ -12,8 +12,7 @@
         </NuxtLink>
 
         <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
-          Offering Prompt Delivery of Custom-Sized Stainless Steels and
-          Specialty Alloys
+          {{ brand?.slogan }}
         </div>
       </div>
 
@@ -116,8 +115,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
+import { useShopStore } from '@/stores/shop'
 import { ref, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
+
+const { brand } = useShopStore()
 
 const showAddedToCartAlert = ref(false)
 
