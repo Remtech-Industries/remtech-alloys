@@ -4,7 +4,7 @@
       <div class="flex flex-grow items-center self-start">
         <NuxtLink to="/">
           <img
-            src="/logo.png"
+            :src="`${brand?.logo?.image?.url}&width=400`"
             alt="Rem-Tech Alloys Logo"
             width="200"
             class="sm:ml-8"

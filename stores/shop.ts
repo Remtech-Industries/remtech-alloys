@@ -11,6 +11,12 @@ export const useShopStore = defineStore('shop', () => {
     query {
       shop {
         brand {
+          logo {
+            id
+            image {
+              url
+            }
+          }
           slogan
         }
       }
