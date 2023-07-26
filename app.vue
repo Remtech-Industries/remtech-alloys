@@ -10,9 +10,9 @@
 
     <Header />
 
-    <div class="container mx-auto max-w-screen-xl">
+    <NuxtLayout>
       <NuxtPage />
-    </div>
+    </NuxtLayout>
   </div>
 </template>
 

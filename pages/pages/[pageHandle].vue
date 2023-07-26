@@ -4,8 +4,18 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useFetch, useRuntimeConfig, useRoute, useHead } from '#imports'
+import {
+  definePageMeta,
+  useFetch,
+  useRuntimeConfig,
+  useRoute,
+  useHead,
+} from '#imports'
 import { Page } from '@/utils/storefront-api-types'
+
+definePageMeta({
+  layout: 'page',
+})
 
 const config = useRuntimeConfig()
 const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-07/graphql.json`
