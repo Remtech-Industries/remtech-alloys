@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   site: {
     url: 'https://remtechalloys.com',
+    name: 'Rem-Tech Alloys',
+  },
+  robots: {
+    disallow: ['/cart', '/mtr'],
   },
   imports: { autoImport: false },
   modules: [
@@ -32,11 +36,6 @@ export default defineNuxtConfig({
     'primevue/resources/themes/saga-blue/theme.css',
     'primevue/resources/primevue.css',
   ],
-  app: {
-    head: {
-      style: [{ children: 'body { background-color: #f8fafc }' }],
-    },
-  },
   bugsnag: {
     baseUrl: 'https://remtechalloys.com',
     publishRelease: true,

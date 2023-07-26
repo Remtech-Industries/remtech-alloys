@@ -25,5 +25,6 @@ getCart()
 
 useHead({
   title: 'Rem-Tech Alloys',
+  style: [{ children: 'body { background-color: #f8fafc }' }],
 })
 </script>
