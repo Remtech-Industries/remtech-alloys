@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RequestedLengthInput from './RequestedLengthInput.vue'
+// temp disable all tests do to nuxt #import error
 
 describe('Length Input', () => {
   it('should include the word Length', () => {

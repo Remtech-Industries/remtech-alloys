@@ -1,4 +1,4 @@
-import { computed, ref } from 'vue'
+import { computed, ref } from '#imports'
 import { defineStore } from 'pinia'
 import type {
   Attribute,

@@ -33,10 +33,8 @@
 
 <script setup lang="ts">
 import { usePostToShopify } from '@/proxies/post-to-shopify'
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
-import { GenericFile, ProductVariant } from '~~/utils/storefront-api-types'
-import { useHead } from 'nuxt/app'
+import { GenericFile, ProductVariant } from '@/utils/storefront-api-types'
+import { onMounted, ref, useHead, useRoute } from '#imports'
 
 useHead({
   title: 'MTR Download',

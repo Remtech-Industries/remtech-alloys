@@ -49,7 +49,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHead } from 'nuxt/app'
+import { useHead } from '#imports'
 useHead({
   title: 'About',
 })

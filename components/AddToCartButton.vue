@@ -10,9 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, useRouter } from '#imports'
 import { useCartStore } from '@/stores/cart'
-import { useRouter } from 'vue-router'
 import type { Item } from '@/utils/items-generator'
 
 const props = defineProps<{ items: Item[] }>()

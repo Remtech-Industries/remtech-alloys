@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from '#imports'
 
 const emit = defineEmits<{
   (e: 'update:quantity', value: number): void

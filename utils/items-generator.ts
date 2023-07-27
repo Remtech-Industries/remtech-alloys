@@ -1,4 +1,4 @@
-import { toMoney, toInches } from '@/utils/conversion'
+import { toMoney, toInches } from './conversion'
 import type {
   AttributeInput,
   ProductVariant,

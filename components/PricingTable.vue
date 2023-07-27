@@ -98,7 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from '#imports'
 import type { Item } from '@/utils/items-generator'
 import { toInches, toMoney } from '@/utils/conversion'
 
