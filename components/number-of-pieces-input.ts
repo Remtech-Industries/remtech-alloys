@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import NumberOfPiecesInput from './NumberOfPiecesInput.vue'
+// temp disable all tests do to nuxt #import error
 
 describe('Quantity Input', () => {
   it('should include the word Quantity', () => {
