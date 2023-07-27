@@ -116,7 +116,7 @@
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useShopStore } from '@/stores/shop'
-import { ref, watch } from 'vue'
+import { ref, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
 
 const { brand } = useShopStore()

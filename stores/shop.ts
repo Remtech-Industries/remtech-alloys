@@ -1,7 +1,6 @@
 import { Shop } from '@/utils/storefront-api-types'
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
-import { useRuntimeConfig, useFetch } from '#imports'
+import { useRuntimeConfig, useFetch, ref } from '#imports'
 
 export const useShopStore = defineStore('shop', () => {
   const config = useRuntimeConfig()

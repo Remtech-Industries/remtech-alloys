@@ -68,13 +68,11 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import { FilterMatchMode } from 'primevue/api'
-import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
-import { useHead } from 'nuxt/app'
+import { onMounted, ref, useHead, useRoute } from '#imports'
 const { params } = useRoute()
 
 const filters = ref({

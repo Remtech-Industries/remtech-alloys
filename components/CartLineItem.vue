@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { toMoney } from '@/utils/conversion'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
-import { computed } from 'vue'
+import { computed } from '#imports'
 
 const props = defineProps<{ cartLine: BaseCartLine }>()
 

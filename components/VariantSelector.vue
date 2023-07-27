@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed } from '#imports'
 import type { ProductVariant } from '@/utils/storefront-api-types'
 
 interface Props {

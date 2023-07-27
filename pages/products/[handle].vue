@@ -87,14 +87,12 @@ import RequestedLengthInput from '@/components/RequestedLengthInput.vue'
 import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { computed, ref } from 'vue'
 import { getTokens } from '@/proxies/get-tokens'
 import { getProduct } from '@/proxies/get-product'
-import { useRoute } from 'vue-router'
 import type { Form } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
-import { useHead } from '#imports'
+import { computed, ref, useHead, useRoute } from '#imports'
 
 const { params } = useRoute()
 

@@ -80,10 +80,9 @@
 
 <script setup lang="ts">
 import CartLineItem from '@/components/CartLineItem.vue'
-import { computed, onMounted, ref, onBeforeUnmount } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { useHead } from '#imports'
+import { useHead, computed, onMounted, ref, onBeforeUnmount } from '#imports'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { tokenHandles } from '@/utils/constants'
 import { toMoney } from '@/utils/conversion'

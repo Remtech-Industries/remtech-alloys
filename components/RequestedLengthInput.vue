@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from '#imports'
 import { toMm } from '@/utils/conversion'
 
 const message = ref('')
