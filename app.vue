@@ -12,8 +12,6 @@
 
     <NuxtLayout>
       <NuxtPage />
-      <button class="p-2 bg-slate-400" @click="getShop">get</button>
-
     </NuxtLayout>
   </div>
 </template>

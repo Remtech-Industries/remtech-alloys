@@ -6,9 +6,9 @@
       Choose a material type
     </div>
 
-    <ul>
+    <ul v-if="data">
       <li
-        v-for="{ node } in collections"
+        v-for="{ node } in data.collections.edges"
         :key="node.id"
         class="rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
       >
@@ -23,5 +23,6 @@
 <script setup lang="ts">
 import { useGetCollections } from '@/proxies/get-collections'
 
-const collections = await useGetCollections()
+const { data, doGet } = useGetCollections()
+await doGet()
 </script>
