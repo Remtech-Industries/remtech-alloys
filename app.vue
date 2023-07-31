@@ -3,8 +3,8 @@
     <SeoKit />
     <div class="flex justify-center bg-yellow-500 px-2">
       <div class="font-bold">
-        Rem-Tech Alloys is under heavy development. We are currently offering
-        local pickup only. Thank you for your patience.
+        Rem-Tech Alloys is under heavy development. We are currently accepting
+        orders as a request for quote. Thank you for your patience.
       </div>
     </div>
 
