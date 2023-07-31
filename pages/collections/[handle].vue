@@ -15,11 +15,12 @@
 
       <div class="rounded-xl bg-white p-6">
         <DataTable
+          v-if="products"
           row-hover
           scrollable
           v-model:filters="filters"
           class="p-datatable-sm"
-          :value="products.map(({ node }) => node)"
+          :value="products"
           @row-click="({ data }) => $router.push(`/products/${data.handle}`)"
         >
           <template #header>
@@ -32,13 +33,19 @@
             </div>
           </template>
 
-          <Column field="title" frozen header="Size" style="min-width: 180px" />
+          <Column field="title" frozen header="Size" style="min-width: 180px">
+            <template #body="{ data }">
+              <NuxtLink :to="`/products/${data.handle}`">
+                {{ data.title }}
+              </NuxtLink>
+            </template>
+          </Column>
 
           <Column header="Price/Inch">
             <template #body="{ data }">
               {{
                 toMoney(
-                  toPricePerInch(+data.priceRange.minVariantPrice.amount, 'mm')
+                  toPricePerInch(+data.priceRange.minVariantPrice.amount, 'mm'),
                 )
               }}
             </template>
@@ -70,7 +77,7 @@ import InputText from 'primevue/inputtext'
 import { FilterMatchMode } from 'primevue/api'
 import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
-import type { ProductEdge, Collection } from '@/utils/storefront-api-types'
+import type { Product, Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 import { onMounted, ref, useHead, useRoute } from '#imports'
 const { params } = useRoute()
@@ -81,15 +88,18 @@ const filters = ref({
     matchMode: FilterMatchMode.CONTAINS,
   },
 })
-const collection = ref<Collection | null>(null)
-const products = ref<ProductEdge[]>([])
+const collection = ref<Collection>()
+const products = ref<Product[]>()
 
 onMounted(async () => {
   const handle =
     typeof params.handle === 'string' ? params.handle : params.handle[0] || ''
-  const response = await useGetCollection(handle)
-  collection.value = response.collection
-  products.value = response.collection.products.edges
+  const { data, doGet } = useGetCollection(handle)
+  await doGet()
+  collection.value = data.value?.collection
+  products.value = data.value?.collection?.products.edges.map(
+    ({ node }) => node,
+  )
 })
 
 useHead({
