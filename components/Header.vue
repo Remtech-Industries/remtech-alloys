@@ -48,6 +48,10 @@
           <div
             class="ml-auto flex flex-col items-end gap-2 font-oswald text-slate-50 sm:flex-row sm:gap-5"
           >
+            <NuxtLink to="/pages/rfq" class="tracking-wide">
+              GET A QUOTE
+            </NuxtLink>
+
             <NuxtLink to="/about" class="tracking-widest">ABOUT</NuxtLink>
 
             <div class="flex items-baseline">

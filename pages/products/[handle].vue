@@ -61,6 +61,12 @@
           />
         </div>
 
+        <div class="rounded border bg-yellow-500 p-3">
+          Currently, the Add to Cart is only available for local pickups. Please
+          send RFQ to place an order.
+          <nuxt-link class="font-bold" to="/pages/rfq">Click Here</nuxt-link>
+        </div>
+
         <AddToCartButton :items="items" />
 
         <div v-if="items.length" class="w-full rounded-xl bg-white p-6">
@@ -127,7 +133,7 @@ const selectedVariant = computed(() => {
   const absoluteLength = Math.ceil(actualLengthPerPiece * numberOfPieces)
 
   const foundVariant = variants.value.find(
-    (variant) => (variant.quantityAvailable || 0) >= absoluteLength
+    (variant) => (variant.quantityAvailable || 0) >= absoluteLength,
   )
 
   if (!foundVariant) return null
