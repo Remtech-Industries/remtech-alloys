@@ -1,7 +1,7 @@
 import { Shop } from '@/utils/storefront-api-types'
+import { useShopifyHeaders, useShopifyUrl } from '@/composables/useShopify'
 import { defineStore } from 'pinia'
-import { ref } from '#imports'
-import { useShopify } from '@/proxies/shopify'
+import { ref, useFetch } from '#imports'
 
 export const useShopStore = defineStore('shop', () => {
   const query = `
@@ -23,12 +23,15 @@ export const useShopStore = defineStore('shop', () => {
   const brand = ref<Shop['brand']>()
 
   async function getShop() {
-    const { data, doGet } = useShopify<{ shop: Shop }>(query)
+    const { data } = await useFetch<{ data: { shop: Shop } }>(useShopifyUrl(), {
+      key: 'shop',
+      method: 'POST',
+      ...useShopifyHeaders(),
+      body: { query },
+    })
 
-    await doGet()
-
-    if (data.value?.shop) {
-      brand.value = data.value.shop.brand
+    if (data.value?.data.shop) {
+      brand.value = data.value.data.shop.brand
     }
   }
 
