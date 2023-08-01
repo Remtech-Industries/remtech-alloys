@@ -2,6 +2,8 @@
   <div class="flex">
     <CollectionSidebar class="hidden md:block" />
 
+    <div v-if="error">{{ error }}</div>
+
     <div class="w-full p-6" v-if="collection">
       <div class="mb-6 flex flex-col items-baseline">
         <h1
@@ -75,12 +77,19 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import { FilterMatchMode } from 'primevue/api'
-import { useGetCollection } from '@/proxies/get-collection'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
-import type { Product, Collection } from '@/utils/storefront-api-types'
+import { collectionQuery } from '@/utils/collections'
+import type { Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
-import { onMounted, ref, useHead, useRoute } from '#imports'
+import { computed, useFetch, ref, useHead, useRoute } from '#imports'
+import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
 const { params } = useRoute()
+
+const variables = computed(() => {
+  const handle =
+    typeof params.handle === 'string' ? params.handle : params.handle[0] || ''
+  return { handle }
+})
 
 const filters = ref({
   global: {
@@ -88,18 +97,26 @@ const filters = ref({
     matchMode: FilterMatchMode.CONTAINS,
   },
 })
-const collection = ref<Collection>()
-const products = ref<Product[]>()
 
-onMounted(async () => {
-  const handle =
-    typeof params.handle === 'string' ? params.handle : params.handle[0] || ''
-  const { data, doGet } = useGetCollection(handle)
-  await doGet()
-  collection.value = data.value?.collection
-  products.value = data.value?.collection?.products.edges.map(
-    ({ node }) => node,
-  )
+type Data = {
+  data: {
+    collection: Collection
+  }
+}
+
+const { data, error } = await useFetch<Data>(useShopifyUrl(), {
+  ...useShopifyHeaders(),
+  method: 'POST',
+  key: 'collection',
+  body: { query: collectionQuery, variables },
+})
+
+const collection = computed(() => {
+  return data.value?.data?.collection
+})
+
+const products = computed(() => {
+  return collection?.value?.products.edges.map(({ node }) => node)
 })
 
 useHead({
