@@ -46,6 +46,7 @@ const page = ref<Page>()
 
 const get = async () => {
   const { data } = await useFetch<{ data: { page: Page } }>(url, {
+    key: 'page',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

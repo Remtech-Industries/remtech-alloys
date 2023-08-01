@@ -4,9 +4,9 @@
 
     <div class="m-6 w-full rounded-xl bg-white p-6">
       <DataTable
-        v-if="data"
+        v-if="collections && collections.length > 0"
         row-hover
-        :value="data.collections.edges.map(({ node }) => node)"
+        :value="collections"
         class="p-datatable-sm"
         @row-click="({ data }) => $router.push(`/collections/${data.handle}`)"
       >
@@ -19,6 +19,10 @@
         </Column>
         <Column field="products.edges.length" header="Quantity" />
       </DataTable>
+
+      <div v-else>
+        <p class="text-center">No collections found</p>
+      </div>
     </div>
   </div>
 </template>
@@ -26,9 +30,24 @@
 <script setup lang="ts">
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
-import { useGetCollections } from '@/proxies/get-collections'
-import CollectionSidebar from '@/components/CollectionSidebar.vue'
+import { collectionsQuery } from '@/utils/collections'
+import { useFetch, computed } from '#imports'
+import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
+import { CollectionConnection } from '@/utils/storefront-api-types'
 
-const { data, doGet } = useGetCollections()
-await doGet()
+type Data = {
+  data: {
+    collections: CollectionConnection
+  }
+}
+const { data } = await useFetch<Data>(useShopifyUrl(), {
+  ...useShopifyHeaders(),
+  key: 'collections',
+  method: 'POST',
+  body: { query: collectionsQuery },
+})
+
+const collections = computed(() => {
+  return data.value?.data?.collections.edges.map(({ node }) => node)
+})
 </script>
