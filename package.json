@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
-    "@vueuse/core": "^10.2.1",
+    "@vueuse/core": "^10.3.0",
     "nuxt-bugsnag": "^6.5.2",
     "pinia": "^2.0.30",
     "primevue": "^3.29.2"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^0.7.1",
+    "@nuxt/devtools": "^0.7.2",
     "@nuxt/test-utils": "^3.1.1",
     "@nuxtjs/tailwindcss": "^6.3.0",
     "@vitejs/plugin-vue": "^4.0.0",

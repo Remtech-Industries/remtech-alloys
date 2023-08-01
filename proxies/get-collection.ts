@@ -1,4 +1,5 @@
-import { usePostToShopify } from './post-to-shopify'
+import { Collection } from '@/utils/storefront-api-types'
+import { useShopify } from './shopify'
 
 const query = `
 query collection($handle: String!) {
@@ -25,7 +26,7 @@ query collection($handle: String!) {
   }
 }`
 
-export async function useGetCollection(handle: string) {
-  const response = await usePostToShopify(query, { handle: handle })
-  return response
+export function useGetCollection(handle: string) {
+  const { data, doGet } = useShopify<{ collection: Collection }>(query, { handle: handle })
+  return { data, doGet }
 }

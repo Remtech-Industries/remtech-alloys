@@ -1,11 +1,9 @@
 import { Shop } from '@/utils/storefront-api-types'
 import { defineStore } from 'pinia'
-import { useRuntimeConfig, useFetch, ref } from '#imports'
+import { ref } from '#imports'
+import { useShopify } from '@/proxies/shopify'
 
 export const useShopStore = defineStore('shop', () => {
-  const config = useRuntimeConfig()
-  const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-07/graphql.json`
-
   const query = `
     query {
       shop {
@@ -25,16 +23,13 @@ export const useShopStore = defineStore('shop', () => {
   const brand = ref<Shop['brand']>()
 
   async function getShop() {
-    const { data } = await useFetch<{ data: { shop: Shop } }>(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': config.public.publicAccessToken,
-      },
-      body: { query },
-    })
+    const { data, doGet } = useShopify<{ shop: Shop }>(query)
 
-    brand.value = data.value?.data.shop.brand
+    await doGet()
+
+    if (data.value?.shop) {
+      brand.value = data.value.shop.brand
+    }
   }
 
   return { brand, getShop }

@@ -1,4 +1,4 @@
-import { usePostToShopify } from './post-to-shopify'
+import { useShopify } from './shopify'
 import type { CollectionEdge } from '@/utils/storefront-api-types'
 
 const query = `
@@ -29,7 +29,7 @@ type Data = {
   }
 }
 
-export async function useGetCollections(): Promise<CollectionEdge[]> {
-  const { collections }: Data = await usePostToShopify(query)
-  return collections.edges
+export function useGetCollections() {
+  const { data, doGet } = useShopify<Data>(query)
+  return { data, doGet }
 }
