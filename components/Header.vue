@@ -3,10 +3,11 @@
     <div class="container mx-auto flex items-stretch justify-between">
       <div class="flex flex-grow items-center self-start">
         <NuxtLink to="/">
-          <img
+          <NuxtImg
             :src="`${brand?.logo?.image?.url}&width=400`"
             alt="Rem-Tech Alloys Logo"
-            width="200"
+            :width="200"
+            :height="75"
             class="sm:ml-8"
           />
         </NuxtLink>

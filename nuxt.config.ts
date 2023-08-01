@@ -1,8 +1,8 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   site: {
-    url: 'https://remtechalloys.com',
-    name: 'Rem-Tech Alloys',
+    siteUrl: 'https://remtechalloys.com',
+    siteName: 'Rem-Tech Alloys',
   },
   robots: {
     disallow: ['/cart', '/mtr'],
@@ -10,6 +10,7 @@ export default defineNuxtConfig({
   imports: { autoImport: false },
   modules: [
     '@nuxtjs/tailwindcss',
+    '@nuxt/image',
     '@pinia/nuxt',
     '@nuxt/devtools',
     'nuxt-gtag',
