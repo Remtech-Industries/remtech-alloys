@@ -32,22 +32,15 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { collectionsQuery } from '@/utils/collections'
 import { useFetch, computed } from '#imports'
-import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
-import { CollectionConnection } from '@/utils/storefront-api-types'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import type { CollectionsResponse } from 'utils/types'
 
-type Data = {
-  data: {
-    collections: CollectionConnection
-  }
-}
-const { data } = await useFetch<Data>(useShopifyUrl(), {
-  ...useShopifyHeaders(),
+const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
+  ...useShopifyOptions(collectionsQuery),
   key: 'collections',
-  method: 'POST',
-  body: { query: collectionsQuery },
 })
 
 const collections = computed(() => {
-  return data.value?.data?.collections.edges.map(({ node }) => node)
+  return data.value?.data?.collections?.edges.map(({ node }) => node)
 })
 </script>

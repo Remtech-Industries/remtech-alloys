@@ -8,18 +8,15 @@ import {
   computed,
   definePageMeta,
   useFetch,
-  useRuntimeConfig,
   useRoute,
   useHead,
 } from '#imports'
-import { Page } from '@/utils/storefront-api-types'
+import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
+import { PageResponse, Page } from '@/utils/types'
 
 definePageMeta({
   layout: 'page',
 })
-
-const config = useRuntimeConfig()
-const url = `https://${config.public.shopifyStore}.myshopify.com/api/2023-07/graphql.json`
 
 const { params } = useRoute()
 const pageHandle = Array.isArray(params.pageHandle)
@@ -43,22 +40,13 @@ query getPage($handle: String!) {
 `
 
 const page = ref<Page>()
-
 const get = async () => {
-  const { data } = await useFetch<{ data: { page: Page } }>(url, {
+  const { data } = await useFetch<PageResponse>(useShopifyUrl(), {
+    ...useShopifyOptions(string, { handle: pageHandle }),
     key: 'page',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': config.public.publicAccessToken,
-    },
-    body: {
-      query: string,
-      variables: { handle: pageHandle },
-    },
   })
 
-  page.value = data.value?.data.page
+  page.value = data.value?.data?.page
 }
 
 get()

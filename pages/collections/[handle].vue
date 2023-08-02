@@ -79,10 +79,10 @@ import InputText from 'primevue/inputtext'
 import { FilterMatchMode } from 'primevue/api'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import { collectionQuery } from '@/utils/collections'
-import type { Collection } from '@/utils/storefront-api-types'
+import type { CollectionResponse } from 'utils/types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 import { computed, useFetch, ref, useHead, useRoute } from '#imports'
-import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -98,17 +98,9 @@ const filters = ref({
   },
 })
 
-type Data = {
-  data: {
-    collection: Collection
-  }
-}
-
-const { data, error } = await useFetch<Data>(useShopifyUrl(), {
-  ...useShopifyHeaders(),
-  method: 'POST',
+const { data, error } = await useFetch<CollectionResponse>(useShopifyUrl(), {
+  ...useShopifyOptions(collectionQuery, variables.value),
   key: 'collection',
-  body: { query: collectionQuery, variables },
 })
 
 const collection = computed(() => {
@@ -116,10 +108,10 @@ const collection = computed(() => {
 })
 
 const products = computed(() => {
-  return collection?.value?.products.edges.map(({ node }) => node)
+  return collection.value?.products.edges.map(({ node }) => node)
 })
 
 useHead({
-  title: collection?.value?.title,
+  title: collection.value?.title,
 })
 </script>
