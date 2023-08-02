@@ -32,7 +32,7 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { collectionsQuery } from '@/utils/collections'
 import { useFetch, computed } from '#imports'
-import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { CollectionConnection } from '@/utils/storefront-api-types'
 
 type Data = {
@@ -41,10 +41,8 @@ type Data = {
   }
 }
 const { data } = await useFetch<Data>(useShopifyUrl(), {
-  ...useShopifyHeaders(),
+  ...useShopifyOptions(collectionsQuery),
   key: 'collections',
-  method: 'POST',
-  body: { query: collectionsQuery },
 })
 
 const collections = computed(() => {

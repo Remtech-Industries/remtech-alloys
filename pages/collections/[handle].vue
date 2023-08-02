@@ -82,7 +82,7 @@ import { collectionQuery } from '@/utils/collections'
 import type { Collection } from '@/utils/storefront-api-types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 import { computed, useFetch, ref, useHead, useRoute } from '#imports'
-import { useShopifyUrl, useShopifyHeaders } from '@/composables/useShopify'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -105,10 +105,8 @@ type Data = {
 }
 
 const { data, error } = await useFetch<Data>(useShopifyUrl(), {
-  ...useShopifyHeaders(),
-  method: 'POST',
+  ...useShopifyOptions(collectionQuery, variables.value),
   key: 'collection',
-  body: { query: collectionQuery, variables },
 })
 
 const collection = computed(() => {
