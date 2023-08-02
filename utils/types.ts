@@ -1,4 +1,4 @@
-import type { Maybe, Shop } from './storefront-api-types'
+import type { Maybe, Shop, CollectionConnection, Collection } from './storefront-api-types'
 
 export type Form = {
   numberOfPieces: number
@@ -15,6 +15,8 @@ export type ShopifyResponse<T> = {
   errors?: string[]
 }
 
+export type CollectionResponse = ShopifyResponse<{ collection?: Collection }>
+export type CollectionsResponse = ShopifyResponse<{ collections?: CollectionConnection }>
 export type ShopResponse = ShopifyResponse<{ shop?: Shop }>
 
 export type * from './storefront-api-types'

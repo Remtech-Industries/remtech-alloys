@@ -26,19 +26,14 @@
 import { collectionsQuery } from '@/utils/collections'
 import { useFetch, computed } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import { CollectionConnection } from '@/utils/storefront-api-types'
+import { CollectionsResponse } from '@/utils/types'
 
-type Data = {
-  data: {
-    collections: CollectionConnection
-  }
-}
-const { data } = await useFetch<Data>(useShopifyUrl(), {
+const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),
   key: 'collections',
 })
 
 const collections = computed(() => {
-  return data.value?.data?.collections.edges.map(({ node }) => node)
+  return data.value?.data?.collections?.edges.map(({ node }) => node)
 })
 </script>
