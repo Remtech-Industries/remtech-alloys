@@ -1,4 +1,4 @@
-import type { ShopResponse, Shop } from '@/utils/types'
+import type { ShopResponse, Brand } from '@/utils/types'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { defineStore } from 'pinia'
 import { ref, useFetch } from '#imports'
@@ -19,7 +19,7 @@ query {
 }`
 
 export const useShopStore = defineStore('shop', () => {
-  const brand = ref<Shop['brand']>()
+  const brand = ref<Brand>()
 
   async function getShop() {
     const { data } = await useFetch<ShopResponse>(useShopifyUrl(), {
