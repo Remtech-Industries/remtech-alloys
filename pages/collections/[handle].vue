@@ -23,7 +23,7 @@
           v-model:filters="filters"
           class="p-datatable-sm"
           :value="products"
-          @row-click="({ data }) => $router.push(`/products/${data.handle}`)"
+          @row-click="({ data }) => goTo(data.handle)"
         >
           <template #header>
             <div class="flex justify-end">
@@ -37,9 +37,7 @@
 
           <Column field="title" frozen header="Size" style="min-width: 180px">
             <template #body="{ data }">
-              <NuxtLink :to="`/products/${data.handle}`">
-                {{ data.title }}
-              </NuxtLink>
+              {{ data.title }}
             </template>
           </Column>
 
@@ -81,7 +79,14 @@ import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import { collectionQuery } from '@/utils/collections'
 import type { CollectionResponse } from 'utils/types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
-import { computed, useFetch, ref, useHead, useRoute } from '#imports'
+import {
+  navigateTo,
+  computed,
+  useFetch,
+  ref,
+  useHead,
+  useRoute,
+} from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 const { params } = useRoute()
 
@@ -114,4 +119,8 @@ const products = computed(() => {
 useHead({
   title: collection.value?.title,
 })
+
+const goTo = async (handle: string) => {
+  await navigateTo(`/products/${handle}`)
+}
 </script>

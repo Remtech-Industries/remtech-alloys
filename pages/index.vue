@@ -8,13 +8,11 @@
         row-hover
         :value="collections"
         class="p-datatable-sm"
-        @row-click="({ data }) => $router.push(`/collections/${data.handle}`)"
+        @row-click="({ data }) => goTo(data.handle)"
       >
         <Column field="title" header="Type">
           <template #body="{ data }">
-            <NuxtLink :to="`/collections/${data.handle}`">
-              {{ data.title }}
-            </NuxtLink>
+            {{ data.title }}
           </template>
         </Column>
         <Column field="products.edges.length" header="Quantity" />
@@ -31,7 +29,7 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import { collectionsQuery } from '@/utils/collections'
-import { useFetch, computed } from '#imports'
+import { useFetch, computed, navigateTo } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import type { CollectionsResponse } from 'utils/types'
 
@@ -43,4 +41,8 @@ const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
 const collections = computed(() => {
   return data.value?.data?.collections?.edges.map(({ node }) => node)
 })
+
+const goTo = async (handle: string) => {
+  await navigateTo(`/collections/${handle}`)
+}
 </script>
