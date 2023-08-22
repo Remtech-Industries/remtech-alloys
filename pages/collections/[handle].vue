@@ -82,7 +82,7 @@ import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 import {
   navigateTo,
   computed,
-  useFetch,
+  useLazyFetch,
   ref,
   useHead,
   useRoute,
@@ -103,10 +103,13 @@ const filters = ref({
   },
 })
 
-const { data, error } = await useFetch<CollectionResponse>(useShopifyUrl(), {
-  ...useShopifyOptions(collectionQuery, variables.value),
-  key: 'collection',
-})
+const { data, error } = await useLazyFetch<CollectionResponse>(
+  useShopifyUrl(),
+  {
+    ...useShopifyOptions(collectionQuery, variables.value),
+    key: 'collection',
+  },
+)
 
 const collection = computed(() => {
   return data.value?.data?.collection
