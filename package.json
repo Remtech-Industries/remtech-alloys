@@ -10,7 +10,7 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
     "@vueuse/core": "^10.3.0",
-    "nuxt-bugsnag": "^6.5.2",
+    "nuxt-bugsnag": "^6.5.4",
     "pinia": "^2.0.30",
     "primevue": "^3.32.1"
   },
