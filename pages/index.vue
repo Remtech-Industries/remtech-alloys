@@ -5,9 +5,7 @@
     <div class="m-6 w-full rounded-xl bg-white p-6">
       <DataTable
         v-if="collections && collections.length > 0"
-        row-hover
         :value="collections"
-        class="p-datatable-sm"
         @row-click="({ data }) => goTo(data.handle)"
       >
         <Column field="title" header="Type">
