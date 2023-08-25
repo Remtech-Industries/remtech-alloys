@@ -64,7 +64,7 @@ export async function cartLinesUpdate(
   cartId: string,
   items: CartLineUpdateInput[]
 ) {
-  const { data } = await useFetch<CartLinesUpdatePayload>(useShopifyUrl(), useShopifyOptions(
+  const { data } = await useFetch<CartLinesUpdatePayload>(useShopifyUrl(), { ...useShopifyOptions(
     `mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
       cartLinesUpdate(cartId: $cartId, lines: $lines) {
         cart ${cartQuery}
@@ -76,9 +76,9 @@ export async function cartLinesUpdate(
       }
     }`,
     { cartId, lines: items }
-  ))
+  ), key: 'cartLinesUpdate'})
 
-  return data.value
+  return { cart: data.value?.cart || null }
 }
 
 export async function cartLinesAdd(

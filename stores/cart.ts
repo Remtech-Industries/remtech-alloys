@@ -53,7 +53,7 @@ export const useCartStore = defineStore('cart', () => {
     const { cart: c } = await cartLinesUpdate(cartId.value, items)
 
     cart.value = c
-    po.value = c.attributes.find(({ key }) => key === poKey)?.value
+    po.value = c?.attributes.find(({ key }) => key === poKey)?.value
   }
 
   async function addToCart(items: CartLineInput[]) {
