@@ -18,10 +18,8 @@
       <div class="rounded-xl bg-white p-6">
         <DataTable
           v-if="products"
-          row-hover
           scrollable
           v-model:filters="filters"
-          class="p-datatable-sm"
           :value="products"
           @row-click="({ data }) => goTo(data.handle)"
         >
@@ -30,7 +28,6 @@
               <InputText
                 v-model="filters['global'].value"
                 placeholder="Keyword Search"
-                class="p-inputtext-sm"
               />
             </div>
           </template>
