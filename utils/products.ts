@@ -44,3 +44,24 @@ query product($handle: String!, $first: Int!) {
   }
 }
 `
+export const tokenQuery = `
+query {
+  cutToken: product(handle: "cut-token") {
+    ...variant
+  }
+  handlingToken: product(handle: "handling-token") {
+    ...variant
+  }
+}
+
+fragment variant on Product {
+  variants(first: 1) {
+    edges { 
+      node { 
+        id
+        price { amount } 
+      } 
+    }
+  }
+}
+`

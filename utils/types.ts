@@ -28,4 +28,10 @@ type CustomProductFields = {
 }
 export type ProductResponse = ShopifyResponse<{ product?: Product & CustomProductFields }>
 
+type Tokens = {
+  cutToken: Product,
+  handlingToken: Product,
+}
+export type TokenResponse = ShopifyResponse<Tokens>
+
 export type * from './storefront-api-types'
