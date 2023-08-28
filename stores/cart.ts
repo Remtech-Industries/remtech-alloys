@@ -5,17 +5,20 @@ import type {
   CartLineUpdateInput,
   CartLineInput,
   Cart,
+  CartLinesUpdatePayload,
+  Maybe
 } from '@/utils/storefront-api-types'
 import {
-  cartLinesUpdate,
   cartLinesAdd,
   useGetCart,
   cartAttributesUpdate,
 } from '@/proxies/cart'
+import { cartLinesUpdateQuery } from '@/utils/cart'
 import { tokenHandles, poKey } from '@/utils/constants'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 
 export const useCartStore = defineStore('cart', () => {
-  const cart = ref<Cart | null>(null)
+  const cart = ref<Maybe<Cart>>()
   const cartId = computed(() => cart.value?.id)
   const po = ref<Attribute['value']>()
 
@@ -50,10 +53,12 @@ export const useCartStore = defineStore('cart', () => {
   async function updateCart(items: CartLineUpdateInput[]) {
     if (!cartId.value) return
 
-    const { cart: c } = await cartLinesUpdate(cartId.value, items)
+    const { data } = await $fetch<{ data: { cartLinesUpdate: CartLinesUpdatePayload } }>(useShopifyUrl(), {
+      ...useShopifyOptions(cartLinesUpdateQuery, { cartId: cartId.value, lines: items }),
+    })
 
-    cart.value = c
-    po.value = c.attributes.find(({ key }) => key === poKey)?.value
+    if (data.cartLinesUpdate) cart.value = data.cartLinesUpdate.cart
+    if (data.cartLinesUpdate) po.value = data.cartLinesUpdate.cart?.attributes.find(({ key }) => key === poKey)?.value
   }
 
   async function addToCart(items: CartLineInput[]) {
