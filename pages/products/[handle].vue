@@ -93,12 +93,12 @@ import RequestedLengthInput from '@/components/RequestedLengthInput.vue'
 import NumberOfPiecesInput from '@/components/NumberOfPiecesInput.vue'
 import AddToCartButton from '@/components/AddToCartButton.vue'
 import PricingTable from '@/components/PricingTable.vue'
-import { getTokens } from '@/proxies/get-tokens'
-import { getProduct } from '@/proxies/get-product'
-import type { Form } from '@/utils/types'
+import type { Form, ProductResponse, TokenResponse } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
-import { computed, ref, useHead, useRoute } from '#imports'
+import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import { productQuery, tokenQuery } from '@/utils/products'
 
 const { params } = useRoute()
 
@@ -109,20 +109,49 @@ const form = ref<Form>({
   lengthIsValid: false,
 })
 
-const { product } = await getProduct(params.handle)
-const { cutToken, handlingToken } = await getTokens()
+const { data } = await useLazyFetch<ProductResponse>(useShopifyUrl(), {
+  ...useShopifyOptions(productQuery, { handle: params.handle, first: 250 }),
+  key: 'product',
+})
+
+const { data: tokens } = await useLazyFetch<TokenResponse>(useShopifyUrl(), {
+  ...useShopifyOptions(tokenQuery),
+  key: 'tokens',
+})
+
+const cutToken = computed(() => {
+  return {
+    id: tokens.value?.data?.cutToken.variants.edges[0].node.id || '',
+    price: +(
+      tokens.value?.data?.cutToken.variants.edges[0].node.price.amount || 0
+    ),
+  }
+})
+
+const handlingToken = computed(() => {
+  return {
+    id: tokens.value?.data?.handlingToken.variants.edges[0].node.id || '',
+    price: +(
+      tokens.value?.data?.handlingToken.variants.edges[0].node.price.amount || 0
+    ),
+  }
+})
+
+const product = computed(() => {
+  return data.value?.data?.product
+})
 
 const variants = computed(() => {
-  if (!product) return []
+  if (!product.value) return []
 
-  return product.variants.edges
+  return product.value?.variants.edges
     .map(({ node }) => node)
     .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
 const isOutOfStock = computed(() => {
-  if (!product) return false
-  return product.totalInventory === 0
+  if (!product.value) return false
+  return product.value?.totalInventory === 0
 })
 
 const selectedVariant = computed(() => {
@@ -141,15 +170,15 @@ const selectedVariant = computed(() => {
   return {
     absoluteLength,
     actualLengthPerPiece,
-    cutTokenId: cutToken.id,
-    cutTokensPerCut: +(product.cutTokensPerCut?.value || 0),
-    handlingTokenId: handlingToken.id,
-    numberOfHandlingTokens: +(product.handlingTokens?.value || 0),
+    cutTokenId: cutToken.value.id,
+    cutTokensPerCut: +(product.value?.cutTokensPerCut?.value || 0),
+    handlingTokenId: handlingToken.value.id,
+    numberOfHandlingTokens: +(product.value?.handlingTokens?.value || 0),
     numberOfPieces,
-    pricePerCutToken: cutToken.price,
-    pricePerHandlingToken: +handlingToken.price,
+    pricePerCutToken: cutToken.value.price,
+    pricePerHandlingToken: handlingToken.value.price,
     pricePerStockingUnit: +(foundVariant.price.amount || 0),
-    productTitle: product.title,
+    productTitle: product.value?.title || '',
     requestedLength,
     selectedVariantId: foundVariant.id,
     tagNumber,
@@ -167,9 +196,9 @@ const items = computed(() => {
   return itemsGenerator(selectedVariant.value)
 })
 
-const cutWaste = computed(() => +(product?.cutWaste?.value || '0'))
+const cutWaste = computed(() => +(product.value?.cutWaste?.value || '0'))
 
 useHead({
-  title: product?.title,
+  title: product.value?.title,
 })
 </script>
