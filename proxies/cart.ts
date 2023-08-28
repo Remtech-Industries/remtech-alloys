@@ -1,12 +1,8 @@
 import { usePostToShopify } from './post-to-shopify'
-import { useFetch } from '#imports'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import type {
   AttributeInput,
   Cart,
-  CartLineUpdateInput,
   CartLineInput,
-  CartLinesUpdatePayload,
 } from '@/utils/storefront-api-types'
 
 const cartQuery = `
@@ -59,27 +55,6 @@ const cartQuery = `
     value
   }
 }`
-
-export async function cartLinesUpdate(
-  cartId: string,
-  items: CartLineUpdateInput[]
-) {
-  const { data } = await useFetch<CartLinesUpdatePayload>(useShopifyUrl(), { ...useShopifyOptions(
-    `mutation cartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
-      cartLinesUpdate(cartId: $cartId, lines: $lines) {
-        cart ${cartQuery}
-        userErrors {
-          code
-          field
-          message
-        }
-      }
-    }`,
-    { cartId, lines: items }
-  ), key: 'cartLinesUpdate'})
-
-  return { cart: data.value?.cart || null }
-}
 
 export async function cartLinesAdd(
   items: CartLineInput[],
