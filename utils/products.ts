@@ -1,7 +1,5 @@
-import { usePostToShopify } from './post-to-shopify'
-import type { Product, ProductVariantsArgs } from '@/utils/storefront-api-types'
 
-const query = `
+export const productQuery = `
 query product($handle: String!, $first: Int!) {
   product(handle: $handle) {
     id
@@ -46,24 +44,3 @@ query product($handle: String!, $first: Int!) {
   }
 }
 `
-
-type CustomProductFields = {
-  cutTokensPerCut?: { value: string }
-  handlingTokens?: { value: string }
-  stockingUnit?: { value: string }
-  cutWaste?: { value: string }
-}
-
-type Variables = {
-  handle: Product['handle']
-} & ProductVariantsArgs
-
-export async function getProduct(
-  handle: string | string[]
-): Promise<{ product: Product & CustomProductFields }> {
-  const parsedHandle = Array.isArray(handle) ? handle[0] : handle
-  const variables = { handle: parsedHandle, first: 250 } as Variables
-
-  const { product } = await usePostToShopify(query, variables)
-  return { product }
-}
