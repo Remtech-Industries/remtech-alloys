@@ -97,15 +97,8 @@ import { getTokens } from '@/proxies/get-tokens'
 import type { Form, ProductResponse } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
-import {
-  computed,
-  ref,
-  useHead,
-  useRoute,
-  useShopifyUrl,
-  useLazyFetch,
-  useShopifyOptions,
-} from '#imports'
+import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { productQuery } from '@/utils/products'
 
 const { params } = useRoute()
