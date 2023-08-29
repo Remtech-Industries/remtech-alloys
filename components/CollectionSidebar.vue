@@ -7,12 +7,11 @@
     </div>
 
     <ul v-if="collections && collections.length > 0">
-      <li
-        v-for="collection in collections"
-        :key="collection.id"
-        class="rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
-      >
-        <NuxtLink :to="`/collections/${collection.handle}`">
+      <li v-for="collection in collections" :key="collection.id">
+        <NuxtLink
+          :to="`/collections/${collection.handle}`"
+          class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
+        >
           {{ collection.title }}
         </NuxtLink>
       </li>
