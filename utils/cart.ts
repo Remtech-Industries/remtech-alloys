@@ -60,3 +60,27 @@ export const cartLinesUpdateQuery = `
       }
     }
   }`
+
+export const cartLinesAddQuery = `
+  mutation addItemToCart($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart ${cartQuery}
+      userErrors {
+        code
+        field
+        message
+      }
+    }
+  }`
+
+export const cartCreateQuery = `
+  mutation createCart($cartInput: CartInput) {
+    cartCreate(input: $cartInput) {
+      cart ${cartQuery}
+      userErrors {
+        code
+        field
+        message
+      }
+    }
+  }`

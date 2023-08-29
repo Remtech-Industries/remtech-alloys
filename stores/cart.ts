@@ -6,14 +6,16 @@ import type {
   CartLineInput,
   Cart,
   CartLinesUpdatePayload,
-  Maybe
+  CartLinesAddPayload,
+  CartCreatePayload,
+  Maybe,
 } from '@/utils/storefront-api-types'
+import { useGetCart, cartAttributesUpdate } from '@/proxies/cart'
 import {
-  cartLinesAdd,
-  useGetCart,
-  cartAttributesUpdate,
-} from '@/proxies/cart'
-import { cartLinesUpdateQuery } from '@/utils/cart'
+  cartCreateQuery,
+  cartLinesAddQuery,
+  cartLinesUpdateQuery,
+} from '@/utils/cart'
 import { tokenHandles, poKey } from '@/utils/constants'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 
@@ -53,18 +55,52 @@ export const useCartStore = defineStore('cart', () => {
   async function updateCart(items: CartLineUpdateInput[]) {
     if (!cartId.value) return
 
-    const { data } = await $fetch<{ data: { cartLinesUpdate: CartLinesUpdatePayload } }>(useShopifyUrl(), {
-      ...useShopifyOptions(cartLinesUpdateQuery, { cartId: cartId.value, lines: items }),
+    const { data } = await $fetch<{
+      data: { cartLinesUpdate: CartLinesUpdatePayload }
+    }>(useShopifyUrl(), {
+      ...useShopifyOptions(cartLinesUpdateQuery, {
+        cartId: cartId.value,
+        lines: items,
+      }),
     })
 
     if (data.cartLinesUpdate) cart.value = data.cartLinesUpdate.cart
-    if (data.cartLinesUpdate) po.value = data.cartLinesUpdate.cart?.attributes.find(({ key }) => key === poKey)?.value
+    if (data.cartLinesUpdate)
+      po.value = data.cartLinesUpdate.cart?.attributes.find(
+        ({ key }) => key === poKey,
+      )?.value
+  }
+
+  async function addItemsOrCreateCart(items: CartLineInput[]) {
+    if (!cartId.value) {
+      const { data } = await $fetch<{
+        data: { cartCreate: CartCreatePayload }
+      }>(useShopifyUrl(), {
+        ...useShopifyOptions(cartCreateQuery, {
+          cartId: cartId.value,
+          lines: items,
+        }),
+      })
+      return data.cartCreate.cart
+    } else {
+      const { data } = await $fetch<{
+        data: { cartLinesAdd: CartLinesAddPayload }
+      }>(useShopifyUrl(), {
+        ...useShopifyOptions(cartLinesAddQuery, {
+          cartId: cartId.value,
+          lines: items,
+        }),
+      })
+      return data.cartLinesAdd.cart
+    }
   }
 
   async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
-    const { cart: c } = await cartLinesAdd(items, cartId.value)
+    const c = await addItemsOrCreateCart(items)
+    if (!c) return
+
     window.localStorage.setItem('cartId', JSON.stringify(c.id))
     cart.value = c
     po.value = c.attributes.find(({ key }) => key === poKey)?.value
