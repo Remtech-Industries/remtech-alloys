@@ -39,5 +39,6 @@
     "superalloys",
     "tailwindcss",
     "vueuse"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
