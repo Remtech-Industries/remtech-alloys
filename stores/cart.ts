@@ -55,9 +55,8 @@ export const useCartStore = defineStore('cart', () => {
   async function updateCart(items: CartLineUpdateInput[]) {
     if (!cartId.value) return
 
-    const { data } = await $fetch<{
-      data: { cartLinesUpdate: CartLinesUpdatePayload }
-    }>(useShopifyUrl(), {
+    type Return = { data: { cartLinesUpdate: CartLinesUpdatePayload } }
+    const { data } = await $fetch<Return>(useShopifyUrl(), {
       ...useShopifyOptions(cartLinesUpdateQuery, {
         cartId: cartId.value,
         lines: items,
@@ -65,17 +64,18 @@ export const useCartStore = defineStore('cart', () => {
     })
 
     if (data.cartLinesUpdate) cart.value = data.cartLinesUpdate.cart
-    if (data.cartLinesUpdate)
+    if (data.cartLinesUpdate) {
       po.value = data.cartLinesUpdate.cart?.attributes.find(
         ({ key }) => key === poKey,
       )?.value
+    }
   }
 
   async function addItemsOrCreateCart(items: CartLineInput[]) {
     if (!cartId.value) {
-      const { data } = await $fetch<{
-        data: { cartCreate: CartCreatePayload }
-      }>(useShopifyUrl(), {
+      type Return = { data: { cartCreate: CartCreatePayload } }
+
+      const { data } = await $fetch<Return>(useShopifyUrl(), {
         ...useShopifyOptions(cartCreateQuery, {
           cartId: cartId.value,
           lines: items,
@@ -83,9 +83,9 @@ export const useCartStore = defineStore('cart', () => {
       })
       return data.cartCreate.cart
     } else {
-      const { data } = await $fetch<{
-        data: { cartLinesAdd: CartLinesAddPayload }
-      }>(useShopifyUrl(), {
+      type Return = { data: { cartLinesAdd: CartLinesAddPayload } }
+
+      const { data } = await $fetch<Return>(useShopifyUrl(), {
         ...useShopifyOptions(cartLinesAddQuery, {
           cartId: cartId.value,
           lines: items,
