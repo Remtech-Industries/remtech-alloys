@@ -102,16 +102,6 @@
 
     {% for line_item in line_items_in_shipment %}
       <div class='flex-line-item'>
-        <div class='flex-line-item-img'>
-          {% if line_item.image != blank %}
-            <div
-              class='aspect-ratio aspect-ratio-square'
-              style='width: {{ desired_image_size }}px; height: {{ desired_image_size }}px;'
-            >
-              {{ line_item.image | img_url: effective_image_dimensions | img_tag: '', 'aspect-ratio__content' }}
-            </div>
-          {% endif %}
-        </div>
         <div class='flex-line-item-description'>
           <p>
             <span class='line-item-description-line'>
@@ -127,21 +117,25 @@
                 {{ line_item.sku }}
               </span>
             {% endif %}
+            {% if line_item.properties['Tag#'] %}
+              <span class='order-list__item-variant'> Tag# {{ line_item.properties['Tag#'] }} </span>
+              <br>
+            {% endif %}
             {% for group in line_item.groups %}
               <span class='line-item-description-line'> Part of: {{ group.title }} </span>
             {% endfor %}
           </p>
         </div>
         <div class='flex-line-item-quantity'>
-          <p class='text-align-right'>{{ line_item.shipping_quantity }} of {{ line_item.quantity }}</p>
+          <p class='text-align-right'>
+            {% if line_item.properties.Pieces %}
+              <span>{{ line_item.properties.Pieces }}</span>
+            {% endif %}
+          </p>
         </div>
       </div>
     {% endfor %}
   </div>
-  {% unless includes_all_line_items_in_order %}
-    <hr class='subdued-separator'>
-    <p class='missing-line-items-text '>There are other items from your order not included in this shipment.</p>
-  {% endunless %}
   <hr>
   {% if order.note != blank %}
     <div class='notes'>
@@ -169,8 +163,6 @@
       {{ shop_address.summary }}
       <br>
       {{ shop.email }}
-      <br>
-      {{ shop.domain }}
     </p>
   </div>
 </div>
