@@ -122,29 +122,9 @@ import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { computed, ref, useFetch, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
-import { useShopifyOptions } from '@/composables/useShopify'
-import type { ShopResponse } from '@/utils/types'
 
-const brandQuery = `
-query {
-  shop {
-    brand {
-      logo {
-        id
-        image {
-          url
-        }
-      }
-      slogan
-    }
-  }
-}`
-
-const { data } = await useFetch<ShopResponse>('/api/shop', {
-  ...useShopifyOptions(brandQuery),
-  key: 'shop',
-})
-const brand = computed(() => data.value?.data?.shop?.brand)
+const { data } = await useFetch('/api/shop')
+const brand = computed(() => data.value?.shop?.brand)
 
 const showAddedToCartAlert = ref(false)
 
