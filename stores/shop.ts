@@ -22,7 +22,7 @@ export const useShopStore = defineStore('shop', () => {
   const brand = ref<Brand>()
 
   async function getShop() {
-    const { data } = await useFetch<ShopResponse>(useShopifyUrl(), {
+    const { data } = await useFetch<ShopResponse>('/api/shop', {
       ...useShopifyOptions(query),
       key: 'shop',
     })
