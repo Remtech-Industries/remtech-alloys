@@ -76,10 +76,7 @@ export const useCartStore = defineStore('cart', () => {
       type Return = { data: { cartCreate: CartCreatePayload } }
 
       const { data } = await $fetch<Return>(useShopifyUrl(), {
-        ...useShopifyOptions(cartCreateQuery, {
-          cartId: cartId.value,
-          lines: items,
-        }),
+        ...useShopifyOptions(cartCreateQuery, { cartInput: { lines: items } }),
       })
       return data.cartCreate.cart
     } else {
