@@ -3,8 +3,8 @@
     <SeoKit />
     <div class="flex justify-center bg-yellow-500 px-2">
       <div class="font-bold">
-        Rem-Tech Alloys is under heavy development. We are currently accepting
-        orders as a request for quote. Thank you for your patience.
+        Accepting request for quote (RFQ) for all orders requiring delivery. The
+        check out experience is currently available for local pickup only.
       </div>
     </div>
 
