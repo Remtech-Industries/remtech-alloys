@@ -18,13 +18,10 @@
 
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
-import { useShopStore } from '@/stores/shop'
 import { useHead } from '#imports'
 import { useCartStore } from '@/stores/cart'
 const { getCart } = useCartStore()
-const { getShop } = useShopStore()
 getCart()
-getShop()
 
 useHead({
   title: 'Rem-Tech Alloys',

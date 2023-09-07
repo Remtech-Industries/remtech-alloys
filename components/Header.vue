@@ -120,11 +120,31 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { useShopStore } from '@/stores/shop'
-import { ref, watch } from '#imports'
+import { computed, ref, useFetch, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
+import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
+import type { ShopResponse } from '@/utils/types'
 
-const { brand } = useShopStore()
+const brandQuery = `
+query {
+  shop {
+    brand {
+      logo {
+        id
+        image {
+          url
+        }
+      }
+      slogan
+    }
+  }
+}`
+
+const { data } = await useFetch<ShopResponse>(useShopifyUrl(), {
+  ...useShopifyOptions(brandQuery),
+  key: 'shop',
+})
+const brand = computed(() => data.value?.data?.shop?.brand)
 
 const showAddedToCartAlert = ref(false)
 
