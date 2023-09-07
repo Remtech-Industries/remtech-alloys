@@ -124,7 +124,7 @@ import { computed, ref, useFetch, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import type { ShopResponse } from '@/utils/types'
-
+// a very nice comment
 const brandQuery = `
 query {
   shop {
