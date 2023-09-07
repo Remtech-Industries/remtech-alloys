@@ -122,7 +122,7 @@ import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { computed, ref, useFetch, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
-import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
+import { useShopifyOptions } from '@/composables/useShopify'
 import type { ShopResponse } from '@/utils/types'
 // ok
 const brandQuery = `
