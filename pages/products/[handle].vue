@@ -62,9 +62,9 @@
         </div>
 
         <div class="rounded border bg-yellow-500 p-3">
-          Currently, the Add to Cart is only available for local pickups. Please
-          send RFQ to place an order if you require delivery.
-          <nuxt-link class="font-bold" to="/pages/rfq">Click Here</nuxt-link>
+          Add to Cart checkout experience is available for local delivery
+          customers. For shipping Canada-wide, please submit a request for quote
+          (RFQ).
         </div>
 
         <AddToCartButton :items="items" />
