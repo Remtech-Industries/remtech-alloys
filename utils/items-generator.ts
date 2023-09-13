@@ -74,6 +74,7 @@ export function itemsGenerator(input: Input) {
     attributes: [
       { key: '_handlingTokens', value: `${numberOfHandlingTokens}` },
       { key: '_cutTokens', value: `${totalCutTokens}` },
+      { key: '_time', value: `${Date.now()}` }
     ],
   }
 
@@ -85,7 +86,7 @@ export function itemsGenerator(input: Input) {
       requestedLength,
       'mm',
       'roundIt'
-    )} inches${ea(numberOfPieces)} (${absoluteLength}mm)`,
+    )} inches${ea(numberOfPieces)}`,
   })
 
   if (tagNumber) {
