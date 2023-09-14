@@ -1,14 +1,12 @@
 <template>
   <div class="flex flex-col items-center justify-center p-10">
-    <div v-if="!variantId" class="rounded border bg-slate-100 p-3">
-      Something seems to have gone wrong. Please call Rem-Tech Alloys for
-      assistance.
-
-      <p class="pt-3">Error: No variant ID found.</p>
+    <div v-if="showMessage" class="rounded border bg-slate-100 p-3">
+      We could not find the MTR you are looking for. Please contact Rem-Tech
+      Alloys for assistance.
     </div>
 
     <div
-      v-if="productVariant"
+      v-if="productVariant && fileInfo"
       class="flex flex-col items-center justify-center p-10"
     >
       <div class="pb-2 font-oswald text-2xl font-bold text-slate-700">
@@ -25,16 +23,20 @@
       >
         Save MTR
       </a>
-
-      <div v-else>Seems to be no MTR file for this variant.</div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { usePostToShopify } from '@/proxies/post-to-shopify'
-import { GenericFile, ProductVariant } from '@/utils/storefront-api-types'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import { GenericFile, ProductVariant } from '@/utils/types'
 import { onMounted, ref, useHead, useRoute } from '#imports'
+
+type Variant = ProductVariant & {
+  mtr: {
+    value: string
+  }
+}
 
 useHead({
   title: 'MTR Download',
@@ -42,8 +44,9 @@ useHead({
 
 const { query } = useRoute()
 const variantId = ref(query.v)
-const productVariant = ref<ProductVariant>()
+const productVariant = ref<Variant | null>()
 const fileInfo = ref<GenericFile>()
+const showMessage = ref(false)
 
 const getProductVariantQuery = `
 query ($id: ID!) {
@@ -74,18 +77,43 @@ query ($id: ID!) {
 onMounted(async () => {
   if (!variantId.value) return
 
-  const { node: p } = await usePostToShopify(getProductVariantQuery, {
-    id: `gid://shopify/ProductVariant/${variantId.value}`,
-  })
+  // get the variant
+  const variant = await $fetch<{ data: { node: Variant | null } }>(
+    useShopifyUrl(),
+    {
+      ...useShopifyOptions(getProductVariantQuery, {
+        id: `gid://shopify/ProductVariant/${variantId.value}`,
+      }),
+    },
+  )
 
-  productVariant.value = p
+  if (!variant.data.node) {
+    showMessage.value = true
+    return
+  }
 
-  if (!p.mtr.value) return
+  productVariant.value = variant.data.node
 
-  const { node: f } = await usePostToShopify(getFileInfoQuery, {
-    id: p.mtr.value,
-  })
+  if (!variant.data.node.mtr?.value) {
+    showMessage.value = true
+    return
+  }
 
-  fileInfo.value = f
+  // get the file info
+  const file = await $fetch<{ data: { node: GenericFile | null } }>(
+    useShopifyUrl(),
+    {
+      ...useShopifyOptions(getFileInfoQuery, {
+        id: variant.data.node.mtr.value,
+      }),
+    },
+  )
+
+  if (!file.data.node?.url) {
+    showMessage.value = true
+    return
+  }
+
+  fileInfo.value = file.data.node
 })
 </script>
