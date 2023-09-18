@@ -1,6 +1,6 @@
 import { defineEventHandler } from "h3"
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
-import { ShopResponse } from "utils/types"
+import { ShopResponse } from "@/utils/types"
 
 const query = `
 query {
