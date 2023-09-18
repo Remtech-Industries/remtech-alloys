@@ -20,7 +20,6 @@
       modal
       @update:visible="words = null"
       :header="header"
-      :style="{ width: '50vw' }"
     >
       <p v-html="words"></p>
     </Dialog>
