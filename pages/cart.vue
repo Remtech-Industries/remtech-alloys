@@ -95,7 +95,7 @@ const productItems = computed(() => {
 
 const toCheckoutLink = ref()
 async function onClick() {
-  await updatePoNumber(po.value)
+  await updatePoNumber()
   if (toCheckoutLink.value) toCheckoutLink.value.click()
 }
 

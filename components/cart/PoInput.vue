@@ -16,10 +16,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeUnmount } from '#imports'
-const po = ref<string | null>(null)
+import { onBeforeUnmount } from '#imports'
+import { useCartStore } from '@/stores/cart'
+import { storeToRefs } from 'pinia'
 
-onBeforeUnmount(() => {
-  updatePoNumber(po.value)
-})
+const { po } = storeToRefs(useCartStore())
+const { updatePoNumber } = useCartStore()
+
+onBeforeUnmount(() => updatePoNumber())
 </script>

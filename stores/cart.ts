@@ -70,7 +70,7 @@ export const useCartStore = defineStore('cart', () => {
     po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
-  async function updatePoNumber(poNumber: string | null | undefined) {
+  async function updatePoNumber() {
     if (!cartId.value) return
 
     if (!poNumber) poNumber = '_'
