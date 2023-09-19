@@ -3,8 +3,8 @@
     <SeoKit />
     <div class="flex justify-center bg-yellow-500 px-2">
       <div class="font-bold">
-        Now offering FREE local delivery within 100 km of Aylmer AND along the
-        401 and 403 from Windsor to Toronto!
+        Now offering FREE delivery along the 401 and 403 from Windsor to
+        Toronto!
       </div>
     </div>
 
