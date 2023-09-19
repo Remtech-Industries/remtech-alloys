@@ -1,17 +1,32 @@
 <template>
   <footer
-    class="mt-auto h-20 w-full bg-slate-900 p-5 text-sm font-light text-slate-100"
+    class="mt-auto w-full bg-slate-900 p-5 text-sm font-light text-slate-100"
   >
     <div class="flex h-full w-full flex-col gap-3">
-      <div class="flex items-center justify-center gap-10">
-        <div @click="showPolicy('privacyPolicy')">Privacy</div>
-        <div @click="showPolicy('termsOfService')">Terms of Service</div>
-        <div @click="showPolicy('shippingPolicy')">Shipping Policy</div>
-        <div @click="showPolicy('refundPolicy')">Return Policy</div>
-        <div>Contact Us</div>
+      <div
+        class="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-10"
+      >
+        <a class="cursor-pointer" @click="showPolicy('privacyPolicy')">
+          Privacy
+        </a>
+
+        <a class="cursor-pointer" @click="showPolicy('termsOfService')">
+          Terms of Service
+        </a>
+
+        <a class="cursor-pointer" @click="showPolicy('shippingPolicy')">
+          Shipping Policy
+        </a>
+
+        <a class="cursor-pointer" @click="showPolicy('refundPolicy')">
+          Return Policy
+        </a>
+
+        <NuxtLink to="/about">Contact Us</NuxtLink>
       </div>
-      <div class="text-center">
-        &copy; 2023 Rem-Tech Alloys Inc. All rights reserved.
+
+      <div class="text-center text-xs">
+        &copy; {{ year }} Rem-Tech Alloys Inc. All rights reserved.
       </div>
     </div>
 
@@ -45,6 +60,7 @@ type PolicyName =
   | 'shippingPolicy'
   | 'termsOfService'
 
+const year = new Date().getFullYear()
 const words = ref<string | null>(null)
 const header = ref('')
 
