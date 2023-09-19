@@ -108,6 +108,7 @@ const { data, execute } = useFetch<ShopPolicyResponse>(useShopifyUrl(), {
 })
 </script>
 
+<!-- #best v-html :deep -->
 <style scoped>
 .css :deep() {
   p {
