@@ -33,8 +33,10 @@
     <Dialog
       :visible="!!words"
       modal
+      dismissable-mask
       @update:visible="words = null"
       :header="header"
+      :draggable="false"
     >
       <p v-html="words"></p>
     </Dialog>
