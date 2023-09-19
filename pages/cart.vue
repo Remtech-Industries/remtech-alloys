@@ -16,21 +16,7 @@
       </div>
 
       <div class="w-2/6 rounded-lg bg-slate-200 p-3 shadow">
-        <!-- po -->
-        <div class="mb-2 flex w-full">
-          <div
-            class="whitespace-nowrap rounded-l bg-slate-700 px-2 py-1 text-slate-50"
-          >
-            PO #
-          </div>
-
-          <input
-            v-model="po"
-            type="text"
-            placeholder="(optional)"
-            class="w-full rounded-r border px-2 py-1 shadow-inner focus:outline-none"
-          />
-        </div>
+        <PoInput />
 
         <div
           class="flex justify-between"
@@ -82,19 +68,17 @@
 import CartLineItem from '@/components/CartLineItem.vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { useHead, computed, onMounted, ref, onBeforeUnmount } from '#imports'
+import { useHead, computed, onMounted, ref } from '#imports'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { tokenHandles } from '@/utils/constants'
 import { toMoney } from '@/utils/conversion'
+import PoInput from '~/components/cart/PoInput.vue'
 
-const { cart, po } = storeToRefs(useCartStore())
+const { cart } = storeToRefs(useCartStore())
 const { updatePoNumber, updateCart, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
-onBeforeUnmount(() => {
-  updatePoNumber(po.value)
-})
 
 const cartItems = computed(() => {
   if (!cart.value) return []
@@ -117,7 +101,7 @@ async function onClick() {
 
 const cutTokens = computed(() => {
   const item = cartItems.value.find(
-    ({ merchandise }) => merchandise.product.handle === 'cut-token'
+    ({ merchandise }) => merchandise.product.handle === 'cut-token',
   )
 
   return { quantity: item?.quantity || 0, id: item?.id || '' }
@@ -125,7 +109,7 @@ const cutTokens = computed(() => {
 
 const handlingTokens = computed(() => {
   const item = cartItems.value.find(
-    ({ merchandise }) => merchandise.product.handle === 'handling-token'
+    ({ merchandise }) => merchandise.product.handle === 'handling-token',
   )
 
   return { quantity: item?.quantity || 0, id: item?.id || '' }
