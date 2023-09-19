@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="mt-auto w-full bg-slate-900 p-5 text-sm font-light text-slate-100"
+    class="mt-auto w-full bg-slate-900 p-4 text-sm font-light text-slate-100"
   >
     <div class="flex h-full w-full flex-col gap-3">
       <div
@@ -111,7 +111,19 @@ const { data, execute } = useFetch<ShopPolicyResponse>(useShopifyUrl(), {
 <style scoped>
 .css :deep() {
   p {
+    @apply mb-3;
+  }
+
+  ol {
+    @apply list-outside list-decimal px-5;
+  }
+
+  li {
     @apply mb-2;
+  }
+
+  a {
+    @apply text-blue-500;
   }
 }
 </style>

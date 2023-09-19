@@ -1,7 +1,7 @@
 import { PrimeVuePTOptions } from 'primevue/config'
 
 const dialog: PrimeVuePTOptions['dialog'] = {
-  root: 'w-[90vw] md:w-[50vw]',
+  root: 'w-[90vw] md:w-[50vw] max-w-screen-md',
   header: 'flex items-center justify-between shrink-0 bg-slate-100 text-slate-700 rounded-t-lg p-4',
   headerTitle: 'font-bold text-lg',
   headerIcons: 'flex items-center',
