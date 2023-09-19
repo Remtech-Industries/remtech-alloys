@@ -1,10 +1,7 @@
 import { defineNuxtPlugin } from '#imports'
+import Tailwind from '@/passthrough'
 import PrimeVue from 'primevue/config'
-import { tailwind } from '#imports'
 
 export default defineNuxtPlugin((nuxtApp) => {
-  nuxtApp.vueApp.use(PrimeVue, {
-    unstyled: true,
-    pt: tailwind,
-  })
+  nuxtApp.vueApp.use(PrimeVue, { unstyled: true, pt: Tailwind })
 })
