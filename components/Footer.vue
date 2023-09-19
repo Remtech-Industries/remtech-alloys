@@ -38,7 +38,7 @@
       :header="header"
       :draggable="false"
     >
-      <p v-html="words"></p>
+      <span class="css" v-html="words"></span>
     </Dialog>
   </footer>
 </template>
@@ -107,3 +107,11 @@ const { data, execute } = useFetch<ShopPolicyResponse>(useShopifyUrl(), {
   immediate: false,
 })
 </script>
+
+<style scoped>
+.css :deep() {
+  p {
+    @apply mb-2;
+  }
+}
+</style>
