@@ -1,6 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
 import type {
-  AttributeInput,
   Cart,
   CartLineInput,
 } from '@/utils/storefront-api-types'
@@ -104,25 +103,4 @@ export async function useGetCart(
     { cartId: cartId }
   )
   return cart
-}
-
-export async function cartAttributesUpdate(
-  cartId: string,
-  attributes: AttributeInput[]
-): Promise<{ cart: Cart }> {
-  const { cartAttributesUpdate } = await usePostToShopify(
-    `mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
-      cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
-        cart ${cartQuery}
-        userErrors {
-          code
-          field
-          message
-        }
-      }
-    }
-    `,
-    { cartId, attributes }
-  )
-  return cartAttributesUpdate
 }
