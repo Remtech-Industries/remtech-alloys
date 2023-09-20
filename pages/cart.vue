@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import CartLineItem from '@/components/CartLineItem.vue'
+import CartLineItem from '@/components/cart/CartLineItem.vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead, computed, onMounted, ref } from '#imports'
