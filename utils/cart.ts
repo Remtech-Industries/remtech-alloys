@@ -60,3 +60,15 @@ export const cartLinesUpdateQuery = `
       }
     }
   }`
+
+export const cartAttributesUpdateQuery = `
+  mutation cartAttributesUpdate($attributes: [AttributeInput!]!, $cartId: ID!) {
+    cartAttributesUpdate(attributes: $attributes, cartId: $cartId) {
+      cart ${cartQuery}
+      userErrors {
+        code
+        field
+        message
+      }
+    }
+  }`

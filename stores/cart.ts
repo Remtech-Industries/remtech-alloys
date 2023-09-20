@@ -6,14 +6,11 @@ import type {
   CartLineInput,
   Cart,
   CartLinesUpdatePayload,
-  Maybe
+  Maybe,
+  Mutation
 } from '@/utils/storefront-api-types'
-import {
-  cartLinesAdd,
-  useGetCart,
-  cartAttributesUpdate,
-} from '@/proxies/cart'
-import { cartLinesUpdateQuery } from '@/utils/cart'
+import { cartLinesAdd, useGetCart } from '@/proxies/cart'
+import { cartLinesUpdateQuery, cartAttributesUpdateQuery } from '@/utils/cart'
 import { tokenHandles, poKey } from '@/utils/constants'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 
@@ -70,16 +67,15 @@ export const useCartStore = defineStore('cart', () => {
     po.value = c.attributes.find(({ key }) => key === poKey)?.value
   }
 
-  async function updatePoNumber(poNumber: string | null | undefined) {
+  async function updatePoNumber() {
     if (!cartId.value) return
 
-    if (!poNumber) poNumber = '_'
-    const { cart: c } = await cartAttributesUpdate(cartId.value, [
-      { key: poKey, value: poNumber },
-    ])
+    const { data } = await $fetch<{ data: Pick<Mutation, 'cartAttributesUpdate'> }>(useShopifyUrl(), {
+      ...useShopifyOptions(cartAttributesUpdateQuery, { cartId: cartId.value, attributes: [{ key: poKey, value: po.value || '_' }] })
+    })
 
-    cart.value = c
-    po.value = c.attributes.find(({ key }) => key === poKey)?.value
+    if (data.cartAttributesUpdate) cart.value = data.cartAttributesUpdate.cart
+    if (data.cartAttributesUpdate) po.value = data.cartAttributesUpdate.cart?.attributes.find(({ key }) => key === poKey)?.value
   }
 
   return {
