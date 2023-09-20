@@ -2,7 +2,7 @@
   <div class="flex justify-between gap-1">
     <div class="flex-col gap-1">
       <p class="font-oswald text-xl text-slate-800">
-        {{ cartLine.merchandise.product.title }}
+        {{ line.merchandise.product.title }}
       </p>
 
       <div class="font-light" v-if="pieces">{{ pieces }}</div>
@@ -11,14 +11,14 @@
 
     <div class="flex gap-2">
       <p class="self-center">
-        {{ toMoney(+cartLine.cost.totalAmount.amount) }}
+        {{ toMoney(+line.cost.totalAmount.amount) }}
       </p>
 
       <div class="self-center">
         <button
           v-if="!isAddon()"
           class="h-6 w-6 rounded-full bg-slate-800 text-center text-slate-100"
-          @click="emit('click:remove', cartLine)"
+          @click="removeLine()"
         >
           X
         </button>
@@ -28,24 +28,45 @@
 </template>
 
 <script setup lang="ts">
+import { remainingTokenCalculator } from '@/components/cart/remainingTokenCalculator'
 import { toMoney } from '@/utils/conversion'
+import { useCartStore } from '@/stores/cart'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { computed } from '#imports'
+import { tokenHandles } from '@/utils/constants'
 
-const props = defineProps<{ cartLine: BaseCartLine }>()
+// init
+const props = defineProps<{ line: BaseCartLine }>()
+const { updateCart, cart } = useCartStore()
 
-const emit = defineEmits<{ (e: 'click:remove', value: BaseCartLine): void }>()
+// helper functions
+const attributeValue = (key: string) => {
+  return props.line.attributes.find((attribute) => attribute.key === key)?.value
+}
 
-const pieces = computed(() => {
-  return props.cartLine.attributes.find(({ key }) => key === 'Pieces')?.value
-})
-
-const tagNumber = computed(() => {
-  return props.cartLine.attributes.find(({ key }) => key === 'Tag#')?.value
-})
+const pieces = computed(() => attributeValue('Pieces'))
+const tagNumber = computed(() => attributeValue('Tag#'))
 
 function isAddon() {
-  const handle = props.cartLine.merchandise.product.handle
-  return ['cut-token', 'handling-token'].includes(handle)
+  const handle = props.line.merchandise.product.handle
+  return tokenHandles.includes(handle)
+}
+
+const cartItems = computed(() => {
+  if (!cart) return []
+  return cart.lines.edges.map(({ node }) => node)
+})
+
+function removeLine() {
+  if (!cart) return
+
+  const { remainingCutTokens, remainingHandlingTokens } =
+    remainingTokenCalculator(props.line, cartItems.value)
+
+  const items = [{ id: props.line.id, quantity: 0 }]
+  if (remainingCutTokens().id) items.push(remainingCutTokens())
+  if (remainingHandlingTokens().id) items.push(remainingHandlingTokens())
+
+  updateCart(items)
 }
 </script>
