@@ -1,16 +1,25 @@
 import { tokenHandles } from '@/utils/constants'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 
-export const remainingTokenCalculator = (cartItemToRemove: BaseCartLine, allCartItems: BaseCartLine[]) => {
+export const remainingTokenCalculator = (
+  cartItemToRemove: BaseCartLine,
+  allCartItems: BaseCartLine[],
+) => {
   const productItemsNotGettingRemoved = () => {
     return allCartItems.filter((item) => {
-      return !tokenHandles.includes(item.merchandise.product.handle) && item.id !== cartItemToRemove.id
+      return (
+        !(tokenHandles as readonly string[]).includes(
+          item.merchandise.product.handle,
+        ) && item.id !== cartItemToRemove.id
+      )
     })
   }
 
   const sumRemainingTokens = (type: string) => {
     return productItemsNotGettingRemoved().reduce((sum, safeItem) => {
-      const tokensOnItem = +(safeItem.attributes.find(({ key }) => key === type)?.value || 0)
+      const tokensOnItem = +(
+        safeItem.attributes.find(({ key }) => key === type)?.value || 0
+      )
       return sum + tokensOnItem
     }, 0)
   }
@@ -22,7 +31,10 @@ export const remainingTokenCalculator = (cartItemToRemove: BaseCartLine, allCart
     return { quantity: item?.quantity || 0, id: item?.id || '' }
   }
 
-  const remainingTokens = (attribute: string, tokenName: string) => {
+  const remainingTokens = (
+    attribute: string,
+    tokenName: (typeof tokenHandles)[number],
+  ) => {
     const token = findToken(tokenName)
     const quantity = sumRemainingTokens(attribute)
 
@@ -31,6 +43,9 @@ export const remainingTokenCalculator = (cartItemToRemove: BaseCartLine, allCart
 
   return {
     remainingCutTokens: remainingTokens('_cutTokens', 'cut-token'),
-    remainingHandlingTokens: remainingTokens('_handlingTokens', 'handling-token'),
+    remainingHandlingTokens: remainingTokens(
+      '_handlingTokens',
+      'handling-token',
+    ),
   }
 }

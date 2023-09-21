@@ -52,7 +52,7 @@ const tagNumber = computed(() => attributeValue('Tag#'))
 
 function isAddon() {
   const handle = props.line.merchandise.product.handle
-  return tokenHandles.includes(handle)
+  return (tokenHandles as readonly string[]).includes(handle)
 }
 
 const cartItems = computed(() => {

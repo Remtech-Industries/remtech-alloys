@@ -1,33 +1,38 @@
-import { it, describe, expect } from 'vitest'
+import type { BaseCartLine } from '@/utils/types'
+import { describe, expect, it } from 'vitest'
 import { remainingTokenCalculator } from './remainingTokenCalculator'
 
 const productCartItem = {
-  id: "1", // cart item id
+  id: '1', // cart item id
   quantity: 35,
-  merchandise: { product: { handle: "316l-ss-1-00-25mm-diameter" } },
+  merchandise: { product: { handle: '316l-ss-1-00-25mm-diameter' } },
   attributes: [
-    { key: "_handlingTokens", value: "1" },
-    { key: "_cutTokens", value: "1" },
+    { key: '_handlingTokens', value: '1' },
+    { key: '_cutTokens', value: '1' },
     // where _coring_tokens, _prep_tokens will go
-  ]
-}
+  ],
+} as BaseCartLine
 
 const handlingTokenCartItem = {
-  id: "2", // cart item id
+  id: '2', // cart item id
   quantity: 1,
-  merchandise: { product: { handle: "handling-token" } },
-}
+  merchandise: { product: { handle: 'handling-token' } },
+} as BaseCartLine
 
 const cutTokenCartItem = {
-  id: "3", // cart item id
+  id: '3', // cart item id
   quantity: 1,
-  merchandise: { product: { handle: "cut-token" } },
-}
+  merchandise: { product: { handle: 'cut-token' } },
+} as BaseCartLine
 
 describe('remainingTokenCalculator', () => {
   it('calculate simplest example', () => {
     const cartItemToRemove = productCartItem
-    const allCartItems = [productCartItem, handlingTokenCartItem, cutTokenCartItem]
+    const allCartItems = [
+      productCartItem,
+      handlingTokenCartItem,
+      cutTokenCartItem,
+    ]
     const result = remainingTokenCalculator(cartItemToRemove, allCartItems)
 
     expect(result.remainingHandlingTokens).toEqual({ id: '2', quantity: 0 })
@@ -40,7 +45,7 @@ describe('remainingTokenCalculator', () => {
       cartItemToRemove,
       { ...productCartItem, id: 'random-2' },
       { ...handlingTokenCartItem, quantity: 2 },
-      { ...cutTokenCartItem, quantity: 2 }
+      { ...cutTokenCartItem, quantity: 2 },
     ]
     const result = remainingTokenCalculator(cartItemToRemove, allCartItems)
 
@@ -54,7 +59,7 @@ describe('remainingTokenCalculator', () => {
       cartItemToRemove,
       { ...productCartItem, id: 'random-2' },
       { ...handlingTokenCartItem, quantity: 4 },
-      { ...cutTokenCartItem, quantity: 4 }
+      { ...cutTokenCartItem, quantity: 4 },
     ]
     const result = remainingTokenCalculator(cartItemToRemove, allCartItems)
 
@@ -68,7 +73,7 @@ describe('remainingTokenCalculator', () => {
       cartItemToRemove,
       { ...productCartItem, id: 'random-2' },
       { ...handlingTokenCartItem, quantity: 0 },
-      { ...cutTokenCartItem, quantity: 0 }
+      { ...cutTokenCartItem, quantity: 0 },
     ]
     const result = remainingTokenCalculator(cartItemToRemove, allCartItems)
 
