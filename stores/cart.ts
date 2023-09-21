@@ -55,9 +55,8 @@ export const useCartStore = defineStore('cart', () => {
   async function updatePoNumber() {
     if (!cartId.value) return
 
-    const { data } = await $fetch<{
-      data: Pick<Mutation, 'cartAttributesUpdate'>
-    }>(useShopifyUrl(), {
+    type Response = { data: Pick<Mutation, 'cartAttributesUpdate'> }
+    const { data } = await $fetch<Response>(useShopifyUrl(), {
       ...useShopifyOptions(cartAttributesUpdateQuery, {
         cartId: cartId.value,
         attributes: [{ key: poKey, value: po.value || '_' }],
@@ -65,10 +64,11 @@ export const useCartStore = defineStore('cart', () => {
     })
 
     if (data.cartAttributesUpdate) cart.value = data.cartAttributesUpdate.cart
-    if (data.cartAttributesUpdate)
+    if (data.cartAttributesUpdate) {
       po.value = data.cartAttributesUpdate.cart?.attributes.find(
         ({ key }) => key === poKey,
       )?.value
+    }
   }
 
   return {
