@@ -2,15 +2,13 @@ import { computed, ref } from '#imports'
 import { defineStore } from 'pinia'
 import type {
   Attribute,
-  CartLineUpdateInput,
   CartLineInput,
   Cart,
-  CartLinesUpdatePayload,
   Maybe,
   Mutation
 } from '@/utils/storefront-api-types'
 import { cartLinesAdd, useGetCart } from '@/proxies/cart'
-import { cartLinesUpdateQuery, cartAttributesUpdateQuery } from '@/utils/cart'
+import { cartAttributesUpdateQuery } from '@/utils/cart'
 import { tokenHandles, poKey } from '@/utils/constants'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 
@@ -47,17 +45,6 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  async function updateCart(items: CartLineUpdateInput[]) {
-    if (!cartId.value) return
-
-    const { data } = await $fetch<{ data: { cartLinesUpdate: CartLinesUpdatePayload } }>(useShopifyUrl(), {
-      ...useShopifyOptions(cartLinesUpdateQuery, { cartId: cartId.value, lines: items }),
-    })
-
-    if (data.cartLinesUpdate) cart.value = data.cartLinesUpdate.cart
-    if (data.cartLinesUpdate) po.value = data.cartLinesUpdate.cart?.attributes.find(({ key }) => key === poKey)?.value
-  }
-
   async function addToCart(items: CartLineInput[]) {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
@@ -86,6 +73,5 @@ export const useCartStore = defineStore('cart', () => {
     addToCart,
     po,
     updatePoNumber,
-    updateCart,
   }
 })

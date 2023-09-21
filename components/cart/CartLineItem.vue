@@ -31,15 +31,16 @@
 import { remainingTokenCalculator } from '@/components/cart/remainingTokenCalculator'
 import { toMoney } from '@/utils/conversion'
 import { useCartStore } from '@/stores/cart'
-import type { BaseCartLine } from '@/utils/storefront-api-types'
+import type { BaseCartLine, Mutation } from '@/utils/storefront-api-types'
 import { computed } from '#imports'
 import { tokenHandles } from '@/utils/constants'
 import { storeToRefs } from 'pinia'
+import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import { cartLinesUpdateQuery } from '@/utils/cart'
 
 // init
 const props = defineProps<{ line: BaseCartLine }>()
-const { cart } = storeToRefs(useCartStore())
-const { updateCart } = useCartStore()
+const { cart, cartId } = storeToRefs(useCartStore())
 
 // helper functions
 const attributeValue = (key: string) => {
@@ -59,7 +60,7 @@ const cartItems = computed(() => {
   return cart.value.lines.edges.map(({ node }) => node)
 })
 
-function removeLine() {
+async function removeLine() {
   const { remainingCutTokens, remainingHandlingTokens } =
     remainingTokenCalculator(props.line, cartItems.value)
 
@@ -67,6 +68,16 @@ function removeLine() {
   if (remainingCutTokens.id) items.push(remainingCutTokens)
   if (remainingHandlingTokens.id) items.push(remainingHandlingTokens)
 
-  updateCart(items)
+  const { data } = await $fetch<{ data: Pick<Mutation, 'cartLinesUpdate'> }>(
+    useShopifyUrl(),
+    {
+      ...useShopifyOptions(cartLinesUpdateQuery, {
+        cartId: cartId.value,
+        lines: items,
+      }),
+    },
+  )
+
+  if (data?.cartLinesUpdate) cart.value = data.cartLinesUpdate.cart
 }
 </script>

@@ -73,7 +73,7 @@ import { toMoney } from '@/utils/conversion'
 import PoInput from '~/components/cart/PoInput.vue'
 
 const { cart } = storeToRefs(useCartStore())
-const { updatePoNumber, updateCart, getCart } = useCartStore()
+const { updatePoNumber, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
@@ -87,10 +87,5 @@ const toCheckoutLink = ref()
 async function onClick() {
   await updatePoNumber()
   if (toCheckoutLink.value) toCheckoutLink.value.click()
-}
-
-function flush() {
-  if (!cart.value) return
-  updateCart(cartItems.value.map((item) => ({ id: item.id, quantity: 0 })))
 }
 </script>
