@@ -11,7 +11,7 @@
     <div class="flex gap-3" v-if="cartItems.length">
       <div class="w-4/6">
         <div v-for="item in cartItems" class="mb-4 flex flex-col border-b p-2">
-          <CartLineItem :cart-line="item" @click:remove="removeLine($event)" />
+          <CartLineItem :line="item" />
         </div>
       </div>
 
@@ -65,98 +65,27 @@
 </template>
 
 <script setup lang="ts">
-import CartLineItem from '@/components/CartLineItem.vue'
+import CartLineItem from '@/components/cart/CartLineItem.vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
 import { useHead, computed, onMounted, ref } from '#imports'
-import type { BaseCartLine } from '@/utils/storefront-api-types'
-import { tokenHandles } from '@/utils/constants'
 import { toMoney } from '@/utils/conversion'
 import PoInput from '~/components/cart/PoInput.vue'
 
 const { cart } = storeToRefs(useCartStore())
-const { updatePoNumber, updateCart, getCart } = useCartStore()
+const { updatePoNumber, getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
 
 const cartItems = computed(() => {
   if (!cart.value) return []
-
   return cart.value.lines.edges.map(({ node }) => node)
-})
-
-const productItems = computed(() => {
-  return cartItems.value.filter(({ merchandise }) => {
-    const handle = merchandise.product.handle
-    return !tokenHandles.includes(handle)
-  })
 })
 
 const toCheckoutLink = ref()
 async function onClick() {
   await updatePoNumber()
   if (toCheckoutLink.value) toCheckoutLink.value.click()
-}
-
-const cutTokens = computed(() => {
-  const item = cartItems.value.find(
-    ({ merchandise }) => merchandise.product.handle === 'cut-token',
-  )
-
-  return { quantity: item?.quantity || 0, id: item?.id || '' }
-})
-
-const handlingTokens = computed(() => {
-  const item = cartItems.value.find(
-    ({ merchandise }) => merchandise.product.handle === 'handling-token',
-  )
-
-  return { quantity: item?.quantity || 0, id: item?.id || '' }
-})
-
-const isLastItem = computed(() => productItems.value.length <= 1)
-
-function removeLine(line: BaseCartLine) {
-  if (!cart.value) return
-
-  const remainingCutTokens = () => {
-    const cutTokensOnItem =
-      line.attributes.find(({ key }) => key === '_cutTokens')?.value || 0
-
-    let quantity
-    if (isLastItem.value) {
-      quantity = 0
-    } else {
-      quantity = cutTokens.value.quantity - +cutTokensOnItem
-    }
-
-    return { id: cutTokens.value.id, quantity }
-  }
-
-  const remainingHandlingTokens = () => {
-    const handlingTokensOnItem =
-      line.attributes.find(({ key }) => key === '_handlingTokens')?.value || 0
-
-    let quantity
-    if (isLastItem.value) {
-      quantity = 0
-    } else {
-      quantity = handlingTokens.value.quantity - +handlingTokensOnItem
-    }
-
-    return { id: handlingTokens.value.id, quantity }
-  }
-
-  const items = [{ id: line.id, quantity: 0 }]
-  if (remainingCutTokens().id) items.push(remainingCutTokens())
-  if (remainingHandlingTokens().id) items.push(remainingHandlingTokens())
-
-  updateCart(items)
-}
-
-function flush() {
-  if (!cart.value) return
-  updateCart(cartItems.value.map((item) => ({ id: item.id, quantity: 0 })))
 }
 </script>

@@ -75,13 +75,13 @@ describe('itemsGenerator', () => {
         it('should return Pieces attribute @ 1 piece like this', () => {
           expect(
             when({ requestedLength: 1, numberOfPieces: 1, absoluteLength: 1 })
-          ).toEqual('1 pc @ 0.039 inches (1mm)')
+          ).toEqual('1 pc @ 0.039 inches')
         })
 
         it('should return Pieces attribute @ more than 1 like this', () => {
           expect(
             when({ requestedLength: 3, numberOfPieces: 3, absoluteLength: 8 })
-          ).toEqual('3 pcs @ 0.118 inches/ea. (8mm)')
+          ).toEqual('3 pcs @ 0.118 inches/ea.')
         })
       })
 
