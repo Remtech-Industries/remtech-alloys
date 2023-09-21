@@ -1,16 +1,16 @@
 import { computed, ref } from '#imports'
-import { defineStore } from 'pinia'
-import type {
-  Attribute,
-  CartLineInput,
-  Cart,
-  Maybe,
-  Mutation
-} from '@/utils/storefront-api-types'
+import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { cartLinesAdd, useGetCart } from '@/proxies/cart'
 import { cartAttributesUpdateQuery } from '@/utils/cart'
-import { tokenHandles, poKey } from '@/utils/constants'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import { poKey, tokenHandles } from '@/utils/constants'
+import type {
+  Attribute,
+  Cart,
+  CartLineInput,
+  Maybe,
+  Mutation,
+} from '@/utils/storefront-api-types'
+import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Maybe<Cart>>()
@@ -21,10 +21,8 @@ export const useCartStore = defineStore('cart', () => {
     if (!cart.value) return 0
 
     const nonTokenItems = cart.value.lines.edges.filter(({ node }) => {
-      const handle = node.merchandise.product.handle as
-        | 'cut-token'
-        | 'handling-token'
-      return !tokenHandles.includes(handle)
+      const handle = node.merchandise.product.handle
+      return !(tokenHandles as readonly string[]).includes(handle)
     })
 
     return nonTokenItems?.length || 0
@@ -57,12 +55,20 @@ export const useCartStore = defineStore('cart', () => {
   async function updatePoNumber() {
     if (!cartId.value) return
 
-    const { data } = await $fetch<{ data: Pick<Mutation, 'cartAttributesUpdate'> }>(useShopifyUrl(), {
-      ...useShopifyOptions(cartAttributesUpdateQuery, { cartId: cartId.value, attributes: [{ key: poKey, value: po.value || '_' }] })
+    const { data } = await $fetch<{
+      data: Pick<Mutation, 'cartAttributesUpdate'>
+    }>(useShopifyUrl(), {
+      ...useShopifyOptions(cartAttributesUpdateQuery, {
+        cartId: cartId.value,
+        attributes: [{ key: poKey, value: po.value || '_' }],
+      }),
     })
 
     if (data.cartAttributesUpdate) cart.value = data.cartAttributesUpdate.cart
-    if (data.cartAttributesUpdate) po.value = data.cartAttributesUpdate.cart?.attributes.find(({ key }) => key === poKey)?.value
+    if (data.cartAttributesUpdate)
+      po.value = data.cartAttributesUpdate.cart?.attributes.find(
+        ({ key }) => key === poKey,
+      )?.value
   }
 
   return {
