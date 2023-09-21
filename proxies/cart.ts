@@ -1,8 +1,5 @@
 import { usePostToShopify } from './post-to-shopify'
-import type {
-  Cart,
-  CartLineInput,
-} from '@/utils/storefront-api-types'
+import type { Cart, CartLineInput } from '@/utils/storefront-api-types'
 
 const cartQuery = `
 { 
@@ -93,14 +90,4 @@ export async function cartLinesAdd(
 
     return cartCreate
   }
-}
-
-export async function useGetCart(
-  cartId: string
-): Promise<{ cart: Cart | null }> {
-  const cart = await usePostToShopify(
-    `query getCart($cartId: ID!) { cart(id: $cartId) ${cartQuery} }`,
-    { cartId: cartId }
-  )
-  return cart
 }

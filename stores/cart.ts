@@ -1,13 +1,14 @@
 import { computed, ref } from '#imports'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
-import { cartLinesAdd, useGetCart } from '@/proxies/cart'
-import { cartAttributesUpdateQuery } from '@/utils/cart'
+import { cartLinesAdd } from '@/proxies/cart'
+import { cartAttributesUpdateQuery, getCartQuery } from '@/utils/cart'
 import { poKey, tokenHandles } from '@/utils/constants'
 import type {
   Attribute,
   Cart,
   CartLineInput,
   Maybe,
+  QueryRoot,
   Mutation,
 } from '@/utils/storefront-api-types'
 import { defineStore } from 'pinia'
@@ -34,11 +35,13 @@ export const useCartStore = defineStore('cart', () => {
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
-      const { cart: c } = await useGetCart(cartId)
-      cart.value = c
+      const { data } = await $fetch<{ data: Pick<QueryRoot, 'cart'> }>(useShopifyUrl(), {
+        ...useShopifyOptions(getCartQuery, { cartId, }),
+      })
 
-      if (c?.attributes) {
-        po.value = c.attributes.find(({ key }) => key === poKey)?.value
+      if (data.cart) cart.value = data.cart
+      if (data.cart?.attributes) {
+        po.value = data.cart.attributes.find(({ key }) => key === poKey)?.value
       }
     }
   }

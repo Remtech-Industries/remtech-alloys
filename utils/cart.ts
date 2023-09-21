@@ -72,3 +72,9 @@ export const cartAttributesUpdateQuery = `
       }
     }
   }`
+
+export const getCartQuery = `
+  query getCart($cartId: ID!) { 
+    cart(id: $cartId) ${cartQuery} 
+  }
+`
