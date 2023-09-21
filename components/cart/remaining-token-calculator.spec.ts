@@ -62,7 +62,7 @@ describe('remainingTokenCalculator', () => {
     expect(result.remainingCutTokens).toEqual({ id: '3', quantity: 1 })
   })
 
-  it('calculate when there are just too few', () => {
+  it('calculate when there are just too few tokens', () => {
     const cartItemToRemove = { ...productCartItem, id: 'random-1' }
     const allCartItems = [
       cartItemToRemove,
