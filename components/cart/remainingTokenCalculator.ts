@@ -1,55 +1,36 @@
 import { tokenHandles } from '@/utils/constants'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 
-export const remainingTokenCalculator = (line: BaseCartLine, cartItems: BaseCartLine[]) => {
-  // helpers
-  const productItems = () => {
-    return cartItems.filter(({ merchandise }) => {
-      const handle = merchandise.product.handle
-      return !tokenHandles.includes(handle)
+export const remainingTokenCalculator = (cartItemToRemove: BaseCartLine, allCartItems: BaseCartLine[]) => {
+  const productItemsNotGettingRemoved = () => {
+    return allCartItems.filter((item) => {
+      return !tokenHandles.includes(item.merchandise.product.handle) && item.id !== cartItemToRemove.id
     })
   }
 
-  const isLastItem = () => productItems.length <= 1
-
-  const attributeValue = (key: string) => {
-    return line.attributes.find((attribute) => attribute.key === key)?.value
+  const sumRemainingTokens = (type: string) => {
+    return productItemsNotGettingRemoved().reduce((sum, safeItem) => {
+      const tokensOnItem = +(safeItem.attributes.find(({ key }) => key === type)?.value || 0)
+      return sum + tokensOnItem
+    }, 0)
   }
 
-  const token = (tokenName: string) => {
-    const item = cartItems.find(
-      ({ merchandise }) => merchandise.product.handle === tokenName,
+  const findToken = (handle: string) => {
+    const item = allCartItems.find(
+      ({ merchandise }) => merchandise.product.handle === handle,
     )
     return { quantity: item?.quantity || 0, id: item?.id || '' }
   }
 
+  const remainingTokens = (attribute: string, tokenName: string) => {
+    const token = findToken(tokenName)
+    const quantity = sumRemainingTokens(attribute)
 
-  // 
-  const remainingCutTokens = () => {
-    const cutTokensOnItem = +(attributeValue('_cutTokens') || 0)
-
-    let quantity
-    if (isLastItem()) {
-      quantity = 0
-    } else {
-      quantity = token('cut-token').quantity - cutTokensOnItem
-    }
-
-    return { id: token('cut-token').id, quantity }
+    return { id: token.id, quantity }
   }
 
-  const remainingHandlingTokens = () => {
-    const handlingTokensOnItem = +(attributeValue('_handlingTokens') || 0)
-
-    let quantity
-    if (isLastItem()) {
-      quantity = 0
-    } else {
-      quantity = token('handling-token').quantity - handlingTokensOnItem
-    }
-
-    return { id: token('handling-token').id, quantity }
+  return {
+    remainingCutTokens: remainingTokens('_cutTokens', 'cut-token'),
+    remainingHandlingTokens: remainingTokens('_handlingTokens', 'handling-token'),
   }
-
-  return { remainingCutTokens, remainingHandlingTokens }
 }

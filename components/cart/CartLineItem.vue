@@ -34,10 +34,12 @@ import { useCartStore } from '@/stores/cart'
 import type { BaseCartLine } from '@/utils/storefront-api-types'
 import { computed } from '#imports'
 import { tokenHandles } from '@/utils/constants'
+import { storeToRefs } from 'pinia'
 
 // init
 const props = defineProps<{ line: BaseCartLine }>()
-const { updateCart, cart } = useCartStore()
+const { cart } = storeToRefs(useCartStore())
+const { updateCart } = useCartStore()
 
 // helper functions
 const attributeValue = (key: string) => {
@@ -53,19 +55,17 @@ function isAddon() {
 }
 
 const cartItems = computed(() => {
-  if (!cart) return []
-  return cart.lines.edges.map(({ node }) => node)
+  if (!cart.value) return []
+  return cart.value.lines.edges.map(({ node }) => node)
 })
 
 function removeLine() {
-  if (!cart) return
-
   const { remainingCutTokens, remainingHandlingTokens } =
     remainingTokenCalculator(props.line, cartItems.value)
 
   const items = [{ id: props.line.id, quantity: 0 }]
-  if (remainingCutTokens().id) items.push(remainingCutTokens())
-  if (remainingHandlingTokens().id) items.push(remainingHandlingTokens())
+  if (remainingCutTokens.id) items.push(remainingCutTokens)
+  if (remainingHandlingTokens.id) items.push(remainingHandlingTokens)
 
   updateCart(items)
 }
