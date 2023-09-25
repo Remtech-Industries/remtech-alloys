@@ -37,7 +37,7 @@
           </div>
         </div>
 
-        <div class="flex justify-between" v-if="cart?.cost.totalAmount">
+        <div class="mb-2 flex justify-between" v-if="cart?.cost.totalAmount">
           <div class="font-light">Total Amount</div>
           <div>
             <span class="mr-1 text-xs font-light text-slate-500">
@@ -51,7 +51,7 @@
 
         <ClientOnly>
           <NuxtLink
-            class="mt-3 w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
+            class="rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
             :to="cart?.checkoutUrl"
           >
             Checkout
