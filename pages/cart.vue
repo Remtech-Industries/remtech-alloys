@@ -50,14 +50,12 @@
         </div>
 
         <ClientOnly>
-          <button
+          <NuxtLink
             class="mt-3 w-full rounded bg-yellow-500 p-2 text-center text-slate-900 hover:bg-yellow-400 hover:text-slate-700"
-            @click="onClick()"
+            :to="cart?.checkoutUrl"
           >
             Checkout
-          </button>
-
-          <a ref="toCheckoutLink" :href="cart?.checkoutUrl" />
+          </NuxtLink>
         </ClientOnly>
       </div>
     </div>
@@ -68,12 +66,12 @@
 import CartLineItem from '@/components/cart/CartLineItem.vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { useHead, computed, onMounted, ref } from '#imports'
+import { useHead, computed, onMounted } from '#imports'
 import { toMoney } from '@/utils/conversion'
 import PoInput from '~/components/cart/PoInput.vue'
 
 const { cart } = storeToRefs(useCartStore())
-const { updatePoNumber, getCart } = useCartStore()
+const { getCart } = useCartStore()
 
 useHead({ title: 'Cart' })
 onMounted(() => getCart())
@@ -82,10 +80,4 @@ const cartItems = computed(() => {
   if (!cart.value) return []
   return cart.value.lines.edges.map(({ node }) => node)
 })
-
-const toCheckoutLink = ref()
-async function onClick() {
-  await updatePoNumber()
-  if (toCheckoutLink.value) toCheckoutLink.value.click()
-}
 </script>
