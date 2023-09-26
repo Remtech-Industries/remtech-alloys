@@ -11,7 +11,7 @@ export const useShopifyOptions = (query: string, variables = {}) => {
     method: 'POST' as const,
     headers: {
       'Content-Type': 'application/json' as const,
-      'X-Shopify-Storefront-Access-Token': config.public.publicAccessToken,
+      'X-Shopify-Storefront-Access-Token': config.public.publicAccessToken as string,
     },
     body: { query, variables },
   }
