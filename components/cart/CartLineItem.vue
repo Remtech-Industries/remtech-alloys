@@ -40,7 +40,7 @@ import { cartLinesUpdateQuery } from '@/utils/cart'
 
 // init
 const props = defineProps<{ line: BaseCartLine }>()
-const { cart, cartId } = storeToRefs(useCartStore())
+const { isPoUpdating, cart, cartId } = storeToRefs(useCartStore())
 
 // helper functions
 const attributeValue = (key: string) => {
@@ -61,6 +61,11 @@ const cartItems = computed(() => {
 })
 
 async function removeLine() {
+  // make sure the PO is done updating before we remove a line item
+  while (isPoUpdating.value) {
+    await new Promise((resolve) => setTimeout(resolve, 20))
+  }
+
   const { remainingCutTokens, remainingHandlingTokens } =
     remainingTokenCalculator(props.line, cartItems.value)
 

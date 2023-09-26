@@ -1,16 +1,23 @@
 import { computed, ref } from '#imports'
-import { defineStore } from 'pinia'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { cartLinesAdd } from '@/proxies/cart'
 import { getCartQuery } from '@/utils/cart'
 import { poKey, tokenHandles } from '@/utils/constants'
-import type { Cart, CartLineInput, Maybe, QueryRoot, } from '@/utils/storefront-api-types'
+import type {
+  Cart,
+  CartLineInput,
+  Maybe,
+  QueryRoot,
+} from '@/utils/storefront-api-types'
+import { defineStore } from 'pinia'
 
 export const useCartStore = defineStore('cart', () => {
   const cart = ref<Maybe<Cart>>()
   const cartId = computed(() => cart.value?.id)
   const po = computed({
-    get() { return cart.value?.attributes.find(({ key }) => key === poKey)?.value },
+    get() {
+      return cart.value?.attributes.find(({ key }) => key === poKey)?.value
+    },
     set(newValue) {
       if (!cart.value) return
       const poAttribute = cart.value.attributes.find(({ key }) => key === poKey)
@@ -19,8 +26,9 @@ export const useCartStore = defineStore('cart', () => {
       } else {
         cart.value.attributes.push({ key: poKey, value: newValue })
       }
-    }
+    },
   })
+  const isPoUpdating = ref(false)
 
   const itemCount = computed(() => {
     if (!cart.value) return 0
@@ -39,9 +47,12 @@ export const useCartStore = defineStore('cart', () => {
     const id = window.localStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
-      const { data } = await $fetch<{ data: Pick<QueryRoot, 'cart'> }>(useShopifyUrl(), {
-        ...useShopifyOptions(getCartQuery, { cartId, }),
-      })
+      const { data } = await $fetch<{ data: Pick<QueryRoot, 'cart'> }>(
+        useShopifyUrl(),
+        {
+          ...useShopifyOptions(getCartQuery, { cartId }),
+        },
+      )
 
       if (data.cart) cart.value = data.cart
     }
@@ -62,5 +73,6 @@ export const useCartStore = defineStore('cart', () => {
     getCart,
     addToCart,
     po,
+    isPoUpdating,
   }
 })

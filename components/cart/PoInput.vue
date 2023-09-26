@@ -24,18 +24,19 @@ import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { cartAttributesUpdateQuery } from '@/utils/cart'
 import { poKey } from '@/utils/constants'
 
-const { po, cartId, cart } = storeToRefs(useCartStore())
+const { isPoUpdating, po, cartId, cart } = storeToRefs(useCartStore())
 
 async function updatePoNumber(value: string) {
   if (!cartId.value) return
 
+  isPoUpdating.value = true
   type Response = { data: Pick<Mutation, 'cartAttributesUpdate'> }
   const { data } = await $fetch<Response>(useShopifyUrl(), {
     ...useShopifyOptions(cartAttributesUpdateQuery, {
       cartId: cartId.value,
       attributes: [{ key: poKey, value: value || '_' }],
     }),
-  })
+  }).finally(() => (isPoUpdating.value = false))
 
   if (data.cartAttributesUpdate) cart.value = data.cartAttributesUpdate.cart
 }
