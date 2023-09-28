@@ -104,7 +104,7 @@ const { data, error } = await useLazyFetch<CollectionResponse>(
   useShopifyUrl(),
   {
     ...useShopifyOptions(collectionQuery, variables.value),
-    key: 'collection',
+    key: `collection-${variables.value.handle}`,
   },
 )
 

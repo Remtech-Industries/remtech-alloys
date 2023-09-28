@@ -111,7 +111,7 @@ const form = ref<Form>({
 
 const { data } = await useLazyFetch<ProductResponse>(useShopifyUrl(), {
   ...useShopifyOptions(productQuery, { handle: params.handle, first: 250 }),
-  key: 'product',
+  key: `product-${params.handle}`,
 })
 
 const { data: tokens } = await useLazyFetch<TokenResponse>(useShopifyUrl(), {

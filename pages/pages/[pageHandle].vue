@@ -43,7 +43,7 @@ const page = ref<Page>()
 const get = async () => {
   const { data } = await useFetch<PageResponse>(useShopifyUrl(), {
     ...useShopifyOptions(string, { handle: pageHandle }),
-    key: 'page',
+    key: `page-${pageHandle}`,
   })
 
   page.value = data.value?.data?.page
