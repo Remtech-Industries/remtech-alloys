@@ -29,7 +29,8 @@ import Column from 'primevue/column'
 import { collectionsQuery } from '@/utils/collections'
 import { useFetch, computed, navigateTo } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import type { CollectionsResponse } from 'utils/types'
+import type { CollectionsResponse } from '@/utils/types'
+import CollectionSidebar from '@/components/CollectionSidebar.vue'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),
