@@ -74,7 +74,7 @@ import InputText from 'primevue/inputtext'
 import { FilterMatchMode } from 'primevue/api'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import { collectionQuery } from '@/utils/collections'
-import type { CollectionResponse } from 'utils/types'
+import type { CollectionResponse } from '@/utils/types'
 import { toPricePerInch, toMoney, toInches } from '@/utils/conversion'
 import {
   navigateTo,
