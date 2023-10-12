@@ -85,6 +85,7 @@ import {
   useRoute,
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
+import { availableProductQuantity } from '#imports'
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -113,7 +114,13 @@ const collection = computed(() => {
 })
 
 const products = computed(() => {
-  return collection.value?.products.edges.map(({ node }) => node)
+  return collection.value?.products.edges.map(({ node }) => ({
+    ...node,
+    totalInventory: availableProductQuantity(
+      node.handle,
+      node.totalInventory ?? 0,
+    ),
+  }))
 })
 
 useHead({
