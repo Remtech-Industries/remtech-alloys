@@ -99,6 +99,7 @@ import { toPricePerInch, toMoney } from '@/utils/conversion'
 import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { productQuery, tokenQuery } from '@/utils/products'
+import { availableQuantity } from '@/utils/available-quantity'
 
 const { params } = useRoute()
 
@@ -145,7 +146,13 @@ const variants = computed(() => {
   if (!product.value) return []
 
   return product.value?.variants.edges
-    .map(({ node }) => node)
+    .map(({ node }) => {
+      const quantityAvailable = availableQuantity(
+        node.id,
+        node.quantityAvailable ?? 0,
+      )
+      return { ...node, quantityAvailable: quantityAvailable }
+    })
     .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
