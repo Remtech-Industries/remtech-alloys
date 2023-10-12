@@ -85,7 +85,7 @@ import {
   useRoute,
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import { availableProductQuantity } from '#imports'
+import { availableProductQuantity } from '@/utils/available-quantity'
 const { params } = useRoute()
 
 const variables = computed(() => {
