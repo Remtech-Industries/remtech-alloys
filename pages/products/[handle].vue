@@ -100,7 +100,7 @@ import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { productQuery, tokenQuery } from '@/utils/products'
 import {
-  availableQuantity,
+  availableVariantQuantity,
   availableProductQuantity,
 } from '@/utils/available-quantity'
 
@@ -155,7 +155,7 @@ const variants = computed(() => {
 
   return product.value?.variants.edges
     .map(({ node }) => {
-      const quantityAvailable = availableQuantity(
+      const quantityAvailable = availableVariantQuantity(
         node.id,
         node.quantityAvailable ?? 0,
       )
