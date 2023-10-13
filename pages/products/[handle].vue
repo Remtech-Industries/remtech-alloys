@@ -103,6 +103,7 @@ import {
   availableVariantQuantity,
   availableProductQuantity,
 } from '@/utils/available-quantity'
+import { useCartStore } from '@/stores/cart'
 
 const { params } = useRoute()
 
@@ -141,12 +142,18 @@ const handlingToken = computed(() => {
   }
 })
 
+const { cart } = useCartStore()
+
 const product = computed(() => {
   if (!data.value?.data?.product) return null
   const p = data.value.data.product
   return {
     ...p,
-    totalInventory: availableProductQuantity(p.handle, p.totalInventory ?? 0),
+    totalInventory: availableProductQuantity(
+      p.handle,
+      p.totalInventory ?? 0,
+      cart?.lines.edges ?? [],
+    ),
   }
 })
 
@@ -158,6 +165,7 @@ const variants = computed(() => {
       const quantityAvailable = availableVariantQuantity(
         node.id,
         node.quantityAvailable ?? 0,
+        cart?.lines.edges ?? [],
       )
       return { ...node, quantityAvailable: quantityAvailable }
     })

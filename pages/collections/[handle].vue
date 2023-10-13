@@ -86,6 +86,8 @@ import {
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { availableProductQuantity } from '@/utils/available-quantity'
+import { useCartStore } from '@/stores/cart'
+
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -119,6 +121,7 @@ const products = computed(() => {
     totalInventory: availableProductQuantity(
       node.handle,
       node.totalInventory ?? 0,
+      useCartStore().cart?.lines.edges ?? [],
     ),
   }))
 })
