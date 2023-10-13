@@ -99,6 +99,10 @@ import { toPricePerInch, toMoney } from '@/utils/conversion'
 import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { productQuery, tokenQuery } from '@/utils/products'
+import {
+  availableVariantQuantity,
+  availableProductQuantity,
+} from '@/utils/available-quantity'
 
 const { params } = useRoute()
 
@@ -138,14 +142,25 @@ const handlingToken = computed(() => {
 })
 
 const product = computed(() => {
-  return data.value?.data?.product
+  if (!data.value?.data?.product) return null
+  const p = data.value.data.product
+  return {
+    ...p,
+    totalInventory: availableProductQuantity(p.handle, p.totalInventory ?? 0),
+  }
 })
 
 const variants = computed(() => {
   if (!product.value) return []
 
   return product.value?.variants.edges
-    .map(({ node }) => node)
+    .map(({ node }) => {
+      const quantityAvailable = availableVariantQuantity(
+        node.id,
+        node.quantityAvailable ?? 0,
+      )
+      return { ...node, quantityAvailable: quantityAvailable }
+    })
     .sort((a, b) => (a.quantityAvailable || 0) - (b.quantityAvailable || 0))
 })
 
@@ -155,7 +170,7 @@ const isOutOfStock = computed(() => {
 })
 
 const selectedVariant = computed(() => {
-  if (!product) return null
+  if (!product.value) return null
 
   const { requestedLength, numberOfPieces, tagNumber } = form.value
   const actualLengthPerPiece = requestedLength + cutWaste.value
