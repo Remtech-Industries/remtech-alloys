@@ -9,7 +9,7 @@
     "upgrade": "npx nuxi upgrade --force"
   },
   "dependencies": {
-    "@pinia/nuxt": "^0.4.6",
+    "@pinia/nuxt": "^0.5.1",
     "@vueuse/core": "^10.6.1",
     "nuxt-bugsnag": "^7.1.0",
     "pinia": "^2.1.7",
