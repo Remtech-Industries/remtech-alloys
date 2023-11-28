@@ -5,6 +5,14 @@ export default defineNuxtConfig({
     siteName: 'Rem-Tech Alloys',
   },
 
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        verbatimModuleSyntax: false,
+      },
+    },
+  },
+
   robots: {
     disallow: ['/cart', '/mtr'],
   },
