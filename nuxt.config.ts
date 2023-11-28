@@ -5,6 +5,16 @@ export default defineNuxtConfig({
     siteName: 'Rem-Tech Alloys',
   },
 
+  // this typescript config is temporary until we refactor as necessary
+  // See sub-heading "Type import changes" https://github.com/nuxt/nuxt/releases/tag/v3.8.0
+  typescript: {
+    tsConfig: {
+      compilerOptions: {
+        verbatimModuleSyntax: false,
+      },
+    },
+  },
+
   robots: {
     disallow: ['/cart', '/mtr'],
   },
