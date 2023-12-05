@@ -19,7 +19,7 @@
           of all stainless steels and high nickel alloys.
         </p>
 
-        <h2 class="mt-8 mb-3 font-extrabold">Contact Details</h2>
+        <h2 class="mb-3 mt-8 font-extrabold">Contact Details</h2>
 
         <p>
           105 White Street
@@ -38,11 +38,11 @@
         </p>
       </div>
 
-      <div class="my-8 grid grid-cols-2">
-        <img src="/overhead.jpg" />
-        <img src="/medium_close.jpg" />
-        <img src="/extremely_close.jpg" />
-        <img src="/side.jpg" />
+      <div class="my-8 grid grid-cols-2 gap-1">
+        <NuxtImg src="/overhead.jpg" />
+        <NuxtImg src="/medium_close.jpg" />
+        <NuxtImg src="/extremely_close.jpg" />
+        <NuxtImg src="/side.jpg" />
       </div>
     </div>
   </div>
