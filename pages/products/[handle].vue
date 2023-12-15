@@ -2,7 +2,7 @@
   <div class="flex">
     <CollectionSidebar class="hidden md:block" />
 
-    <div v-if="product" class="w-full p-5">
+    <div v-if="product" class="w-full overflow-hidden p-5">
       <div v-if="isOutOfStock" class="flex flex-col gap-2">
         <h1 class="border-b pb-2 font-oswald text-2xl font-bold text-slate-700">
           {{ product.title }}
