@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto mt-6 max-w-3xl text-slate-600">
+  <div v-if="isUnlocked" class="mx-auto mt-6 max-w-3xl text-slate-600">
     <h1
       class="mb-2 border-b-2 border-yellow-500 font-oswald text-3xl font-bold"
     >
@@ -66,11 +66,17 @@
 import CartLineItem from '@/components/cart/CartLineItem.vue'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
-import { useHead, computed, onMounted } from '#imports'
+import { useHead, computed, onMounted, navigateTo } from '#imports'
 import { toMoney } from '@/utils/conversion'
 import PoInput from '~/components/cart/PoInput.vue'
 
-const { cart } = storeToRefs(useCartStore())
+/**
+ * Cart page is locked from anyone who doesn't have the key
+ */
+const { cart, isUnlocked } = storeToRefs(useCartStore())
+onMounted(() => {
+  if (!isUnlocked.value) navigateTo('/pages/rfq')
+})
 const { getCart } = useCartStore()
 
 useHead({ title: 'Cart' })

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div v-if="isUnlocked" class="flex">
     <CollectionSidebar class="hidden md:block" />
 
     <div v-if="product" class="w-full overflow-hidden p-5">
@@ -96,13 +96,31 @@ import PricingTable from '@/components/PricingTable.vue'
 import type { Form, ProductResponse, TokenResponse } from '@/utils/types'
 import { itemsGenerator } from '@/utils/items-generator'
 import { toPricePerInch, toMoney } from '@/utils/conversion'
-import { computed, ref, useHead, useRoute, useLazyFetch } from '#imports'
+import {
+  computed,
+  ref,
+  useHead,
+  useRoute,
+  useLazyFetch,
+  onMounted,
+  navigateTo,
+} from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { productQuery, tokenQuery } from '@/utils/products'
 import {
   availableVariantQuantity,
   availableProductQuantity,
 } from '@/utils/available-quantity'
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/stores/cart'
+
+/**
+ * Products page is locked from anyone who doesn't have the key
+ */
+const { isUnlocked } = storeToRefs(useCartStore())
+onMounted(() => {
+  if (!isUnlocked.value) navigateTo('/pages/rfq')
+})
 
 const { params } = useRoute()
 
