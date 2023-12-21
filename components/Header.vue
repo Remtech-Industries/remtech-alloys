@@ -101,7 +101,8 @@
           </div>
         </div>
 
-        <div class="mt-2 flex justify-end text-slate-50">
+        <!-- Hide cart link if the user has not unlocked the app -->
+        <div v-if="isUnlocked" class="mt-2 flex justify-end text-slate-50">
           <div v-show="showAddedToCartAlert" class="mr-2">Added to cart!</div>
 
           <NuxtLink to="/cart" class="font-semibold">
@@ -128,7 +129,7 @@ const { brand } = useShopStore()
 
 const showAddedToCartAlert = ref(false)
 
-const { itemCount } = storeToRefs(useCartStore())
+const { isUnlocked, itemCount } = storeToRefs(useCartStore())
 watch(itemCount, (oldCount, newCount) => {
   if (oldCount > newCount) {
     showAddedToCartAlert.value = true
