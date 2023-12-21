@@ -38,7 +38,8 @@
             </template>
           </Column>
 
-          <Column header="Price/Inch">
+          <!-- Hide prices if the user has not unlocked the app -->
+          <Column v-if="isUnlocked" header="Price/Inch">
             <template #body="{ data }">
               {{
                 toMoney(
@@ -86,6 +87,10 @@ import {
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { availableProductQuantity } from '@/utils/available-quantity'
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/stores/cart'
+
+const { isUnlocked } = storeToRefs(useCartStore())
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -127,7 +132,11 @@ useHead({
   title: collection.value?.title,
 })
 
+/**
+ * Go to the RFQ page if the user has not unlocked the app
+ */
 const goTo = async (handle: string) => {
-  await navigateTo(`/products/${handle}`)
+  if (isUnlocked.value) await navigateTo(`/products/${handle}`)
+  else await navigateTo(`/pages/rfq`)
 }
 </script>
