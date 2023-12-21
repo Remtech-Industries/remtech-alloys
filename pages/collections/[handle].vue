@@ -38,7 +38,7 @@
             </template>
           </Column>
 
-          <Column header="Price/Inch">
+          <Column v-if="isUnlocked" header="Price/Inch">
             <template #body="{ data }">
               {{
                 toMoney(
@@ -86,6 +86,10 @@ import {
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { availableProductQuantity } from '@/utils/available-quantity'
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/stores/cart'
+
+const { isUnlocked } = storeToRefs(useCartStore())
 const { params } = useRoute()
 
 const variables = computed(() => {
@@ -128,6 +132,7 @@ useHead({
 })
 
 const goTo = async (handle: string) => {
-  await navigateTo(`/products/${handle}`)
+  if (isUnlocked.value) await navigateTo(`/products/${handle}`)
+  else await navigateTo(`/pages/rfq`)
 }
 </script>
