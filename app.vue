@@ -19,11 +19,13 @@
 </template>
 
 <script setup lang="ts">
+import { storeToRefs } from 'pinia'
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import { useShopStore } from '@/stores/shop'
-import { useHead } from '#imports'
+import { useHead, watch } from '#imports'
 import { useCartStore } from '@/stores/cart'
+import { useRoute } from 'vue-router'
 const { getCart } = useCartStore()
 const { getShop } = useShopStore()
 getCart()
@@ -33,4 +35,15 @@ useHead({
   title: 'Rem-Tech Alloys',
   style: [{ children: 'body { background-color: #f8fafc }' }],
 })
+
+const { isUnlocked } = storeToRefs(useCartStore())
+const route = useRoute()
+watch(
+  () => route.params.unlock,
+  () => {
+    const key =
+      'u0q289hasdvu8g0!!##4cmq032ryq2h0svndjq9we0q2u8fh8dadafg43q2sfa4'
+    if (route.params.unlock === key) isUnlocked.value = true
+  },
+)
 </script>

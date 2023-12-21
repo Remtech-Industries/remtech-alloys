@@ -41,6 +41,8 @@ export const useCartStore = defineStore('cart', () => {
     return nonTokenItems?.length || 0
   })
 
+  const isUnlocked = ref(false)
+
   async function getCart() {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
@@ -74,5 +76,6 @@ export const useCartStore = defineStore('cart', () => {
     addToCart,
     po,
     isPoUpdating,
+    isUnlocked,
   }
 })
