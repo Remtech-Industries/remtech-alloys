@@ -38,6 +38,7 @@
             </template>
           </Column>
 
+          <!-- Hide prices if the user has not unlocked the app -->
           <Column v-if="isUnlocked" header="Price/Inch">
             <template #body="{ data }">
               {{
@@ -131,6 +132,9 @@ useHead({
   title: collection.value?.title,
 })
 
+/**
+ * Go to the RFQ page if the user has not unlocked the app
+ */
 const goTo = async (handle: string) => {
   if (isUnlocked.value) await navigateTo(`/products/${handle}`)
   else await navigateTo(`/pages/rfq`)

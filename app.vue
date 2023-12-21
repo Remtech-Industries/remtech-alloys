@@ -36,6 +36,9 @@ useHead({
   style: [{ children: 'body { background-color: #f8fafc }' }],
 })
 
+/**
+ * Unlock the app only if the user has the correct key
+ */
 const { isUnlocked } = storeToRefs(useCartStore())
 const route = useRoute()
 watch(
