@@ -55,7 +55,7 @@
           <div class="rounded-l bg-slate-600 px-2 py-1 text-slate-50">Tag#</div>
 
           <input
-            class="rounded-r border px-2 py-1 shadow-inner"
+            class="rounded-r border px-2 py-1 shadow-inner focus:outline-none"
             v-model="form.tagNumber"
             placeholder="(optional)"
           />
