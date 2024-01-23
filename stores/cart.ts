@@ -46,7 +46,7 @@ export const useCartStore = defineStore('cart', () => {
   async function getCart() {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
-    const id = window.localStorage.getItem('cartId')
+    const id = window.sessionStorage.getItem('cartId')
     const cartId = id ? JSON.parse(id) : null
     if (cartId) {
       const { data } = await $fetch<{ data: Pick<QueryRoot, 'cart'> }>(
@@ -64,7 +64,7 @@ export const useCartStore = defineStore('cart', () => {
     if (!process.client) return //window will return undefined on server, errors with nitro server
 
     const { cart: c } = await cartLinesAdd(items, cartId.value)
-    window.localStorage.setItem('cartId', JSON.stringify(c.id))
+    window.sessionStorage.setItem('cartId', JSON.stringify(c.id))
     cart.value = c
   }
 
