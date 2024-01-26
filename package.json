@@ -18,10 +18,10 @@
   "devDependencies": {
     "@nuxt/devtools": "^1.0.8",
     "@nuxt/image": "^1.2.0",
-    "@nuxt/test-utils": "^3.9.0",
+    "@nuxt/test-utils": "^3.10.0",
     "@nuxtjs/tailwindcss": "^6.11.1",
     "@vitejs/plugin-vue": "^5.0.3",
-    "@vue/test-utils": "^2.4.3",
+    "@vue/test-utils": "^2.4.4",
     "jsdom": "^23.0.1",
     "nuxt": "^3.9.3",
     "nuxt-gtag": "^1.1.2",
@@ -30,7 +30,7 @@
     "prettier-plugin-organize-imports": "^3.2.4",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "typescript": "^5.3.3",
-    "vitest": "^1.1.0"
+    "vitest": "^1.2.1"
   },
   "overrides": {
     "vue": "latest"
