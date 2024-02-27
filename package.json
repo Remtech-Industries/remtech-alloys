@@ -13,7 +13,7 @@
     "@vueuse/core": "^10.7.2",
     "nuxt-bugsnag": "^7.2.3",
     "pinia": "^2.1.7",
-    "primevue": "^3.48.1"
+    "primevue": "^3.49.1"
   },
   "devDependencies": {
     "@nuxt/devtools": "^1.0.8",
