@@ -6,8 +6,6 @@
         Now offering FREE delivery along the 401 and 403 from Windsor to
         Toronto!
       </div>
-
-      <div v-if="needsUpdate"></div>
     </div>
 
     <Header />
@@ -37,8 +35,6 @@ useHead({
   title: 'Rem-Tech Alloys',
   style: [{ children: 'body { background-color: #f8fafc }' }],
 })
-
-const needsUpdate = false
 
 /**
  * Unlock the app only if the user has the correct key
