@@ -16,7 +16,7 @@
     "primevue": "^3.51.0"
   },
   "devDependencies": {
-    "@nuxt/devtools": "^1.1.5",
+    "@nuxt/devtools": "^1.2.0",
     "@nuxt/image": "^1.2.0",
     "@nuxt/test-utils": "^3.12.1",
     "@nuxtjs/tailwindcss": "^6.11.4",
