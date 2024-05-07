@@ -24,13 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import DataTable from 'primevue/datatable'
-import Column from 'primevue/column'
-import { collectionsQuery } from '@/utils/collections'
-import { useFetch, computed, navigateTo } from '#imports'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import type { CollectionsResponse } from '@/utils/types'
+import { computed, navigateTo, useFetch } from '#imports'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
+import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
+import { collectionsQuery } from '@/utils/collections'
+import type { CollectionsResponse } from '@/utils/types'
+import Column from 'primevue/column'
+import DataTable from 'primevue/datatable'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),

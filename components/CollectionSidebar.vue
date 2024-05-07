@@ -6,6 +6,13 @@
       Choose a material type
     </div>
 
+    <NuxtLink
+      to="/material-type/alloy_20"
+      class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
+    >
+      Alloy 20
+    </NuxtLink>
+
     <ul v-if="collections && collections.length > 0">
       <li v-for="collection in collections" :key="collection.id">
         <NuxtLink
@@ -22,9 +29,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useFetch } from '#imports'
+import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { collectionsQuery } from '@/utils/collections'
-import { useFetch, computed } from '#imports'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { CollectionsResponse } from '@/utils/types'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
