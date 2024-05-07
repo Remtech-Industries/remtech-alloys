@@ -41,7 +41,7 @@ import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
 
 const { data } = await useFetch<{ products: [] }>(
-  'http://data.remtechalloys.com/remtech_alloys_inventory_levels.json',
+  'https://data.remtechalloys.com/remtech_alloys_inventory_levels.json',
   { lazy: true, server: false },
 )
 
