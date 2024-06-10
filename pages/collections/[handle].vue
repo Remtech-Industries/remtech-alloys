@@ -51,7 +51,14 @@
 
           <Column header="Stock" #body="{ data }" style="min-width: 100px">
             <span
-              v-if="data.totalInventory > 0"
+              v-if="data.totalInventoryInches > 0"
+              class="text-sm font-light text-green-600"
+            >
+              {{ Math.floor(data.totalInventoryInches) }}" In Stock
+            </span>
+
+            <span
+              v-else-if="data.totalInventory > 0"
               class="text-sm font-light text-green-600"
             >
               {{ Math.floor(toInches(+data.totalInventory, 'mm', 'roundIt')) }}"
@@ -84,6 +91,7 @@ import {
   ref,
   useHead,
   useRoute,
+  useFetch,
 } from '#imports'
 import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { availableProductQuantity } from '@/utils/available-quantity'
@@ -118,14 +126,64 @@ const collection = computed(() => {
   return data.value?.data?.collection
 })
 
+const { data: jobbossData } = await useFetch<{ products: [] }>(
+  'https://data.remtechalloys.com/remtech_alloys_inventory_levels.json',
+  { lazy: true, server: false },
+)
+
+const handleMapping = {
+  alloy_20: { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
+  '316': { searchJobbossWith: '316 SS', replaceJobbossWith: '316L SS' },
+}
+
+function naturalSort(a: string, b: string) {
+  const a1 = a.split(' ').map((word) => {
+    if (parseFloat(word)) return parseFloat(word)
+    else return word
+  })
+  const b1 = b.split(' ').map((word) => {
+    if (parseFloat(word)) return parseFloat(word)
+    else return word
+  })
+  for (let i = 0; i < a1.length; i++) {
+    if (a1[i] < b1[i]) return -1
+    if (a1[i] > b1[i]) return 1
+  }
+  return 0
+}
+
 const products = computed(() => {
-  return collection.value?.products.edges.map(({ node }) => ({
-    ...node,
-    totalInventory: availableProductQuantity(
-      node.handle,
-      node.totalInventory ?? 0,
-    ),
-  }))
+  const shopifyProducts =
+    collection.value?.products.edges.map(({ node }) => ({
+      ...node,
+      totalInventory: availableProductQuantity(
+        node.handle,
+        node.totalInventory ?? 0,
+      ),
+    })) ?? []
+
+  type Item = { partno: string; qtyonhand: number; partweight: number }
+  const handle = variables.value.handle as keyof typeof handleMapping
+  if (!handleMapping[handle]) return shopifyProducts
+
+  const jobbossProducts =
+    jobbossData.value?.products
+      .filter((item: Item) =>
+        item.partno.startsWith(handleMapping[handle].searchJobbossWith),
+      )
+      .map((item: Item) => ({
+        title: item.partno
+          .replace(
+            handleMapping[handle].searchJobbossWith,
+            handleMapping[handle].replaceJobbossWith,
+          )
+          .replace(/RND/g, 'Diameter'),
+        totalInventoryInches: item.qtyonhand,
+      })) ?? []
+
+  return [...shopifyProducts, ...jobbossProducts].sort((a, b) =>
+    naturalSort(a.title, b.title),
+  )
 })
 
 useHead({
