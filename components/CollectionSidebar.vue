@@ -7,7 +7,7 @@
     </div>
 
     <NuxtLink
-      to="/material-type/alloy_20"
+      to="/collections/alloy-20"
       class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
     >
       Alloy 20
