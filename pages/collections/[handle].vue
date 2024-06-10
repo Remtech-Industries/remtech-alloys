@@ -111,7 +111,7 @@ const { isUnlocked } = storeToRefs(useCartStore())
 const { params } = useRoute()
 
 const handleMapping = {
-  alloy_20: { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
+  'alloy-20': { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
   '316l': { searchJobbossWith: '316 SS', replaceJobbossWith: '316L SS' },
 }
 type HandleKey = keyof typeof handleMapping
