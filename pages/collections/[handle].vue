@@ -30,7 +30,7 @@
           scrollable
           v-model:filters="filters"
           :value="products"
-          @row-click="({ data }) => goTo(data.handle)"
+          @row-click="({ data }) => goTo(data)"
         >
           <template #header>
             <div class="flex justify-end">
@@ -50,11 +50,18 @@
           <!-- Hide prices if the user has not unlocked the app -->
           <Column v-if="isUnlocked" header="Price/Inch">
             <template #body="{ data }">
-              {{
-                toMoney(
-                  toPricePerInch(+data.priceRange.minVariantPrice.amount, 'mm'),
-                )
-              }}
+              <span v-if="data?.priceRange">
+                {{
+                  toMoney(
+                    toPricePerInch(
+                      +data.priceRange.minVariantPrice.amount,
+                      'mm',
+                    ),
+                  )
+                }}
+              </span>
+
+              <span v-else>-</span>
             </template>
           </Column>
 
@@ -218,8 +225,9 @@ useHead({
 /**
  * Go to the RFQ page if the user has not unlocked the app
  */
-const goTo = async (handle: string) => {
-  if (isUnlocked.value) await navigateTo(`/products/${handle}`)
+const goTo = async (data: any) => {
+  if (isUnlocked.value && data.priceRange)
+    await navigateTo(`/products/${data.handle}`)
   else await navigateTo(`/pages/rfq`)
 }
 </script>
