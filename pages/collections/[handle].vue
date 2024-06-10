@@ -4,15 +4,24 @@
 
     <div v-if="error">{{ error }}</div>
 
-    <div class="w-full p-6" v-if="collection">
+    <div
+      v-if="collection || handleMapping[variables.handle]"
+      class="w-full p-6"
+    >
       <div class="mb-6 flex flex-col items-baseline">
         <h1
           class="mb-3 border-b-4 border-yellow-500 text-center font-oswald text-3xl font-bold text-slate-600"
         >
-          {{ collection.title }}
+          <span v-if="collection">{{ collection.title }}</span>
+
+          <span v-else>
+            {{ handleMapping[variables.handle].replaceJobbossWith }}
+          </span>
         </h1>
 
-        <p class="pl-4 text-sm font-light">{{ collection.description }}</p>
+        <p v-if="collection" class="pl-4 text-sm font-light">
+          {{ collection.description }}
+        </p>
       </div>
 
       <div class="rounded-xl bg-white p-6">
@@ -101,9 +110,15 @@ import { useCartStore } from '@/stores/cart'
 const { isUnlocked } = storeToRefs(useCartStore())
 const { params } = useRoute()
 
+const handleMapping = {
+  alloy_20: { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
+  '316l': { searchJobbossWith: '316 SS', replaceJobbossWith: '316L SS' },
+}
+type HandleKey = keyof typeof handleMapping
 const variables = computed(() => {
-  const handle =
-    typeof params.handle === 'string' ? params.handle : params.handle[0] || ''
+  const handle = (
+    typeof params.handle === 'string' ? params.handle : params.handle[0]
+  ) as HandleKey
   return { handle }
 })
 
@@ -131,11 +146,6 @@ const { data: jobbossData } = await useFetch<{ products: [] }>(
   { lazy: true, server: false },
 )
 
-const handleMapping = {
-  alloy_20: { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
-  '316': { searchJobbossWith: '316 SS', replaceJobbossWith: '316L SS' },
-}
-
 function naturalSort(a: string, b: string) {
   const a1 = a.split(' ').map((word) => {
     if (parseFloat(word)) return parseFloat(word)
@@ -152,8 +162,8 @@ function naturalSort(a: string, b: string) {
   return 0
 }
 
-const products = computed(() => {
-  const shopifyProducts =
+const shopifyProducts = computed(() => {
+  return (
     collection.value?.products.edges.map(({ node }) => ({
       ...node,
       totalInventory: availableProductQuantity(
@@ -161,27 +171,36 @@ const products = computed(() => {
         node.totalInventory ?? 0,
       ),
     })) ?? []
+  )
+})
 
-  type Item = { partno: string; qtyonhand: number; partweight: number }
-  const handle = variables.value.handle as keyof typeof handleMapping
-  if (!handleMapping[handle]) return shopifyProducts
+const jobbossProducts = computed(() => {
+  const handle = variables.value.handle as HandleKey
+  if (!handleMapping[handle]) return []
 
-  const jobbossProducts =
+  return (
     jobbossData.value?.products
-      .filter((item: Item) =>
-        item.partno.startsWith(handleMapping[handle].searchJobbossWith),
+      .filter(
+        (item: { partno: string; qtyonhand: number; partweight: number }) =>
+          item.partno.startsWith(handleMapping[handle].searchJobbossWith),
       )
-      .map((item: Item) => ({
-        title: item.partno
-          .replace(
-            handleMapping[handle].searchJobbossWith,
-            handleMapping[handle].replaceJobbossWith,
-          )
-          .replace(/RND/g, 'Diameter'),
-        totalInventoryInches: item.qtyonhand,
-      })) ?? []
+      .map(
+        (item: { partno: string; qtyonhand: number; partweight: number }) => ({
+          title: item.partno
+            .replace(
+              handleMapping[handle].searchJobbossWith,
+              handleMapping[handle].replaceJobbossWith,
+            )
+            .replace(/RND/g, 'Diameter'),
+          totalInventoryInches: item.qtyonhand,
+        }),
+      )
+      .sort((a, b) => naturalSort(a.title, b.title)) ?? []
+  )
+})
 
-  return [...shopifyProducts, ...jobbossProducts].sort((a, b) =>
+const products = computed(() => {
+  return [...shopifyProducts.value, ...jobbossProducts.value].sort((a, b) =>
     naturalSort(a.title, b.title),
   )
 })
