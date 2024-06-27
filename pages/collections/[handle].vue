@@ -113,20 +113,11 @@ import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
 import { availableProductQuantity } from '@/utils/available-quantity'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/stores/cart'
+import { handleMapping } from '@/utils/handle-mapping'
 
 const { isUnlocked } = storeToRefs(useCartStore())
 const { params } = useRoute()
 
-const handleMapping = {
-  'alloy-20': { searchJobbossWith: 'ALLOY 20', replaceJobbossWith: 'Alloy 20' },
-  'duplex-2205': {
-    searchJobbossWith: 'DUPLEX 2205',
-    replaceJobbossWith: 'Duplex 2205',
-  },
-  '316l': { searchJobbossWith: '316 SS', replaceJobbossWith: '316L SS' },
-  '416': { searchJobbossWith: '416 SS', replaceJobbossWith: '416 SS' },
-  '410': { searchJobbossWith: '410 SS', replaceJobbossWith: '410 SS' },
-}
 type HandleKey = keyof typeof handleMapping
 const variables = computed(() => {
   const handle = (

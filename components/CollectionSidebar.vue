@@ -6,15 +6,8 @@
       Choose a material type
     </div>
 
-    <NuxtLink
-      to="/collections/alloy-20"
-      class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
-    >
-      Alloy 20
-    </NuxtLink>
-
     <ul v-if="collections && collections.length > 0">
-      <li v-for="collection in collections" :key="collection.id">
+      <li v-for="collection in collections" :key="collection.handle">
         <NuxtLink
           :to="`/collections/${collection.handle}`"
           class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
@@ -33,13 +26,33 @@ import { computed, useFetch } from '#imports'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { collectionsQuery } from '@/utils/collections'
 import { CollectionsResponse } from '@/utils/types'
+import { handleMapping } from '@/utils/handle-mapping'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),
   key: 'collections',
 })
 
+const staticCollections = computed(() =>
+  Object.entries(handleMapping).map(([handle, strings]) => ({
+    handle,
+    title: strings.displayTitle,
+  })),
+)
+
 const collections = computed(() => {
-  return data.value?.data?.collections?.edges.map(({ node }) => node)
+  if (!data.value?.data?.collections?.edges) return staticCollections.value
+
+  const allCollections = staticCollections.value
+
+  data.value.data.collections.edges.forEach(({ node }) => {
+    if (
+      !allCollections.some((collection) => node.handle === collection.handle)
+    ) {
+      allCollections.push(node)
+    }
+  })
+
+  return allCollections.sort((a, b) => a.title.localeCompare(b.title))
 })
 </script>
