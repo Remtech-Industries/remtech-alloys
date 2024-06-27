@@ -31,18 +31,38 @@ import { collectionsQuery } from '@/utils/collections'
 import type { CollectionsResponse } from '@/utils/types'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
+import { handleMapping } from '@/utils/handle-mapping'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),
   key: 'collections',
 })
 
-const staticCollections = [{ title: 'Alloy 20', handle: 'alloy-20' }] as const
+const { data: jobbossData } = await useFetch<{ products: [] }>(
+  'https://data.remtechalloys.com/remtech_alloys_inventory_levels.json',
+  { lazy: true, server: false },
+)
+
+const staticCollectionsWithQuantity = computed(() => {
+  const products = jobbossData.value?.products || []
+
+  return Object.entries(handleMapping).map(([handle, strings]) => {
+    const length = products.filter((product: { partno: string }) =>
+      product.partno.includes(strings.searchJobbossWith),
+    ).length
+    return {
+      handle,
+      title: strings.displayTitle,
+      products: { edges: { length } },
+    }
+  })
+})
 
 const collections = computed(() => {
-  if (!data.value?.data?.collections?.edges) return staticCollections
+  if (!data.value?.data?.collections?.edges)
+    return staticCollectionsWithQuantity.value
   return [
-    ...staticCollections,
+    ...staticCollectionsWithQuantity.value,
     ...data.value.data.collections.edges.map(({ node }) => node),
   ]
 })
