@@ -37,8 +37,14 @@ const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   key: 'collections',
 })
 
+const staticCollections = [{ title: 'Alloy 20', handle: 'alloy-20' }] as const
+
 const collections = computed(() => {
-  return data.value?.data?.collections?.edges.map(({ node }) => node)
+  if (!data.value?.data?.collections?.edges) return staticCollections
+  return [
+    ...staticCollections,
+    ...data.value.data.collections.edges.map(({ node }) => node),
+  ]
 })
 
 const goTo = async (handle: string) => {
