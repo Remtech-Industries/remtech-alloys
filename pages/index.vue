@@ -70,6 +70,11 @@ const collections = computed(() => {
       !allCollections.some((collection) => node.handle === collection.handle)
     ) {
       allCollections.push(node)
+    } else {
+      const index = allCollections.findIndex(
+        (collection) => collection.handle === node.handle,
+      )
+      allCollections[index].products.edges.length += node.products.edges.length
     }
   })
 
