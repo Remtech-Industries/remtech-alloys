@@ -59,12 +59,21 @@ const staticCollectionsWithQuantity = computed(() => {
 })
 
 const collections = computed(() => {
-  if (!data.value?.data?.collections?.edges)
+  if (!data.value?.data?.collections?.edges) {
     return staticCollectionsWithQuantity.value
-  return [
-    ...staticCollectionsWithQuantity.value,
-    ...data.value.data.collections.edges.map(({ node }) => node),
-  ]
+  }
+
+  const allCollections = staticCollectionsWithQuantity.value
+
+  data.value.data.collections.edges.forEach(({ node }) => {
+    if (
+      !allCollections.some((collection) => node.handle === collection.handle)
+    ) {
+      allCollections.push(node)
+    }
+  })
+
+  return allCollections.sort((a, b) => a.title.localeCompare(b.title))
 })
 
 const goTo = async (handle: string) => {
