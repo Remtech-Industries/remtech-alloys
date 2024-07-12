@@ -53,6 +53,11 @@ const collections = computed(() => {
     }
   })
 
-  return allCollections.sort((a, b) => a.title.localeCompare(b.title))
+  return allCollections.sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    }),
+  )
 })
 </script>
