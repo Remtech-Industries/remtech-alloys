@@ -15,7 +15,7 @@
           <span v-if="collection">{{ collection.title }}</span>
 
           <span v-else>
-            {{ handleMapping[variables.handle].replaceJobbossWith }}
+            {{ handleMapping[variables.handle].pageTitle }}
           </span>
         </h1>
 
@@ -195,7 +195,8 @@ const jobbossProducts = computed(() => {
               handleMapping[handle].searchJobbossWith,
               handleMapping[handle].replaceJobbossWith,
             )
-            .replace(/RND/g, 'Diameter'),
+            .replace(/RND/g, 'Diameter')
+            .replace(/HLW/g, 'Hollow'),
           totalInventoryInches: item.qtyonhand,
         }),
       )
