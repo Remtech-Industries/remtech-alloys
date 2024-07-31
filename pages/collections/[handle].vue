@@ -95,7 +95,7 @@
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
-import { FilterMatchMode } from 'primevue/api'
+import { FilterMatchMode } from '@primevue/core/api'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import { collectionQuery } from '@/utils/collections'
 import type { CollectionResponse } from '@/utils/types'
