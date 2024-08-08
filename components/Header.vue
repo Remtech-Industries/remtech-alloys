@@ -119,11 +119,11 @@
 </template>
 
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { ref, watch } from '#imports'
 import { useCartStore } from '@/stores/cart'
 import { useShopStore } from '@/stores/shop'
-import { ref, watch } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
+import { storeToRefs } from 'pinia'
 
 const { brand } = useShopStore()
 
@@ -133,7 +133,7 @@ const { isUnlocked, itemCount } = storeToRefs(useCartStore())
 watch(itemCount, (oldCount, newCount) => {
   if (oldCount > newCount) {
     showAddedToCartAlert.value = true
-    setTimeout(() => (showAddedToCartAlert.value = false), 3001)
+    setTimeout(() => (showAddedToCartAlert.value = false), 3000)
   }
 })
 
