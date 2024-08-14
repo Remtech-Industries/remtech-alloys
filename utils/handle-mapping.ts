@@ -95,6 +95,12 @@ export const handleMapping = {
     searchJobbossWith: 'ALLOY C-276',
     replaceJobbossWith: 'Alloy C-276',
   },
+  'alum-6061': {
+    displayTitle: 'Alum 6061',
+    pageTitle: 'Alum 6061',
+    searchJobbossWith: 'ALUM 6061',
+    replaceJobbossWith: 'Alum 6061',
+  },
   ca15: {
     displayTitle: 'CA15',
     pageTitle: 'CA15',
