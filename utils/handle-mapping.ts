@@ -11,11 +11,11 @@ export const handleMapping = {
     searchJobbossWith: '1018 HRS',
     replaceJobbossWith: '1018 HRS',
   },
-  '1045-crs': {
-    displayTitle: '1045 CRS',
-    pageTitle: '1045 CRS',
-    searchJobbossWith: '1045 CRS',
-    replaceJobbossWith: '1045 CRS',
+  '1045-hrs': {
+    displayTitle: '1045 HRS',
+    pageTitle: '1045 HRS',
+    searchJobbossWith: '1045 HRS',
+    replaceJobbossWith: '1045 HRS',
   },
   '17-4-cond-a': {
     displayTitle: '17-4 Cond A',
