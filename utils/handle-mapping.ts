@@ -101,6 +101,12 @@ export const handleMapping = {
     searchJobbossWith: 'ALLOY 718',
     replaceJobbossWith: 'Alloy 718',
   },
+  'alloy-c-22': {
+    displayTitle: 'Alloy C-22',
+    pageTitle: 'Alloy C-22',
+    searchJobbossWith: 'ALLOY C-22',
+    replaceJobbossWith: 'Alloy C-22',
+  },
   'alloy-c-276': {
     displayTitle: 'Alloy C-276',
     pageTitle: 'Alloy C-276',
@@ -126,10 +132,10 @@ export const handleMapping = {
     replaceJobbossWith: 'CA40',
   },
   cd4mcun: {
-    displayTitle: 'CD4MCUN',
-    pageTitle: 'CD4MCUN',
+    displayTitle: 'CD4MCuN',
+    pageTitle: 'CD4MCuN',
     searchJobbossWith: 'CD4MCUN',
-    replaceJobbossWith: 'CD4MCUN',
+    replaceJobbossWith: 'CD4MCuN',
   },
   'cl40-cast': {
     displayTitle: 'CL40 Cast',
