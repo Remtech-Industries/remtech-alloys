@@ -28,10 +28,10 @@ import { computed, navigateTo, useFetch } from '#imports'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
 import { collectionsQuery } from '@/utils/collections'
+import { handleMapping } from '@/utils/handle-mapping'
 import type { CollectionsResponse } from '@/utils/types'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { handleMapping } from '@/utils/handle-mapping'
 
 const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
   ...useShopifyOptions(collectionsQuery),
@@ -78,7 +78,12 @@ const collections = computed(() => {
     }
   })
 
-  return allCollections.sort((a, b) => a.title.localeCompare(b.title))
+  return allCollections.sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, {
+      numeric: true,
+      sensitivity: 'base',
+    }),
+  )
 })
 
 const goTo = async (handle: string) => {
