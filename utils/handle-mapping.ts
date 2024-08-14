@@ -47,6 +47,12 @@ export const handleMapping = {
     searchJobbossWith: '316 SS',
     replaceJobbossWith: '316L SS',
   },
+  '317': {
+    displayTitle: '317',
+    pageTitle: '317 SS',
+    searchJobbossWith: '317 SS',
+    replaceJobbossWith: '317 SS',
+  },
   '410': {
     displayTitle: '410',
     pageTitle: '410 SS',
