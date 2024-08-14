@@ -125,6 +125,12 @@ export const handleMapping = {
     searchJobbossWith: 'DUPLEX 2205',
     replaceJobbossWith: 'Duplex 2205',
   },
+  'duplex-255': {
+    displayTitle: 'Duplex 255',
+    pageTitle: 'Duplex 255',
+    searchJobbossWith: 'DUPLEX 255',
+    replaceJobbossWith: 'Duplex 255',
+  },
   'zeron-100': {
     displayTitle: 'Zeron 100',
     pageTitle: 'Zeron 100',
