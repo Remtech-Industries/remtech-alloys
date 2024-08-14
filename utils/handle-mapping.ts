@@ -167,4 +167,10 @@ export const handleMapping = {
     searchJobbossWith: 'ZERON 100',
     replaceJobbossWith: 'Zeron 100',
   },
+  'zirconium-702': {
+    displayTitle: 'Zirconium 702',
+    pageTitle: 'Zirconium 702',
+    searchJobbossWith: 'ZIRCONIUM 702',
+    replaceJobbossWith: 'Zirconium 702',
+  },
 }
