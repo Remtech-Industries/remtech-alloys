@@ -1,15 +1,21 @@
 export const handleMapping = {
-  '1018-cs': {
-    displayTitle: '1018 CS',
-    pageTitle: '1018 CS',
-    searchJobbossWith: '1018 CS',
-    replaceJobbossWith: '1018 CS',
+  '1018-crs': {
+    displayTitle: '1018 CRS',
+    pageTitle: '1018 CRS',
+    searchJobbossWith: '1018 CRS',
+    replaceJobbossWith: '1018 CRS',
   },
-  '1045-cs': {
-    displayTitle: '1045 CS',
-    pageTitle: '1045 CS',
-    searchJobbossWith: '1045 CS',
-    replaceJobbossWith: '1045 CS',
+  '1018-hrs': {
+    displayTitle: '1018 HRS',
+    pageTitle: '1018 HRS',
+    searchJobbossWith: '1018 HRS',
+    replaceJobbossWith: '1018 HRS',
+  },
+  '1045-crs': {
+    displayTitle: '1045 CRS',
+    pageTitle: '1045 CRS',
+    searchJobbossWith: '1045 CRS',
+    replaceJobbossWith: '1045 CRS',
   },
   '17-4-cond-a': {
     displayTitle: '17-4 Cond A',
