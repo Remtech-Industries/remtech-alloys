@@ -133,7 +133,7 @@ const { isUnlocked, itemCount } = storeToRefs(useCartStore())
 watch(itemCount, (oldCount, newCount) => {
   if (oldCount > newCount) {
     showAddedToCartAlert.value = true
-    setTimeout(() => (showAddedToCartAlert.value = false), 3000)
+    setTimeout(() => (showAddedToCartAlert.value = false), 3001)
   }
 })
 
