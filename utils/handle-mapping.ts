@@ -161,6 +161,12 @@ export const handleMapping = {
     searchJobbossWith: 'DUPLEX 255',
     replaceJobbossWith: 'Duplex 255',
   },
+  'duplex-2507': {
+    displayTitle: 'Duplex 2507',
+    pageTitle: 'Duplex 2507',
+    searchJobbossWith: 'DUPLEX 2507',
+    replaceJobbossWith: 'Duplex 2507',
+  },
   'zeron-100': {
     displayTitle: 'Zeron 100',
     pageTitle: 'Zeron 100',
@@ -172,5 +178,41 @@ export const handleMapping = {
     pageTitle: 'Zirconium 702',
     searchJobbossWith: 'ZIRCONIUM 702',
     replaceJobbossWith: 'Zirconium 702',
+  },
+  '4140': {
+    displayTitle: '4140',
+    pageTitle: '4140',
+    searchJobbossWith: '4140',
+    replaceJobbossWith: '4140',
+  },
+  '316Ti': {
+    displayTitle: '316Ti',
+    pageTitle: '316Ti',
+    searchJobbossWith: '316TI SS',
+    replaceJobbossWith: '316Ti SS',
+  },
+  '431': {
+    displayTitle: '431',
+    pageTitle: '431',
+    searchJobbossWith: '431 SS',
+    replaceJobbossWith: '431 SS',
+  },
+  '415': {
+    displayTitle: '415',
+    pageTitle: '415',
+    searchJobbossWith: '415 SS',
+    replaceJobbossWith: '415 SS',
+  },
+  'nitronic-50': {
+    displayTitle: 'Nitronic 50',
+    pageTitle: 'Nitronic 50',
+    searchJobbossWith: 'NIT 50',
+    replaceJobbossWith: 'NIT 50',
+  },
+  'nitronic-60': {
+    displayTitle: 'Nitronic 60',
+    pageTitle: 'Nitronic 60',
+    searchJobbossWith: 'NIT 60',
+    replaceJobbossWith: 'NIT 60',
   },
 }
