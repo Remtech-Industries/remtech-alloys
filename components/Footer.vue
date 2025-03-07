@@ -6,19 +6,19 @@
       <div
         class="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-10"
       >
-        <a class="cursor-pointer" @click="showPolicy('privacyPolicy')">
+        <a class="cursor-pointer" @click="showPolicy('Privacy Policy')">
           Privacy
         </a>
 
-        <a class="cursor-pointer" @click="showPolicy('termsOfService')">
+        <a class="cursor-pointer" @click="showPolicy('Terms Of Service')">
           Terms of Service
         </a>
 
-        <a class="cursor-pointer" @click="showPolicy('shippingPolicy')">
+        <a class="cursor-pointer" @click="showPolicy('Shipping Policy')">
           Shipping Policy
         </a>
 
-        <a class="cursor-pointer" @click="showPolicy('refundPolicy')">
+        <a class="cursor-pointer" @click="showPolicy('Refund Policy')">
           Return Policy
         </a>
 
@@ -45,67 +45,22 @@
 
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import { useFetch, ref } from '#imports'
-import type { ShopifyResponse, Shop } from '@/utils/types'
-
-type ShopPolicyResponse = ShopifyResponse<{
-  shop?: Pick<
-    Shop,
-    'refundPolicy' | 'privacyPolicy' | 'shippingPolicy' | 'termsOfService'
-  >
-}>
+import { ref } from '#imports'
 
 type PolicyName =
-  | 'refundPolicy'
-  | 'privacyPolicy'
-  | 'shippingPolicy'
-  | 'termsOfService'
+  | 'Refund Policy'
+  | 'Privacy Policy'
+  | 'Shipping Policy'
+  | 'Terms Of Service'
 
 const year = new Date().getFullYear()
 const words = ref<string | null>(null)
 const header = ref('')
 
-const query = `
-query {
-  shop {
-    privacyPolicy {
-      body
-      title
-    }
-    refundPolicy {
-      title
-      body
-    }
-    shippingPolicy {
-      body
-      title
-    }
-    termsOfService {
-      body
-      title
-    }
-  }
+async function showPolicy(title: PolicyName) {
+  words.value = 'policy'
+  header.value = title
 }
-`
-
-async function showPolicy(handle: PolicyName) {
-  if (!data.value) await execute()
-
-  const policy = data.value?.data?.shop?.[handle]
-  if (policy) {
-    words.value = policy.body
-    header.value = policy.title
-  }
-}
-
-const { data, execute } = useFetch<ShopPolicyResponse>(useShopifyUrl(), {
-  ...useShopifyOptions(query),
-  key: 'shopPolicy',
-  lazy: true,
-  server: false,
-  immediate: false,
-})
 </script>
 
 <!-- #best v-html :deep -->
