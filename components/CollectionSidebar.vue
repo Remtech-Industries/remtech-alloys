@@ -6,13 +6,13 @@
       Choose a material type
     </div>
 
-    <ul v-if="collections && collections.length > 0">
-      <li v-for="collection in collections" :key="collection.handle">
+    <ul v-if="materials && materials.length > 0">
+      <li v-for="title in materials" :key="title">
         <NuxtLink
-          :to="`/collections/${collection.handle}`"
+          :to="`/collections/${title}`"
           class="block rounded px-2 py-2 text-slate-700 hover:bg-slate-100"
         >
-          {{ collection.title }}
+          {{ title }}
         </NuxtLink>
       </li>
     </ul>
@@ -22,42 +22,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useFetch } from '#imports'
-import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
-import { collectionsQuery } from '@/utils/collections'
-import { CollectionsResponse } from '@/utils/types'
-import { handleMapping } from '@/utils/handle-mapping'
+import { computed, storeToRefs } from '#imports'
+import { useMaterialInfoStore } from '~/stores/material-info'
 
-const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
-  ...useShopifyOptions(collectionsQuery),
-  key: 'collections',
-})
-
-const staticCollections = computed(() =>
-  Object.entries(handleMapping).map(([handle, strings]) => ({
-    handle,
-    title: strings.displayTitle,
-  })),
+const { materialInfo } = storeToRefs(useMaterialInfoStore())
+const materials = computed(() =>
+  materialInfo.value?.material_groups.flatMap(({ materials }) =>
+    materials.map(({ title }) => title),
+  ),
 )
-
-const collections = computed(() => {
-  if (!data.value?.data?.collections?.edges) return staticCollections.value
-
-  const allCollections = staticCollections.value
-
-  data.value.data.collections.edges.forEach(({ node }) => {
-    if (
-      !allCollections.some((collection) => node.handle === collection.handle)
-    ) {
-      allCollections.push(node)
-    }
-  })
-
-  return allCollections.sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, {
-      numeric: true,
-      sensitivity: 'base',
-    }),
-  )
-})
 </script>
