@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-auto max-w-screen-md pt-6">
+  <div class="container mx-auto flex max-w-screen-md flex-col gap-6 px-6 pt-6">
     <h1 class="mb-10 text-3xl font-bold text-slate-700">
       Submit orders as a request for quote (RFQ)
     </h1>
