@@ -21,6 +21,7 @@
           scrollable
           v-model:filters="filters"
           :value="collection.parts"
+          data-key="partno"
         >
           <template #header>
             <div class="flex justify-end">
