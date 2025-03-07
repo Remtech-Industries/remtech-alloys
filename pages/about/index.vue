@@ -38,7 +38,7 @@
         </p>
       </div>
 
-      <div class="my-8 grid grid-cols-2 gap-1">
+      <div class="my-8 grid grid-cols-1 gap-1 sm:grid-cols-2">
         <NuxtImg src="/overhead.jpg" />
         <NuxtImg src="/medium_close.jpg" />
         <NuxtImg src="/extremely_close.jpg" />
