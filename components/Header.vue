@@ -4,7 +4,7 @@
       <div class="flex flex-grow items-center self-start">
         <NuxtLink to="/">
           <NuxtImg
-            :src="`${brand?.logo?.image?.url}&width=400`"
+            src="/logo.png"
             alt="Rem-Tech Alloys Logo"
             :width="200"
             :height="75"
@@ -13,7 +13,8 @@
         </NuxtLink>
 
         <div class="hidden pl-4 tracking-wide text-slate-50 xl:block">
-          {{ brand?.slogan }}
+          Offering Prompt Delivery of Custom-Sized Stainless Steels and
+          Specialty Alloys
         </div>
       </div>
 
@@ -100,42 +101,14 @@
             </a>
           </div>
         </div>
-
-        <!-- Hide cart link if the user has not unlocked the app -->
-        <div v-if="isUnlocked" class="mt-2 flex justify-end text-slate-50">
-          <div v-show="showAddedToCartAlert" class="mr-2">Added to cart!</div>
-
-          <NuxtLink to="/cart" class="font-semibold">
-            <span class="mr-1">Cart</span>
-
-            <span class="rounded bg-yellow-500 px-1 text-sm text-slate-900">
-              {{ itemCount }}
-            </span>
-          </NuxtLink>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from '#imports'
-import { useCartStore } from '@/stores/cart'
-import { useShopStore } from '@/stores/shop'
+import { ref } from '#imports'
 import { useResizeObserver } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-
-const { brand } = useShopStore()
-
-const showAddedToCartAlert = ref(false)
-
-const { isUnlocked, itemCount } = storeToRefs(useCartStore())
-watch(itemCount, (oldCount, newCount) => {
-  if (oldCount > newCount) {
-    showAddedToCartAlert.value = true
-    setTimeout(() => (showAddedToCartAlert.value = false), 3000)
-  }
-})
 
 const showMenu = ref(false)
 function toggleNavbar() {
