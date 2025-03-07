@@ -26,7 +26,7 @@ import { navigateTo, storeToRefs, computed } from '#imports'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
-import { useMaterialInfoStore } from '~/stores/material-info'
+import { useMaterialInfoStore } from '@/stores/material-info'
 
 const { materialInfo } = storeToRefs(useMaterialInfoStore())
 const materials = computed(() =>

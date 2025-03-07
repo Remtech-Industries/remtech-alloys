@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 import { computed, storeToRefs } from '#imports'
-import { useMaterialInfoStore } from '~/stores/material-info'
+import { useMaterialInfoStore } from '@/stores/material-info'
 
 const { materialInfo } = storeToRefs(useMaterialInfoStore())
 const materials = computed(() =>
