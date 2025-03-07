@@ -15,10 +15,6 @@ export default defineNuxtConfig({
     },
   },
 
-  robots: {
-    disallow: ['/cart', '/mtr'],
-  },
-
   imports: { autoImport: false },
 
   modules: [
@@ -34,14 +30,10 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/about': { prerender: true },
-    '/cart': { index: false },
-    '/mtr': { index: false },
   },
 
   runtimeConfig: {
     public: {
-      shopifyStore: process.env.SHOPIFY_STORE,
-      publicAccessToken: process.env.PUBLIC_ACCESS_TOKEN,
       siteUrl: 'https://remtechalloys.com',
       siteName: 'Rem-Tech Alloys',
       siteDescription:
