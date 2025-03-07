@@ -70,15 +70,12 @@ import {
   useMaterialInfoStore,
 } from '#imports'
 import { storeToRefs } from 'pinia'
-import { handleMapping } from '@/utils/handle-mapping'
 
 const { params } = useRoute()
 
-type HandleKey = keyof typeof handleMapping
 const variables = computed(() => {
-  const handle = (
+  const handle =
     typeof params.handle === 'string' ? params.handle : params.handle[0]
-  ) as HandleKey
   return { handle }
 })
 
