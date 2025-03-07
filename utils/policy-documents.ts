@@ -1,7 +1,7 @@
 export type PolicyDocument = {
   /**
    * The title of the policy document.
-   * This appears as the footer link the dialog title.
+   * This appears as the footer link and the dialog title.
    */
   title: string
   /**
