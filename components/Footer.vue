@@ -6,106 +6,43 @@
       <div
         class="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-10"
       >
-        <a class="cursor-pointer" @click="showPolicy('privacyPolicy')">
-          Privacy
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('termsOfService')">
-          Terms of Service
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('shippingPolicy')">
-          Shipping Policy
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('refundPolicy')">
-          Return Policy
+        <a
+          v-for="document in policyDocuments"
+          :key="document.title"
+          class="cursor-pointer"
+          @click="selectedDocument = document"
+        >
+          {{ document.title }}
         </a>
 
         <NuxtLink to="/about">Contact Us</NuxtLink>
       </div>
 
       <div class="text-center text-xs">
-        &copy; {{ year }} Rem-Tech Alloys Inc. All rights reserved.
+        &copy; {{ new Date().getFullYear() }} Rem-Tech Alloys Inc. All rights
+        reserved.
       </div>
     </div>
 
     <Dialog
-      :visible="!!words"
+      :visible="!!selectedDocument"
       modal
       dismissable-mask
-      @update:visible="words = null"
-      :header="header"
+      @update:visible="selectedDocument = undefined"
+      :header="selectedDocument?.title"
       :draggable="false"
     >
-      <span class="css" v-html="words"></span>
+      <span class="css" v-html="selectedDocument?.content"></span>
     </Dialog>
   </footer>
 </template>
 
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import { useShopifyUrl, useShopifyOptions } from '@/composables/useShopify'
-import { useFetch, ref } from '#imports'
-import type { ShopifyResponse, Shop } from '@/utils/types'
+import { ref } from '#imports'
+import { policyDocuments, type PolicyDocument } from '@/utils/policy-documents'
 
-type ShopPolicyResponse = ShopifyResponse<{
-  shop?: Pick<
-    Shop,
-    'refundPolicy' | 'privacyPolicy' | 'shippingPolicy' | 'termsOfService'
-  >
-}>
-
-type PolicyName =
-  | 'refundPolicy'
-  | 'privacyPolicy'
-  | 'shippingPolicy'
-  | 'termsOfService'
-
-const year = new Date().getFullYear()
-const words = ref<string | null>(null)
-const header = ref('')
-
-const query = `
-query {
-  shop {
-    privacyPolicy {
-      body
-      title
-    }
-    refundPolicy {
-      title
-      body
-    }
-    shippingPolicy {
-      body
-      title
-    }
-    termsOfService {
-      body
-      title
-    }
-  }
-}
-`
-
-async function showPolicy(handle: PolicyName) {
-  if (!data.value) await execute()
-
-  const policy = data.value?.data?.shop?.[handle]
-  if (policy) {
-    words.value = policy.body
-    header.value = policy.title
-  }
-}
-
-const { data, execute } = useFetch<ShopPolicyResponse>(useShopifyUrl(), {
-  ...useShopifyOptions(query),
-  key: 'shopPolicy',
-  lazy: true,
-  server: false,
-  immediate: false,
-})
+const selectedDocument = ref<PolicyDocument>()
 </script>
 
 <!-- #best v-html :deep -->

@@ -4,16 +4,14 @@
 
     <div class="m-6 w-full rounded-xl bg-white p-6">
       <DataTable
-        v-if="collections && collections.length > 0"
-        :value="collections"
-        @row-click="({ data }) => goTo(data.handle)"
+        v-if="materials && materials.length > 0"
+        :value="materials"
+        data-key="title"
+        @row-click="({ data }) => goTo(data.title)"
       >
-        <Column field="title" header="Type">
-          <template #body="{ data }">
-            {{ data.title }}
-          </template>
-        </Column>
-        <Column field="products.edges.length" header="Quantity" />
+        <Column field="title" header="Type" />
+
+        <Column field="quantity" header="Quantity" />
       </DataTable>
 
       <div v-else>
@@ -24,67 +22,18 @@
 </template>
 
 <script setup lang="ts">
-import { computed, navigateTo, useFetch } from '#imports'
+import { navigateTo, storeToRefs, computed } from '#imports'
 import CollectionSidebar from '@/components/CollectionSidebar.vue'
-import { useShopifyOptions, useShopifyUrl } from '@/composables/useShopify'
-import { collectionsQuery } from '@/utils/collections'
-import { handleMapping } from '@/utils/handle-mapping'
-import type { CollectionsResponse } from '@/utils/types'
 import Column from 'primevue/column'
 import DataTable from 'primevue/datatable'
+import { useMaterialInfoStore } from '@/stores/material-info'
 
-const { data } = await useFetch<CollectionsResponse>(useShopifyUrl(), {
-  ...useShopifyOptions(collectionsQuery),
-  key: 'collections',
-})
-
-const { data: jobbossData } = await useFetch<{ products: [] }>(
-  'https://data.remtechalloys.com/remtech_alloys_inventory_levels.json',
-  { lazy: true, server: false },
+const { materialInfo } = storeToRefs(useMaterialInfoStore())
+const materials = computed(() =>
+  materialInfo.value?.material_groups.flatMap(({ materials }) =>
+    materials.map(({ title, parts }) => ({ title, quantity: parts.length })),
+  ),
 )
-
-const staticCollectionsWithQuantity = computed(() => {
-  const products = jobbossData.value?.products || []
-
-  return Object.entries(handleMapping).map(([handle, strings]) => {
-    const length = products.filter((product: { partno: string }) =>
-      product.partno.includes(strings.searchJobbossWith),
-    ).length
-    return {
-      handle,
-      title: strings.displayTitle,
-      products: { edges: { length } },
-    }
-  })
-})
-
-const collections = computed(() => {
-  if (!data.value?.data?.collections?.edges) {
-    return staticCollectionsWithQuantity.value
-  }
-
-  const allCollections = staticCollectionsWithQuantity.value
-
-  data.value.data.collections.edges.forEach(({ node }) => {
-    if (
-      !allCollections.some((collection) => node.handle === collection.handle)
-    ) {
-      allCollections.push(node)
-    } else {
-      const index = allCollections.findIndex(
-        (collection) => collection.handle === node.handle,
-      )
-      allCollections[index].products.edges.length += node.products.edges.length
-    }
-  })
-
-  return allCollections.sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, {
-      numeric: true,
-      sensitivity: 'base',
-    }),
-  )
-})
 
 const goTo = async (handle: string) => {
   await navigateTo(`/collections/${handle}`)

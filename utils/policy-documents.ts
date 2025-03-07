@@ -1,0 +1,45 @@
+export type PolicyDocument = {
+  /**
+   * The title of the policy document.
+   * This appears as the footer link and the dialog title.
+   */
+  title: string
+  /**
+   * The content of the policy document.
+   * This appears as the dialog content parsed as HTML.
+   */
+  content: string
+}
+
+export const policyDocuments: Record<string, PolicyDocument> = {
+  privacyPolicy: {
+    title: 'Privacy Policy',
+    content: `<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Customer information collected from you may be used to contact you, for delivery purposes, or to personalize and improve your experience. We use modern security measures to keep your information safe, and we do not save banking or credit card information.</span><span data-ccp-props="{&quot;134233118&quot;:false,&quot;201341983&quot;:0,&quot;335559739&quot;:0,&quot;335559740&quot;:259}" data-mce-fragment="1">&nbsp;</span></p>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Rem-Tech Alloys will not sell or trade any identifiable customer information with third parties. Information is however shared with trusted third parties who assist in operating our website and who handle our checkout experience, they must agree to keep your information confidential. Further, your information may be released to comply with the law or to enforce our site policies. We retain the right to share non-identified information with third parties for advertising, marketing, or other uses.</span><span data-ccp-props="{&quot;134233118&quot;:false,&quot;201341983&quot;:0,&quot;335559739&quot;:0,&quot;335559740&quot;:259}" data-mce-fragment="1">&nbsp;</span></p>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Users of our website consent to our privacy policy.</span><span data-ccp-props="{&quot;134233118&quot;:false,&quot;201341983&quot;:0,&quot;335559739&quot;:0,&quot;335559740&quot;:259}" data-mce-fragment="1">&nbsp;</span></p>`,
+  },
+  termsOfService: {
+    title: 'Terms of Service',
+    content: `<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">The following are the terms of the agreement between Rem-Tech Alloys Inc. (“Company”) and the buyer (“Buyer”) of material through the Company’s website (“Site”).</span></p>
+<ol data-mce-fragment="1">
+<li data-leveltext="%1." data-font="Calibri" data-listid="2" data-list-defn-props="{&quot;335552541&quot;:0,&quot;335559684&quot;:-1,&quot;335559685&quot;:720,&quot;335559991&quot;:360,&quot;469769242&quot;:[65533,0],&quot;469777803&quot;:&quot;left&quot;,&quot;469777804&quot;:&quot;%1.&quot;,&quot;469777815&quot;:&quot;hybridMultilevel&quot;}" data-aria-posinset="1" data-aria-level="1" data-mce-fragment="1"><b data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">General.</span></b><span data-contrast="auto" data-mce-fragment="1"> Buyer agrees to the terms of service of this online contract (“Contract”) with respect to the goods, services, and information provided by the Site. This Contract supersedes all prior and current agreements, understandings, and communications. Buyer agrees to review this Contract and the purchase of a good or service acts as acceptance of this Contract.</span></li>
+<li data-leveltext="%1." data-font="Calibri" data-listid="2" data-list-defn-props="{&quot;335552541&quot;:0,&quot;335559684&quot;:-1,&quot;335559685&quot;:720,&quot;335559991&quot;:360,&quot;469769242&quot;:[65533,0],&quot;469777803&quot;:&quot;left&quot;,&quot;469777804&quot;:&quot;%1.&quot;,&quot;469777815&quot;:&quot;hybridMultilevel&quot;}" data-aria-posinset="2" data-aria-level="1" data-mce-fragment="1"><b data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Pricing.</span></b><span data-contrast="auto" data-mce-fragment="1"> The Company reserves the right to verify prices calculated upon checkout, and subsequently cancel or re-quote when pricing errors have been made.</span></li>
+<li data-leveltext="%1." data-font="Calibri" data-listid="2" data-list-defn-props="{&quot;335552541&quot;:0,&quot;335559684&quot;:-1,&quot;335559685&quot;:720,&quot;335559991&quot;:360,&quot;469769242&quot;:[65533,0],&quot;469777803&quot;:&quot;left&quot;,&quot;469777804&quot;:&quot;%1.&quot;,&quot;469777815&quot;:&quot;hybridMultilevel&quot;}" data-aria-posinset="3" data-aria-level="1" data-mce-fragment="1"><b data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Payment.</span></b><span data-contrast="auto" data-mce-fragment="1"> The Buyer warrants that the supplied banking or credit card information is correct and honored by the Buyer’s financial institution. The Buyer shall pay for charges incurred, including all applicable taxes.</span></li>
+<li data-leveltext="%1." data-font="Calibri" data-listid="2" data-list-defn-props="{&quot;335552541&quot;:0,&quot;335559684&quot;:-1,&quot;335559685&quot;:720,&quot;335559991&quot;:360,&quot;469769242&quot;:[65533,0],&quot;469777803&quot;:&quot;left&quot;,&quot;469777804&quot;:&quot;%1.&quot;,&quot;469777815&quot;:&quot;hybridMultilevel&quot;}" data-aria-posinset="4" data-aria-level="1" data-mce-fragment="1"><b data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Copyright.</span></b><span data-contrast="auto" data-mce-fragment="1"> All content and organization of information on the Site are protected under copyrights, trademarks, and other proprietary rights. Any copying or redistribution of information by the Buyer or any other visitor to the Site is strictly prohibited.</span></li>
+<li data-leveltext="%1." data-font="Calibri" data-listid="2" data-list-defn-props="{&quot;335552541&quot;:0,&quot;335559684&quot;:-1,&quot;335559685&quot;:720,&quot;335559991&quot;:360,&quot;469769242&quot;:[65533,0],&quot;469777803&quot;:&quot;left&quot;,&quot;469777804&quot;:&quot;%1.&quot;,&quot;469777815&quot;:&quot;hybridMultilevel&quot;}" data-aria-posinset="5" data-aria-level="1" data-mce-fragment="1"><b data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Modification.</span></b><span data-contrast="auto" data-mce-fragment="1"> Company reserves the right to change, remove, or update any information, product, or service appearing on the Site. This Contract and/or products and services on the Site may be modified without prior notice at the sole discretion of the Company.</span></li>
+</ol>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Any concerns or questions related to this Contract can be directed to </span><a href="mailto:info@remtechalloys.com" data-mce-fragment="1" data-mce-href="mailto:info@remtechalloys.com"><span data-contrast="none" data-mce-fragment="1">info@remtechalloys.com</span></a><span data-ccp-props="{&quot;134233118&quot;:false,&quot;201341983&quot;:0,&quot;335559685&quot;:0,&quot;335559739&quot;:0,&quot;335559740&quot;:259}" data-mce-fragment="1">&nbsp;</span></p>`,
+  },
+  shippingPolicy: {
+    title: 'Shipping Policy',
+    content: `<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Rem-Tech Alloys is dedicated to providing cost efficient, timely, and safe delivery options.</span></p>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">We are currently offering free local shipping along the 401 and 403 from Windsor to Toronto. Stocked material can typically be delivered locally within 1-2 days.</span></p>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">For customers outside of our free delivery regions, delivery charges will be calculated and listed in the initial quote along with the estimated delivery timeframe. Feel free to provide delivery option preferences in the request for quote (RFQ).</span></p>
+<p data-mce-fragment="1"><span data-contrast="auto" data-mce-fragment="1">Acceptance by the customer will signify successful delivery, therefore it is important that the customer inspects the delivered product.</span><span data-ccp-props="{&quot;134233118&quot;:false,&quot;201341983&quot;:0,&quot;335559739&quot;:0,&quot;335559740&quot;:259}" data-mce-fragment="1">&nbsp;</span></p>`,
+  },
+  returnPolicy: {
+    title: 'Return Policy',
+    content: `<p><span data-contrast="auto">All custom-sized material cannot be canceled once material preparation has begun. No returns will be accepted and no refunds will be issued, unless we make a material or dimensional error. Rem-Tech Alloys will consider restocking unmodified full-length bars at the request of the customer, but we retain the right to do so on a case-by-case basis and the customer will be charged a restocking fee.</span></p>
+<p><span data-contrast="auto">Rem-Tech Alloys is dedicated to our customers and therefore we will accept returns and provide a refund if we make a mistake. Please contact </span><a href="mailto:info@remtechalloys.com"><span data-contrast="none">info@remtechalloys.com</span></a><span data-contrast="auto"> for return/refund instructions.</span><span data-ccp-props="{&quot;201341983&quot;:0,&quot;335559739&quot;:160,&quot;335559740&quot;:259}">&nbsp;</span></p>`,
+  },
+}
