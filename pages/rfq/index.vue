@@ -10,3 +10,8 @@
     </p>
   </div>
 </template>
+
+<script setup lang="ts">
+import { useHead } from '#imports'
+useHead({ title: 'RFQ' })
+</script>
