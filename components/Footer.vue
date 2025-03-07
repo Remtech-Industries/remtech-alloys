@@ -6,39 +6,33 @@
       <div
         class="flex flex-col items-center justify-center gap-3 md:flex-row md:gap-10"
       >
-        <a class="cursor-pointer" @click="showPolicy('Privacy Policy')">
-          Privacy
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('Terms Of Service')">
-          Terms of Service
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('Shipping Policy')">
-          Shipping Policy
-        </a>
-
-        <a class="cursor-pointer" @click="showPolicy('Refund Policy')">
-          Return Policy
+        <a
+          v-for="document in policyDocuments"
+          :key="document.title"
+          class="cursor-pointer"
+          @click="selectedDocument = document"
+        >
+          {{ document.title }}
         </a>
 
         <NuxtLink to="/about">Contact Us</NuxtLink>
       </div>
 
       <div class="text-center text-xs">
-        &copy; {{ year }} Rem-Tech Alloys Inc. All rights reserved.
+        &copy; {{ new Date().getFullYear() }} Rem-Tech Alloys Inc. All rights
+        reserved.
       </div>
     </div>
 
     <Dialog
-      :visible="!!words"
+      :visible="!!selectedDocument"
       modal
       dismissable-mask
-      @update:visible="words = null"
-      :header="header"
+      @update:visible="selectedDocument = undefined"
+      :header="selectedDocument?.title"
       :draggable="false"
     >
-      <span class="css" v-html="words"></span>
+      <span class="css" v-html="selectedDocument?.content"></span>
     </Dialog>
   </footer>
 </template>
@@ -46,21 +40,9 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
 import { ref } from '#imports'
+import { policyDocuments, type PolicyDocument } from '@/utils/policy-documents'
 
-type PolicyName =
-  | 'Refund Policy'
-  | 'Privacy Policy'
-  | 'Shipping Policy'
-  | 'Terms Of Service'
-
-const year = new Date().getFullYear()
-const words = ref<string | null>(null)
-const header = ref('')
-
-async function showPolicy(title: PolicyName) {
-  words.value = 'policy'
-  header.value = title
-}
+const selectedDocument = ref<PolicyDocument>()
 </script>
 
 <!-- #best v-html :deep -->
