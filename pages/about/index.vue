@@ -38,7 +38,7 @@
         </p>
       </div>
 
-      <div class="my-8 grid grid-cols-1 gap-1 sm:grid-cols-2">
+      <div class="my-8 grid grid-cols-2 gap-1">
         <NuxtImg src="/overhead.jpg" />
         <NuxtImg src="/medium_close.jpg" />
         <NuxtImg src="/extremely_close.jpg" />
@@ -50,5 +50,7 @@
 
 <script setup lang="ts">
 import { useHead } from '#imports'
-useHead({ title: 'About' })
+useHead({
+  title: 'About',
+})
 </script>
