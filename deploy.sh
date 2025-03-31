@@ -11,4 +11,4 @@ mise exec node -- npm install
 nice -n 19 mise exec node -- npm run generate
 
 # upload site
-rsync -avz --delete .output/public/ e1@data.remtechalloys.com:/home/e1/staging.remtechindustries.com
+rsync -avz --delete .output/public/ e1@data.remtechalloys.com:/home/e1/remtechalloys.com
