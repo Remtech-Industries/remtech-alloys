@@ -6,7 +6,8 @@
     "preview": "nuxi preview",
     "postinstall": "nuxi prepare",
     "test": "vitest",
-    "upgrade": "npx nuxi upgrade --force"
+    "upgrade": "npx nuxi upgrade --force",
+    "generate": "nuxt generate"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.5",
